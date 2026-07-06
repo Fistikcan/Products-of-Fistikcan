@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fıstıkcan | Ana Sayfa</title>
+    <style>
+        :root {
+            --primary-color: #93C90F; /* Senin imza rengin */
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+        }
+
+        /* Gece modu */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --text-color: #f0f0f0;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            transition: 0.3s;
+        }
+
+        h1 {
+            border-bottom: 4px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .cta-button {
+            background-color: var(--primary-color);
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Fıstıkcan'ın Dünyası</h1>
+    <p>Burası ana merkez, projeler için alttaki linke göz atabilirsin.</p>
+    
+    <a href="https://products.fcandev.space" class="cta-button">Projelerim (Products)</a>
+
+</body>
+</html>
