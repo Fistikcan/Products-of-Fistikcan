@@ -2,59 +2,625 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Fıstıkcan | Dev Hub</title>
-    <style>
-        :root { --primary: #93C90F; --bg: #0a0a0a; --card: rgba(255, 255, 255, 0.05); }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: white; margin: 0; padding: 40px; }
-        
-        .container { max-width: 1000px; margin: auto; }
-        header { text-align: center; margin-bottom: 50px; }
-        h1 { font-size: 3rem; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Developer & Guide Creator</title>
+    <meta name="description" content="GitHub projelerim ve rehberlerim için kişisel portfolyo.">
 
-        #repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        
-        .card { 
-            background: var(--card); padding: 25px; border-radius: 15px; 
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s;
-            backdrop-filter: blur(10px);
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============ CSS DEĞİŞKENLERİ ============ */
+        :root {
+            --accent: #93C90F;
+            --accent-glow: rgba(147, 201, 15, 0.4);
+            --bg: #0a0a0f;
+            --surface: rgba(255, 255, 255, 0.03);
+            --surface-hover: rgba(255, 255, 255, 0.06);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text: #e8e8f0;
+            --text-secondary: #9898b0;
+            --radius: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .card:hover { border-color: var(--primary); transform: translateY(-10px); }
-        
-        h3 { color: var(--primary); margin-top: 0; }
-        a { color: #fff; text-decoration: none; font-weight: bold; border-bottom: 2px solid var(--primary); }
+
+        /* Aydınlık tema değişkenleri */
+        [data-theme="light"] {
+            --bg: #f5f7fa;
+            --surface: rgba(0, 0, 0, 0.03);
+            --surface-hover: rgba(0, 0, 0, 0.06);
+            --glass: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text: #1a1a2e;
+            --text-secondary: #4a4a6a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* ============ ÖZEL İMLEÇ ============ */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, border-color 0.3s;
+            mix-blend-mode: difference;
+            opacity: 0.7;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.05s ease;
+        }
+
+        /* ============ PARTİKEL ARKA PLAN ============ */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============ ANA YAPI ============ */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        /* ============ TEMA DEĞİŞTİRİCİ ============ */
+        .theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--text);
+            transition: all var(--transition);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .theme-toggle:hover {
+            background: var(--surface-hover);
+            transform: scale(1.1);
+            border-color: var(--accent);
+        }
+
+        /* ============ HERO ============ */
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease forwards;
+            width: 100%;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            animation: pulse 2.5s infinite;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--accent), #d4ff4d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            min-height: 30px;
+        }
+
+        .hero-subtitle .typing-text {
+            border-right: 2px solid var(--accent);
+            padding-right: 4px;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { border-color: var(--accent); }
+            50% { border-color: transparent; }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            box-shadow: 0 8px 32px var(--accent-glow);
+            color: #0a0a0f;
+            font-weight: 700;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(147, 201, 15, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: var(--surface-hover);
+            color: var(--accent);
+        }
+
+        /* ============ BÖLÜM BAŞLIKLARI ============ */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .section-title .accent {
+            color: var(--accent);
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 48px;
+            font-size: 1.1rem;
+        }
+
+        /* ============ KARTLAR (PROJE & REHBER) ============ */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 28px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .card:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+            transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) scale(1.02);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(147, 201, 15, 0.05), transparent);
+            transition: left 0.6s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            background: rgba(147, 201, 15, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(147, 201, 15, 0.3);
+        }
+
+        .card-links {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .card-link {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color var(--transition);
+        }
+
+        .card-link:hover {
+            color: var(--accent);
+        }
+
+        /* Yıldız sayısı */
+        .star-count {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-left: auto;
+        }
+
+        /* ============ YÜKLENİYOR / HATA ============ */
+        .loading, .error {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 40px;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ============ ANİMASYONLAR ============ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+            70% { box-shadow: 0 0 0 10px rgba(147, 201, 15, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(147, 201, 15, 0); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobil uyum */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Fıstıkcan'ın Çalışma Alanı</h1>
-        <p>Projelerim, kodlarım ve deneysel donanım süreçlerim.</p>
-    </header>
-    <div id="repo-grid">Yükleniyor, kodlar çekiliyor...</div>
-</div>
+    <!-- Özel İmleç -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
 
-<script>
-    const username = 'Fistikcan'; // Kullanıcı adın
-    async function fetchRepos() {
-        const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
-        const repos = await res.json();
-        const grid = document.getElementById('repo-grid');
-        grid.innerHTML = '';
-        
-        repos.forEach(repo => {
-            if(repo.fork) return; // Forkları gizle
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <h3>${repo.name}</h3>
-                <p>${repo.description || 'Açıklama girilmemiş.'}</p>
-                <a href="${repo.html_url}" target="_blank">Repo'ya Git →</a>
-            `;
-            grid.appendChild(card);
-        });
-    }
-    fetchRepos();
-</script>
-</body>
-</html>
+    <!-- Partikel Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Tema Değiştirici -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌓</button>
+
+    <!-- Ana İçerik -->
+    <div class="container">
+
+        <!-- HERO -->
+        <header>
+            <div class="hero-content">
+                <div class="hero-badge">🚀 Açık Kaynak Aşığı</div>
+                <h1 class="hero-title">
+                    Merhaba, ben<br><span class="highlight" id="githubName">Developer</span>
+                </h1>
+                <p class="hero-subtitle">
+                    <span class="typing-text" id="typing"></span>
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projeler" class="btn btn-primary">🚀 Projeleri Gör</a>
+                    <a href="#rehberler" class="btn btn-outline">📚 Rehberlere Bak</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- İSTATİSTİKLER / HAKKIMDA -->
+        <section id="hakkimda">
+            <h2 class="section-title"><span class="accent">&lt;</span> Hakkımda <span class="accent">/&gt;</span></h2>
+            <p class="section-subtitle">GitHub üzerinden çekilen canlı veriler</p>
+            <div class="card-grid" id="statsContainer">
+                <div class="loading">⏳ GitHub bilgileri yükleniyor...</div>
+            </div>
+        </section>
+
+        <!-- PROJELER (GitHub repoları, guide olmayanlar) -->
+        <section id="projeler">
+            <h2 class="section-title"><span class="accent">.</span>projeler<span class="accent">()</span></h2>
+            <p class="section-subtitle">En güncel çalışmalarım</p>
+            <div class="card-grid" id="projectsContainer">
+                <div class="loading">⏳ Projeler yükleniyor...</div>
+            </div>
+        </section>
+
+        <!-- REHBERLER (topic içinde 'guide' olan repolar) -->
+        <section id="rehberler">
+            <h2 class="section-title"><span class="accent">📖</span> rehberler</h2>
+            <p class="section-subtitle">GitHub'da "guide" etiketi eklediğim repolar</p>
+            <div class="card-grid" id="guidesContainer">
+                <div class="loading">⏳ Rehberler yükleniyor...</div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>© <span id="currentYear"></span> - <span id="footerName">Developer</span> | <a href="https://github.com" target="_blank">GitHub</a> ile güçlendirilmiştir</p>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            // ============ KULLANICI AYARLARI ============
+            const githubUsername = "kendi-kullanici-adin"; // ⚠️ BU KISMI DEĞİŞTİR
+
+            // ============ DOM ELEMANLARI ============
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            const cursor = document.querySelector('.cursor');
+            const cursorDot = document.querySelector('.cursor-dot');
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // ============ TEMA YÖNETİMİ ============
+            function setTheme(theme) {
+                body.setAttribute('data-theme', theme);
+                localStorage.setItem('portfolio-theme', theme);
+                themeToggle.textContent = theme === 'light' ? '🌙' : '🌓';
+            }
+
+            function toggleTheme() {
+                const current = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                setTheme(current);
+            }
+
+            // Kayıtlı tema varsa uygula
+            const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+            setTheme(savedTheme);
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // ============ ÖZEL İMLEÇ ============
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+                cursorDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+            });
+
+            document.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '0';
+                cursorDot.style.opacity = '0';
+            });
+
+            document.addEventListener('mouseenter', () => {
+                cursor.style.opacity = '0.7';
+                cursorDot.style.opacity = '1';
+            });
+
+            // Tıklanabilir elemanlar üzerinde imleç büyüsün
+            document.querySelectorAll('a, button, .card').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = `translate(${el.getBoundingClientRect().left + el.offsetWidth/2}px, ${el.getBoundingClientRect().top + el.offsetHeight/2}px) scale(1.5)`;
+                    cursor.style.borderColor = '#93C90F';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = '';
+                    cursor.style.borderColor = '#93C90F';
+                });
+            });
+
+            // ============ PARTİKEL ARKA PLAN ============
+            let particles = [];
+            const particleCount = 80;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 1;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.5 + 0.1;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    const isLight = body.getAttribute('data-theme') === 'light';
+                    ctx.fillStyle = isLight ? `rgba(147, 201, 15, ${this.opacity * 0.6})` : `rgba(147, 201, 15, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // Bağlantı çizgileri
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+              
