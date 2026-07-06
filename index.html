@@ -2,63 +2,59 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fıstıkcan | Ana Sayfa</title>
+    <title>Fıstıkcan | Dev Hub</title>
     <style>
-        :root {
-            --primary-color: #93C90F; /* Senin imza rengin */
-            --bg-color: #ffffff;
-            --text-color: #1a1a1a;
-        }
+        :root { --primary: #93C90F; --bg: #0a0a0a; --card: rgba(255, 255, 255, 0.05); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: white; margin: 0; padding: 40px; }
+        
+        .container { max-width: 1000px; margin: auto; }
+        header { text-align: center; margin-bottom: 50px; }
+        h1 { font-size: 3rem; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* Gece modu */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #121212;
-                --text-color: #f0f0f0;
-            }
+        #repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        
+        .card { 
+            background: var(--card); padding: 25px; border-radius: 15px; 
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s;
+            backdrop-filter: blur(10px);
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            transition: 0.3s;
-        }
-
-        h1 {
-            border-bottom: 4px solid var(--primary-color);
-            padding-bottom: 10px;
-        }
-
-        .cta-button {
-            background-color: var(--primary-color);
-            color: #000;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 20px;
-            transition: transform 0.2s;
-        }
-
-        .cta-button:hover {
-            transform: scale(1.05);
-        }
+        .card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        
+        h3 { color: var(--primary); margin-top: 0; }
+        a { color: #fff; text-decoration: none; font-weight: bold; border-bottom: 2px solid var(--primary); }
     </style>
 </head>
 <body>
 
-    <h1>Fıstıkcan'ın Dünyası</h1>
-    <p>Burası ana merkez, projeler için alttaki linke göz atabilirsin.</p>
-    
-    <a href="https://products.fcandev.space" class="cta-button">Projelerim (Products)</a>
+<div class="container">
+    <header>
+        <h1>Fıstıkcan'ın Çalışma Alanı</h1>
+        <p>Projelerim, kodlarım ve deneysel donanım süreçlerim.</p>
+    </header>
+    <div id="repo-grid">Yükleniyor, kodlar çekiliyor...</div>
+</div>
 
+<script>
+    const username = 'Fistikcan'; // Kullanıcı adın
+    async function fetchRepos() {
+        const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
+        const repos = await res.json();
+        const grid = document.getElementById('repo-grid');
+        grid.innerHTML = '';
+        
+        repos.forEach(repo => {
+            if(repo.fork) return; // Forkları gizle
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3>${repo.name}</h3>
+                <p>${repo.description || 'Açıklama girilmemiş.'}</p>
+                <a href="${repo.html_url}" target="_blank">Repo'ya Git →</a>
+            `;
+            grid.appendChild(card);
+        });
+    }
+    fetchRepos();
+</script>
 </body>
 </html>
