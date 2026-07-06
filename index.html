@@ -53,36 +53,42 @@
             line-height: 1.6;
             overflow-x: hidden;
             transition: background 0.5s ease, color 0.5s ease;
-            cursor: none;
         }
 
-        /* özel imleç */
-        .cursor {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.08s ease, border-color 0.3s, background 0.3s;
-            mix-blend-mode: difference;
-        }
-        .cursor-dot {
-            width: 7px;
-            height: 7px;
-            background: var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.04s ease;
-        }
-        .cursor.hover {
-            transform: scale(2);
-            background: rgba(147, 201, 15, 0.15);
-            border-color: transparent;
-            mix-blend-mode: normal;
+        /* özel imleç (masaüstü için) */
+        @media (hover: hover) and (pointer: fine) {
+            body {
+                cursor: none;
+            }
+            .cursor {
+                width: 24px;
+                height: 24px;
+                border: 2px solid var(--accent);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.08s ease, border-color 0.3s, background 0.3s;
+                mix-blend-mode: difference;
+                display: block;
+            }
+            .cursor-dot {
+                width: 7px;
+                height: 7px;
+                background: var(--accent);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.04s ease;
+                display: block;
+            }
+            .cursor.hover {
+                transform: scale(2);
+                background: rgba(147, 201, 15, 0.15);
+                border-color: transparent;
+                mix-blend-mode: normal;
+            }
         }
 
         /* partikeller */
@@ -209,7 +215,7 @@
             padding: 10px 24px;
             backdrop-filter: blur(8px);
             transition: opacity 0.3s ease;
-            min-width: 220px;
+            min-width: 260px;
             text-align: center;
             white-space: nowrap;
         }
@@ -424,10 +430,13 @@
                 font-size: 2.2rem;
             }
             .hero-subtitle {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
                 padding: 8px 16px;
                 white-space: normal;
                 min-width: auto;
+            }
+            .cursor, .cursor-dot {
+                display: none;
             }
         }
     </style>
@@ -451,7 +460,7 @@
                     Products of <a href="https://github.com/Fistikcan" target="_blank" class="hero-link">@Fistikcan</a>
                 </h1>
                 <div class="hero-subtitle-wrapper">
-                    <span class="hero-subtitle" id="heroCodeSnippet">def main():</span>
+                    <span class="hero-subtitle" id="heroCodeSnippet">HTML: &lt;h1&gt;Başlık&lt;/h1&gt;</span>
                 </div>
                 <div class="hero-buttons">
                     <a href="#projeler" class="btn btn-primary">Projeleri Gör</a>
@@ -515,30 +524,30 @@
             const ctx = canvas.getContext('2d');
             const heroCodeSnippet = document.getElementById('heroCodeSnippet');
 
-            // ============ KOD PARÇACIKLARI LİSTESİ ============
+            // ============ KOD BAŞLIKLARI (HER DİL İÇİN) ============
             const codeSnippets = [
-                "&lt;/&gt;",             // HTML
-                "{ }",                  // CSS
-                "() =&gt; {}",          // JavaScript
-                "def main():",          // Python
-                "public static void main", // Java
-                "std::cout &lt;&lt;",   // C++
-                "using System;",        // C#
-                "&lt;?php",             // PHP
-                "SELECT * FROM",        // SQL
-                "interface {}",         // TypeScript
-                "func () -&gt;",        // Swift
-                "func main() {}",       // Go
-                "fn main() {}",         // Rust
-                "def end",              // Ruby
-                "fun main()"            // Kotlin
+                "HTML: &lt;h1&gt;Başlık&lt;/h1&gt;",
+                "CSS: .baslik { }",
+                "JavaScript: function baslik() {}",
+                "Python: def baslik():",
+                "Java: void baslik() {}",
+                "C++: void baslik() {}",
+                "C#: void baslik() {}",
+                "PHP: &lt;?php baslik(); ?&gt;",
+                "SQL: SELECT baslik",
+                "TypeScript: interface Baslik {}",
+                "Swift: func baslik() {}",
+                "Go: func baslik() {}",
+                "Rust: fn baslik() {}",
+                "Ruby: def baslik; end",
+                "Kotlin: fun baslik() {}"
             ];
 
             function getRandomSnippet() {
                 return codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
             }
 
-            // İlk yüklemede rastgele bir tane, sonra 1 sn'de bir değiştir
+            // İlk yüklemede rastgele, sonra 1 sn'de bir değiştir
             heroCodeSnippet.innerHTML = getRandomSnippet();
             setInterval(() => {
                 heroCodeSnippet.style.opacity = '0';
@@ -564,39 +573,29 @@
             setTheme(savedTheme);
             themeToggle.addEventListener('click', toggleTheme);
 
-            // ============ ÖZEL İMLEÇ ============
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`;
-                cursorDot.style.transform = `translate(${e.clientX - 3.5}px, ${e.clientY - 3.5}px)`;
-            });
-            document.addEventListener('mouseleave', () => {
-                cursor.style.opacity = '0';
-                cursorDot.style.opacity = '0';
-            });
-            document.addEventListener('mouseenter', () => {
-                cursor.style.opacity = '1';
-                cursorDot.style.opacity = '1';
-            });
-            document.querySelectorAll('a, button, .card').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-            });
+            // ============ ÖZEL İMLEÇ (sadece masaüstü) ============
+            const isMobile = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            if (!isMobile) {
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`;
+                    cursorDot.style.transform = `translate(${e.clientX - 3.5}px, ${e.clientY - 3.5}px)`;
+                });
+                document.addEventListener('mouseleave', () => {
+                    cursor.style.opacity = '0';
+                    cursorDot.style.opacity = '0';
+                });
+                document.addEventListener('mouseenter', () => {
+                    cursor.style.opacity = '1';
+                    cursorDot.style.opacity = '1';
+                });
+                document.querySelectorAll('a, button, .card').forEach(el => {
+                    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+                });
+            } else {
+                cursor.style.display = 'none';
+                cursorDot.style.display = 'none';
+            }
 
             // ============ PARTİKEL ARKA PLAN ============
-            let particles = [];
-            const particleCount = 70;
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            class Particle {
-                constructor() {
-                    this.reset();
-                }
-                reset() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 2.2 + 1;
-                    this.speedX = (Math.random() - 0.5) * 0.6;
-                    this.speedY = (Math.random() - 0.5) * 0.6;
-  
+            let particles =
