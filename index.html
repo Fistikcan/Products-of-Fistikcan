@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fistikcan | Portfolio</title>
-    <meta name="description" content="Fistikcan - GitHub projeleri ve rehberler için kişisel portfolyo.">
+    <meta name="description" content="Products of @Fistikcan - GitHub projeleri ve rehberler.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -157,32 +157,61 @@
             letter-spacing: 0.5px;
         }
         .hero-title {
-            font-size: clamp(2.8rem, 8vw, 5.8rem);
+            font-size: clamp(2.8rem, 8vw, 5.5rem);
             font-weight: 700;
-            line-height: 1.1;
+            line-height: 1.2;
             margin-bottom: 18px;
         }
-        .hero-title .highlight {
+        .hero-link {
+            color: var(--accent);
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s;
             background: linear-gradient(135deg, var(--accent), #d4ff4d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .hero-subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.15rem;
-            color: var(--text-secondary);
+        .hero-link:hover {
+            filter: brightness(1.2);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+        .hero-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+            transform-origin: right;
+        }
+        .hero-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .hero-subtitle-wrapper {
+            display: flex;
+            justify-content: center;
             margin-bottom: 36px;
-            min-height: 32px;
         }
-        .typing-text {
-            border-right: 2px solid var(--accent);
-            padding-right: 5px;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink {
-            0%,100%{border-color: var(--accent)}
-            50%{border-color: transparent}
+        .hero-subtitle {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--accent);
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 10px 24px;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease;
+            min-width: 220px;
+            text-align: center;
+            white-space: nowrap;
         }
         .hero-buttons {
             display: flex;
@@ -270,6 +299,8 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
         .card:hover {
             background: var(--surface-hover);
@@ -384,13 +415,19 @@
         /* mobil */
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 2.6rem;
+                font-size: 2.4rem;
             }
             .card-grid {
                 grid-template-columns: 1fr;
             }
             .section-title {
                 font-size: 2.2rem;
+            }
+            .hero-subtitle {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+                white-space: normal;
+                min-width: auto;
             }
         }
     </style>
@@ -409,13 +446,13 @@
         <!-- HERO -->
         <header>
             <div class="hero-content">
-                <div class="hero-badge">// açık kaynak geliştirici</div>
+                <div class="hero-badge">// ürünler ve rehberler</div>
                 <h1 class="hero-title">
-                    Merhaba, ben<br><span class="highlight" id="githubName">Fistikcan</span>
+                    Products of <a href="https://github.com/Fistikcan" target="_blank" class="hero-link">@Fistikcan</a>
                 </h1>
-                <p class="hero-subtitle">
-                    <span class="typing-text" id="typing"></span>
-                </p>
+                <div class="hero-subtitle-wrapper">
+                    <span class="hero-subtitle" id="heroCodeSnippet">def main():</span>
+                </div>
                 <div class="hero-buttons">
                     <a href="#projeler" class="btn btn-primary">Projeleri Gör</a>
                     <a href="#rehberler" class="btn btn-outline">Rehberlere Bak</a>
@@ -423,7 +460,7 @@
             </div>
         </header>
 
-        <!-- HAKKIMDA (HTML yorum stili) -->
+        <!-- HAKKIMDA -->
         <section id="hakkimda">
             <div class="section-header">
                 <div class="section-comment">&lt;!-- Hakkımda --&gt;</div>
@@ -435,7 +472,7 @@
             </div>
         </section>
 
-        <!-- PROJELER (Python yorum stili) -->
+        <!-- PROJELER -->
         <section id="projeler">
             <div class="section-header">
                 <div class="section-comment"># Projeler</div>
@@ -447,7 +484,7 @@
             </div>
         </section>
 
-        <!-- REHBERLER (Bash yorum stili) -->
+        <!-- REHBERLER -->
         <section id="rehberler">
             <div class="section-header">
                 <div class="section-comment">## Rehberler</div>
@@ -476,12 +513,46 @@
             const cursorDot = document.querySelector('.cursor-dot');
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
+            const heroCodeSnippet = document.getElementById('heroCodeSnippet');
+
+            // ============ KOD PARÇACIKLARI LİSTESİ ============
+            const codeSnippets = [
+                "&lt;/&gt;",             // HTML
+                "{ }",                  // CSS
+                "() =&gt; {}",          // JavaScript
+                "def main():",          // Python
+                "public static void main", // Java
+                "std::cout &lt;&lt;",   // C++
+                "using System;",        // C#
+                "&lt;?php",             // PHP
+                "SELECT * FROM",        // SQL
+                "interface {}",         // TypeScript
+                "func () -&gt;",        // Swift
+                "func main() {}",       // Go
+                "fn main() {}",         // Rust
+                "def end",              // Ruby
+                "fun main()"            // Kotlin
+            ];
+
+            function getRandomSnippet() {
+                return codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+            }
+
+            // İlk yüklemede rastgele bir tane, sonra 1 sn'de bir değiştir
+            heroCodeSnippet.innerHTML = getRandomSnippet();
+            setInterval(() => {
+                heroCodeSnippet.style.opacity = '0';
+                setTimeout(() => {
+                    heroCodeSnippet.innerHTML = getRandomSnippet();
+                    heroCodeSnippet.style.opacity = '1';
+                }, 200);
+            }, 1000);
 
             // ============ TEMA ============
             function setTheme(theme) {
                 body.setAttribute('data-theme', theme);
                 localStorage.setItem('portfolio-theme', theme);
-                themeToggle.innerHTML = theme === 'light' ? '&#9790;' : '&#9789;'; // ay/güneş simgeleri
+                themeToggle.innerHTML = theme === 'light' ? '&#9790;' : '&#9789;';
             }
 
             function toggleTheme() {
@@ -493,7 +564,7 @@
             setTheme(savedTheme);
             themeToggle.addEventListener('click', toggleTheme);
 
-            // ============ İMLEÇ ============
+            // ============ ÖZEL İMLEÇ ============
             document.addEventListener('mousemove', (e) => {
                 cursor.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`;
                 cursorDot.style.transform = `translate(${e.clientX - 3.5}px, ${e.clientY - 3.5}px)`;
@@ -506,13 +577,12 @@
                 cursor.style.opacity = '1';
                 cursorDot.style.opacity = '1';
             });
-            // tıklanabilir öğelerde hover efekti
             document.querySelectorAll('a, button, .card').forEach(el => {
                 el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
             });
 
-            // ============ PARTİKEL ============
+            // ============ PARTİKEL ARKA PLAN ============
             let particles = [];
             const particleCount = 70;
             function resizeCanvas() {
@@ -529,53 +599,4 @@
                     this.size = Math.random() * 2.2 + 1;
                     this.speedX = (Math.random() - 0.5) * 0.6;
                     this.speedY = (Math.random() - 0.5) * 0.6;
-                    this.opacity = Math.random() * 0.55 + 0.15;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                    const isLight = body.getAttribute('data-theme') === 'light';
-                    ctx.fillStyle = isLight ? `rgba(147, 201, 15, ${this.opacity * 0.5})` : `rgba(147, 201, 15, ${this.opacity})`;
-                    ctx.fill();
-                }
-            }
-            function initParticles() {
-                particles = [];
-                for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-            }
-            function animateParticles() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i+1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx*dx+dy*dy);
-                        if (dist < 110) {
-                            ctx.beginPath();
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            const isLight = body.getAttribute('data-theme') === 'light';
-                            ctx.strokeStyle = isLight ? `rgba(147, 201, 15, ${0.07 * (1 - dist/110)})` : `rgba(147, 201, 15, ${0.16 * (1 - dist/110)})`;
-                            ctx.lineWidth = 0.6;
-                            ctx.stroke();
-                        }
-                    }
-                }
-                particles.forEach(p => { p.update(); p.draw(); });
-                requestAnimationFrame(animateParticles);
-            }
-            window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
-            resizeCanvas();
-            initParticles();
-            animateParticles();
-
-            // ============ GITHUB API ============
-            async function fetchGitHubData() {
-                const userUrl = `https://api.github.com/users/${githubUsername}`;
-         
+  
