@@ -3,37 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Developer & Guide Creator</title>
-    <meta name="description" content="GitHub projelerim ve rehberlerim için kişisel portfolyo.">
+    <title>Fistikcan | Portfolio</title>
+    <meta name="description" content="Fistikcan - GitHub projeleri ve rehberler için kişisel portfolyo.">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* ============ CSS DEĞİŞKENLERİ ============ */
+        /* ============ DEĞİŞKENLER ============ */
         :root {
             --accent: #93C90F;
-            --accent-glow: rgba(147, 201, 15, 0.4);
+            --accent-glow: rgba(147, 201, 15, 0.45);
             --bg: #0a0a0f;
-            --surface: rgba(255, 255, 255, 0.03);
-            --surface-hover: rgba(255, 255, 255, 0.06);
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
             --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --text: #e8e8f0;
             --text-secondary: #9898b0;
-            --radius: 16px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius: 18px;
+            --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Aydınlık tema değişkenleri */
         [data-theme="light"] {
             --bg: #f5f7fa;
             --surface: rgba(0, 0, 0, 0.03);
             --surface-hover: rgba(0, 0, 0, 0.06);
-            --glass: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(0, 0, 0, 0.08);
+            --glass: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.1);
             --text: #1a1a2e;
             --text-secondary: #4a4a6a;
         }
@@ -55,34 +53,39 @@
             line-height: 1.6;
             overflow-x: hidden;
             transition: background 0.5s ease, color 0.5s ease;
+            cursor: none;
         }
 
-        /* ============ ÖZEL İMLEÇ ============ */
+        /* özel imleç */
         .cursor {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border: 2px solid var(--accent);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            transition: transform 0.1s ease, border-color 0.3s;
+            transition: transform 0.08s ease, border-color 0.3s, background 0.3s;
             mix-blend-mode: difference;
-            opacity: 0.7;
         }
-
         .cursor-dot {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             background: var(--accent);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            transition: transform 0.05s ease;
+            transition: transform 0.04s ease;
+        }
+        .cursor.hover {
+            transform: scale(2);
+            background: rgba(147, 201, 15, 0.15);
+            border-color: transparent;
+            mix-blend-mode: normal;
         }
 
-        /* ============ PARTİKEL ARKA PLAN ============ */
+        /* partikeller */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -93,65 +96,56 @@
             pointer-events: none;
         }
 
-        /* ============ ANA YAPI ============ */
+        /* tema butonu */
+        .theme-toggle {
+            position: fixed;
+            top: 28px;
+            right: 28px;
+            z-index: 1000;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            color: var(--text);
+            transition: all var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .theme-toggle:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+            transform: scale(1.08);
+        }
+
+        /* ana yapı */
         .container {
             position: relative;
             z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 28px;
         }
-
         section {
-            padding: 80px 0;
+            padding: 90px 0;
         }
 
-        /* ============ TEMA DEĞİŞTİRİCİ ============ */
-        .theme-toggle {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 1000;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.3rem;
-            color: var(--text);
-            transition: all var(--transition);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .theme-toggle:hover {
-            background: var(--surface-hover);
-            transform: scale(1.1);
-            border-color: var(--accent);
-        }
-
-        /* ============ HERO ============ */
+        /* hero */
         header {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            position: relative;
         }
-
-        .hero-content {
-            animation: fadeInUp 1s ease forwards;
-            width: 100%;
-        }
-
         .hero-badge {
             display: inline-block;
-            padding: 8px 20px;
+            padding: 8px 22px;
             background: var(--glass);
             border: 1px solid var(--glass-border);
             border-radius: 50px;
@@ -160,51 +154,44 @@
             color: var(--accent);
             margin-bottom: 24px;
             backdrop-filter: blur(10px);
-            animation: pulse 2.5s infinite;
+            letter-spacing: 0.5px;
         }
-
         .hero-title {
-            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            font-size: clamp(2.8rem, 8vw, 5.8rem);
             font-weight: 700;
             line-height: 1.1;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
-
         .hero-title .highlight {
             background: linear-gradient(135deg, var(--accent), #d4ff4d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .hero-subtitle {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--text-secondary);
-            margin-bottom: 32px;
-            min-height: 30px;
+            margin-bottom: 36px;
+            min-height: 32px;
         }
-
-        .hero-subtitle .typing-text {
+        .typing-text {
             border-right: 2px solid var(--accent);
-            padding-right: 4px;
+            padding-right: 5px;
             animation: blink 1s step-end infinite;
         }
-
         @keyframes blink {
-            0%, 100% { border-color: var(--accent); }
-            50% { border-color: transparent; }
+            0%,100%{border-color: var(--accent)}
+            50%{border-color: transparent}
         }
-
         .hero-buttons {
             display: flex;
-            gap: 16px;
+            gap: 18px;
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .btn {
-            padding: 14px 32px;
+            padding: 15px 34px;
             border-radius: 50px;
             font-weight: 600;
             font-family: 'Space Grotesk', sans-serif;
@@ -212,144 +199,133 @@
             text-decoration: none;
             transition: all var(--transition);
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             border: none;
             color: white;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
         }
-
         .btn-primary {
             background: var(--accent);
-            box-shadow: 0 8px 32px var(--accent-glow);
             color: #0a0a0f;
             font-weight: 700;
+            box-shadow: 0 8px 32px var(--accent-glow);
         }
-
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(147, 201, 15, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 40px rgba(147, 201, 15, 0.65);
         }
-
         .btn-outline {
             background: transparent;
             border: 2px solid var(--glass-border);
             backdrop-filter: blur(10px);
             color: var(--text);
         }
-
         .btn-outline:hover {
             border-color: var(--accent);
             background: var(--surface-hover);
             color: var(--accent);
         }
 
-        /* ============ BÖLÜM BAŞLIKLARI ============ */
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 8px;
+        /* başlıklar */
+        .section-header {
             text-align: center;
+            margin-bottom: 50px;
         }
-
-        .section-title .accent {
+        .section-comment {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
             color: var(--accent);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
         }
-
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+        }
         .section-subtitle {
             color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 48px;
+            margin-top: 8px;
             font-size: 1.1rem;
         }
 
-        /* ============ KARTLAR (PROJE & REHBER) ============ */
+        /* kart grid */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 26px;
         }
-
         .card {
             background: var(--glass);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius);
-            padding: 28px;
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
+            padding: 30px;
+            backdrop-filter: blur(14px);
+            transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
             transform-style: preserve-3d;
             transform: perspective(1000px);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
         }
-
         .card:hover {
             background: var(--surface-hover);
             border-color: var(--accent);
-            box-shadow: 0 16px 48px rgba(0,0,0,0.2);
-            transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            transform: perspective(1000px) rotateX(1.5deg) rotateY(-2deg) scale(1.03);
         }
-
-        .card::before {
+        .card::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(147, 201, 15, 0.05), transparent);
-            transition: left 0.6s;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(147,201,15,0.12), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            border-radius: var(--radius);
+            pointer-events: none;
         }
-
-        .card:hover::before {
-            left: 100%;
+        .card:hover::after {
+            opacity: 1;
         }
-
         .card-icon {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 16px;
             color: var(--accent);
         }
-
         .card h3 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 8px;
-            color: var(--text);
         }
-
         .card p {
             color: var(--text-secondary);
             font-size: 0.95rem;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             flex-grow: 1;
         }
-
         .card-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
-
         .tag {
             background: rgba(147, 201, 15, 0.1);
             color: var(--accent);
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 500;
-            border: 1px solid rgba(147, 201, 15, 0.3);
+            border: 1px solid rgba(147, 201, 15, 0.25);
         }
-
         .card-links {
             display: flex;
-            gap: 12px;
+            gap: 14px;
+            align-items: center;
             margin-top: auto;
         }
-
         .card-link {
             color: var(--text);
             text-decoration: none;
@@ -357,169 +333,143 @@
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             transition: color var(--transition);
         }
-
         .card-link:hover {
             color: var(--accent);
         }
-
-        /* Yıldız sayısı */
         .star-count {
-            display: flex;
-            align-items: center;
-            gap: 4px;
             color: var(--accent);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-left: auto;
         }
 
-        /* ============ YÜKLENİYOR / HATA ============ */
-        .loading, .error {
+        /* loading/error */
+        .status-message {
             text-align: center;
             padding: 40px;
-            color: var(--text-secondary);
             font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
         }
-
-        .error {
+        .error-message {
             color: #ff6b6b;
         }
 
-        /* ============ FOOTER ============ */
+        /* footer */
         footer {
             text-align: center;
             padding: 40px 0;
             border-top: 1px solid var(--glass-border);
-            margin-top: 40px;
-        }
-
-        footer p {
+            margin-top: 30px;
+            font-size: 0.95rem;
             color: var(--text-secondary);
-            font-size: 0.9rem;
         }
-
         footer a {
             color: var(--accent);
             text-decoration: none;
         }
 
-        /* ============ ANİMASYONLAR ============ */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
-            70% { box-shadow: 0 0 0 10px rgba(147, 201, 15, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(147, 201, 15, 0); }
-        }
-
+        /* animasyon sınıfları */
         .fade-in {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
-
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Mobil uyum */
+        /* mobil */
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.6rem;
             }
             .card-grid {
                 grid-template-columns: 1fr;
             }
-            .btn {
-                padding: 12px 24px;
-                font-size: 0.9rem;
+            .section-title {
+                font-size: 2.2rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Özel İmleç -->
     <div class="cursor"></div>
     <div class="cursor-dot"></div>
 
-    <!-- Partikel Canvas -->
     <canvas id="particle-canvas"></canvas>
 
-    <!-- Tema Değiştirici -->
-    <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌓</button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">&#9789;</button>
 
-    <!-- Ana İçerik -->
     <div class="container">
 
         <!-- HERO -->
         <header>
             <div class="hero-content">
-                <div class="hero-badge">🚀 Açık Kaynak Aşığı</div>
+                <div class="hero-badge">// açık kaynak geliştirici</div>
                 <h1 class="hero-title">
-                    Merhaba, ben<br><span class="highlight" id="githubName">Developer</span>
+                    Merhaba, ben<br><span class="highlight" id="githubName">Fistikcan</span>
                 </h1>
                 <p class="hero-subtitle">
                     <span class="typing-text" id="typing"></span>
                 </p>
                 <div class="hero-buttons">
-                    <a href="#projeler" class="btn btn-primary">🚀 Projeleri Gör</a>
-                    <a href="#rehberler" class="btn btn-outline">📚 Rehberlere Bak</a>
+                    <a href="#projeler" class="btn btn-primary">Projeleri Gör</a>
+                    <a href="#rehberler" class="btn btn-outline">Rehberlere Bak</a>
                 </div>
             </div>
         </header>
 
-        <!-- İSTATİSTİKLER / HAKKIMDA -->
+        <!-- HAKKIMDA (HTML yorum stili) -->
         <section id="hakkimda">
-            <h2 class="section-title"><span class="accent">&lt;</span> Hakkımda <span class="accent">/&gt;</span></h2>
-            <p class="section-subtitle">GitHub üzerinden çekilen canlı veriler</p>
+            <div class="section-header">
+                <div class="section-comment">&lt;!-- Hakkımda --&gt;</div>
+                <h2 class="section-title">Ben Kimim?</h2>
+                <p class="section-subtitle">GitHub profilimden canlı istatistikler</p>
+            </div>
             <div class="card-grid" id="statsContainer">
-                <div class="loading">⏳ GitHub bilgileri yükleniyor...</div>
+                <div class="status-message">GitHub bilgileri yükleniyor...</div>
             </div>
         </section>
 
-        <!-- PROJELER (GitHub repoları, guide olmayanlar) -->
+        <!-- PROJELER (Python yorum stili) -->
         <section id="projeler">
-            <h2 class="section-title"><span class="accent">.</span>projeler<span class="accent">()</span></h2>
-            <p class="section-subtitle">En güncel çalışmalarım</p>
+            <div class="section-header">
+                <div class="section-comment"># Projeler</div>
+                <h2 class="section-title">Geliştirdiklerim</h2>
+                <p class="section-subtitle">Son güncellenen açık kaynak depolarım</p>
+            </div>
             <div class="card-grid" id="projectsContainer">
-                <div class="loading">⏳ Projeler yükleniyor...</div>
+                <div class="status-message">Projeler yükleniyor...</div>
             </div>
         </section>
 
-        <!-- REHBERLER (topic içinde 'guide' olan repolar) -->
+        <!-- REHBERLER (Bash yorum stili) -->
         <section id="rehberler">
-            <h2 class="section-title"><span class="accent">📖</span> rehberler</h2>
-            <p class="section-subtitle">GitHub'da "guide" etiketi eklediğim repolar</p>
+            <div class="section-header">
+                <div class="section-comment">## Rehberler</div>
+                <h2 class="section-title">Yazdığım Kılavuzlar</h2>
+                <p class="section-subtitle">GitHub'da <code>guide</code> etiketi eklediğim repolar</p>
+            </div>
             <div class="card-grid" id="guidesContainer">
-                <div class="loading">⏳ Rehberler yükleniyor...</div>
+                <div class="status-message">Rehberler yükleniyor...</div>
             </div>
         </section>
 
-        <!-- FOOTER -->
         <footer>
-            <p>© <span id="currentYear"></span> - <span id="footerName">Developer</span> | <a href="https://github.com" target="_blank">GitHub</a> ile güçlendirilmiştir</p>
+            <p>&copy; <span id="currentYear"></span> <span id="footerName">Fistikcan</span> | <a href="https://github.com/Fistikcan" target="_blank">github.com/Fistikcan</a> ile güçlendirildi</p>
         </footer>
     </div>
 
     <script>
         (function() {
-            // ============ KULLANICI AYARLARI ============
-            const githubUsername = "kendi-kullanici-adin"; // ⚠️ BU KISMI DEĞİŞTİR
+            // ============ KULLANICI ADI ============
+            const githubUsername = "Fistikcan";
 
-            // ============ DOM ELEMANLARI ============
+            // ============ DOM ============
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
             const cursor = document.querySelector('.cursor');
@@ -527,11 +477,11 @@
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
 
-            // ============ TEMA YÖNETİMİ ============
+            // ============ TEMA ============
             function setTheme(theme) {
                 body.setAttribute('data-theme', theme);
                 localStorage.setItem('portfolio-theme', theme);
-                themeToggle.textContent = theme === 'light' ? '🌙' : '🌓';
+                themeToggle.innerHTML = theme === 'light' ? '&#9790;' : '&#9789;'; // ay/güneş simgeleri
             }
 
             function toggleTheme() {
@@ -539,48 +489,36 @@
                 setTheme(current);
             }
 
-            // Kayıtlı tema varsa uygula
             const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
             setTheme(savedTheme);
             themeToggle.addEventListener('click', toggleTheme);
 
-            // ============ ÖZEL İMLEÇ ============
+            // ============ İMLEÇ ============
             document.addEventListener('mousemove', (e) => {
-                cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
-                cursorDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+                cursor.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`;
+                cursorDot.style.transform = `translate(${e.clientX - 3.5}px, ${e.clientY - 3.5}px)`;
             });
-
             document.addEventListener('mouseleave', () => {
                 cursor.style.opacity = '0';
                 cursorDot.style.opacity = '0';
             });
-
             document.addEventListener('mouseenter', () => {
-                cursor.style.opacity = '0.7';
+                cursor.style.opacity = '1';
                 cursorDot.style.opacity = '1';
             });
-
-            // Tıklanabilir elemanlar üzerinde imleç büyüsün
+            // tıklanabilir öğelerde hover efekti
             document.querySelectorAll('a, button, .card').forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    cursor.style.transform = `translate(${el.getBoundingClientRect().left + el.offsetWidth/2}px, ${el.getBoundingClientRect().top + el.offsetHeight/2}px) scale(1.5)`;
-                    cursor.style.borderColor = '#93C90F';
-                });
-                el.addEventListener('mouseleave', () => {
-                    cursor.style.transform = '';
-                    cursor.style.borderColor = '#93C90F';
-                });
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
             });
 
-            // ============ PARTİKEL ARKA PLAN ============
+            // ============ PARTİKEL ============
             let particles = [];
-            const particleCount = 80;
-
+            const particleCount = 70;
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             }
-
             class Particle {
                 constructor() {
                     this.reset();
@@ -588,10 +526,10 @@
                 reset() {
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 2 + 1;
-                    this.speedX = (Math.random() - 0.5) * 0.5;
-                    this.speedY = (Math.random() - 0.5) * 0.5;
-                    this.opacity = Math.random() * 0.5 + 0.1;
+                    this.size = Math.random() * 2.2 + 1;
+                    this.speedX = (Math.random() - 0.5) * 0.6;
+                    this.speedY = (Math.random() - 0.5) * 0.6;
+                    this.opacity = Math.random() * 0.55 + 0.15;
                 }
                 update() {
                     this.x += this.speedX;
@@ -601,26 +539,43 @@
                 }
                 draw() {
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
                     const isLight = body.getAttribute('data-theme') === 'light';
-                    ctx.fillStyle = isLight ? `rgba(147, 201, 15, ${this.opacity * 0.6})` : `rgba(147, 201, 15, ${this.opacity})`;
+                    ctx.fillStyle = isLight ? `rgba(147, 201, 15, ${this.opacity * 0.5})` : `rgba(147, 201, 15, ${this.opacity})`;
                     ctx.fill();
                 }
             }
-
             function initParticles() {
                 particles = [];
-                for (let i = 0; i < particleCount; i++) {
-                    particles.push(new Particle());
-                }
+                for (let i = 0; i < particleCount; i++) particles.push(new Particle());
             }
-
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // Bağlantı çizgileri
                 for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
+                    for (let j = i+1; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
                         const dy = particles[i].y - particles[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-              
+                        const dist = Math.sqrt(dx*dx+dy*dy);
+                        if (dist < 110) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            const isLight = body.getAttribute('data-theme') === 'light';
+                            ctx.strokeStyle = isLight ? `rgba(147, 201, 15, ${0.07 * (1 - dist/110)})` : `rgba(147, 201, 15, ${0.16 * (1 - dist/110)})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animateParticles);
+            }
+            window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+            resizeCanvas();
+            initParticles();
+            animateParticles();
+
+            // ============ GITHUB API ============
+            async function fetchGitHubData() {
+                const userUrl = `https://api.github.com/users/${githubUsername}`;
+         
