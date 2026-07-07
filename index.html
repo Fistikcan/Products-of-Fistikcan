@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fistikcan • Ürünü</title>
+    <title>Fistikcan · Dijital Bahçe</title>
     <style>
         :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --surface-light: #1e1e1e;
+            --bg: #070707;
+            --surface: #111111;
+            --surface-elevated: #1a1a1a;
             --accent: #93C90F;
-            --accent-glow: rgba(147, 201, 15, 0.3);
-            --text: #e0e0e0;
-            --text-muted: #888;
-            --radius: 16px;
+            --accent-soft: rgba(147, 201, 15, 0.15);
+            --accent-glow: rgba(147, 201, 15, 0.5);
+            --text: #eaeaea;
+            --text-secondary: #9a9a9a;
+            --radius: 20px;
             --font-mono: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
             --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
         }
@@ -25,12 +26,18 @@
         }
 
         body {
-            background-color: var(--bg);
+            background: var(--bg);
             color: var(--text);
             font-family: var(--font-sans);
-            line-height: 1.6;
             min-height: 100vh;
-            background-image: radial-gradient(ellipse at 50% 0%, rgba(147, 201, 15, 0.08) 0%, transparent 70%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 2rem 1rem;
+            background-image:
+                radial-gradient(circle at 30% 40%, rgba(147, 201, 15, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(147, 201, 15, 0.04) 0%, transparent 50%);
             overflow-x: hidden;
         }
 
@@ -39,91 +46,144 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            background: var(--surface);
-            border: 1px solid rgba(147, 201, 15, 0.3);
-            color: var(--text-muted);
-            padding: 6px 14px;
-            border-radius: 30px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(147, 201, 15, 0.25);
+            color: #aaa;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
             font-size: 0.8rem;
             font-family: var(--font-mono);
             z-index: 100;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            cursor: default;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s;
         }
 
         .product-badge a {
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
-            position: relative;
-            transition: color 0.3s;
+            margin-left: 4px;
+            transition: text-shadow 0.3s;
         }
 
         .product-badge a:hover {
-            color: #b5f02e;
             text-shadow: 0 0 12px var(--accent-glow);
         }
 
-        .product-badge a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
+        /* Main wrapper */
+        .main-wrapper {
             width: 100%;
-            height: 1px;
-            background: var(--accent);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-            transform-origin: right;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4rem;
+            margin-top: 2rem;
         }
 
-        .product-badge a:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
+        /* Hero card */
+        .hero {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(147, 201, 15, 0.1) inset;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: float 6s ease-in-out infinite;
         }
 
-        /* Main container */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 100px 24px 60px;
-        }
-
-        /* Section styling */
-        .section {
-            margin-bottom: 80px;
-            animation: fadeInUp 0.8s ease forwards;
-            opacity: 0;
-            animation-delay: calc(var(--i) * 0.15s);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
+        @keyframes float {
+            0%,
+            100% {
                 transform: translateY(0);
             }
+            50% {
+                transform: translateY(-8px);
+            }
         }
 
-        .section-header {
-            margin-bottom: 36px;
-            position: relative;
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 25px var(--accent-soft);
+            margin-bottom: 1.5rem;
+            transition: all 0.4s;
+        }
+
+        .hero:hover .avatar {
+            box-shadow: 0 0 40px var(--accent-glow);
+            transform: scale(1.02);
+        }
+
+        .hero-name {
+            font-size: 2.4rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            color: white;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-bio {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #777;
+        }
+
+        /* Sections */
+        .section {
+            width: 100%;
+            text-align: center;
         }
 
         .section-title {
             font-family: var(--font-mono);
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--accent);
             display: inline-block;
-            position: relative;
-            text-shadow: 0 0 15px var(--accent-glow);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 12px var(--accent-soft);
             transition: none;
+            position: relative;
         }
 
         .glitch-active {
@@ -157,16 +217,15 @@
             }
         }
 
-        /* Typewriter cursor */
         .cursor {
             display: inline-block;
             width: 2px;
-            height: 1.1em;
+            height: 1.2em;
             background: var(--accent);
-            margin-left: 4px;
+            margin-left: 6px;
             vertical-align: text-bottom;
             animation: blink 1s step-end infinite;
-            box-shadow: 0 0 8px var(--accent);
+            box-shadow: 0 0 10px var(--accent);
         }
 
         @keyframes blink {
@@ -179,84 +238,74 @@
             }
         }
 
-        /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        /* Cards dikey sıralı, ortada */
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            align-items: center;
         }
 
         .card {
-            background: var(--surface);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: var(--radius);
-            padding: 24px;
+            width: 100%;
+            background: var(--surface-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1.8rem 2rem;
+            text-align: left;
             transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            text-decoration: none;
+            color: inherit;
+            display: block;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(6px);
-            cursor: default;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         .card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(147, 201, 15, 0.4);
-            box-shadow: 0 16px 40px rgba(147, 201, 15, 0.15);
-            background: #1a1a1a;
+            transform: translateY(-4px);
+            border-color: rgba(147, 201, 15, 0.5);
+            box-shadow: 0 16px 35px rgba(147, 201, 15, 0.18);
         }
 
         .card::before {
             content: '';
             position: absolute;
-            top: 0;
             left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--accent);
+            transform: scaleY(0);
+            transition: transform 0.35s ease;
         }
 
         .card:hover::before {
-            transform: translateX(100%);
+            transform: scaleY(1);
         }
 
         .card-title {
             font-family: var(--font-mono);
-            font-size: 1.2rem;
             font-weight: 600;
+            font-size: 1.2rem;
             color: white;
-            margin-bottom: 8px;
-            word-break: break-word;
+            margin-bottom: 0.4rem;
         }
 
         .card-desc {
             color: #aaa;
             font-size: 0.9rem;
-            flex-grow: 1;
-            margin-bottom: 16px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            margin-bottom: 1rem;
+            line-height: 1.4;
         }
 
         .card-meta {
             display: flex;
-            align-items: center;
-            gap: 12px;
+            gap: 1.2rem;
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: #777;
             font-family: var(--font-mono);
-        }
-
-        .card-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
         .language-dot {
@@ -265,134 +314,98 @@
             border-radius: 50%;
             background: var(--accent);
             display: inline-block;
+            margin-right: 4px;
+            vertical-align: middle;
         }
 
-        .card-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            align-self: flex-end;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .card-link:hover {
-            color: #c4ff47;
-            text-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        /* Loading state */
         .loading {
-            text-align: center;
-            color: var(--text-muted);
+            color: #888;
             font-family: var(--font-mono);
-            padding: 40px;
+            padding: 2rem;
+            animation: pulse-text 2s infinite;
         }
 
-        .loading::after {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            margin-left: 8px;
-            animation: pulse 0.8s infinite;
-        }
-
-        @keyframes pulse {
+        @keyframes pulse-text {
             0%,
             100% {
-                box-shadow: 0 0 0 0 rgba(147, 201, 15, 0.7);
+                opacity: 0.4;
             }
             50% {
-                box-shadow: 0 0 0 12px rgba(147, 201, 15, 0);
+                opacity: 1;
             }
         }
 
-        /* Error */
         .error-state {
             color: #ff6b6b;
-            text-align: center;
-            padding: 20px;
         }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            .container {
-                padding: 80px 16px 40px;
-            }
-            .section-title {
-                font-size: 1.6rem;
-            }
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-            .product-badge {
-                top: 10px;
-                left: 10px;
-                font-size: 0.7rem;
-                padding: 5px 10px;
-            }
+        /* footer */
+        .footer {
+            margin-top: 4rem;
+            color: #444;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
         }
 
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
+        @media (max-width: 500px) {
+            .hero {
+                padding: 2rem 1.2rem;
+            }
+            .hero-name {
+                font-size: 1.8rem;
+            }
+            .stats {
+                gap: 1.5rem;
+            }
+            .card {
+                padding: 1.3rem 1.4rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Product Badge -->
     <div class="product-badge">
-        🧬 Product of <a href="https://github.com/Fistikcan" target="_blank" rel="noopener">@Fistikcan</a>
+        🧬 Product of <a href="https://github.com/Fistikcan" target="_blank">@Fistikcan</a>
     </div>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Projeler Section -->
-        <section class="section" style="--i:1">
-            <div class="section-header">
-                <h2 class="section-title" id="projeler-title">
-                    <span class="title-text">// Projeler</span><span class="cursor"></span>
-                </h2>
-            </div>
-            <div class="cards-grid" id="projects-container">
-                <div class="loading">Depolar yükleniyor</div>
+    <main class="main-wrapper">
+        <!-- Hero / Hakkımda -->
+        <div class="hero" id="hero">
+            <img class="avatar" id="avatar" src="" alt="avatar" loading="lazy">
+            <h1 class="hero-name" id="hero-name">Fistikcan</h1>
+            <p class="hero-bio" id="hero-bio">Yükleniyor...</p>
+            <div class="stats" id="stats"></div>
+        </div>
+
+        <!-- Projeler -->
+        <section class="section">
+            <h2 class="section-title" id="projeler-title">
+                <span class="title-text">// Projeler</span><span class="cursor"></span>
+            </h2>
+            <div class="cards-list" id="projects-container">
+                <div class="loading">Depolar yükleniyor...</div>
             </div>
         </section>
 
-        <!-- Guide / Rehber Section -->
-        <section class="section" style="--i:2">
-            <div class="section-header">
-                <h2 class="section-title" id="guide-title">
-                    <span class="title-text"># Rehber</span><span class="cursor"></span>
-                </h2>
-            </div>
-            <div class="cards-grid" id="guides-container">
-                <div class="loading">Rehberler yükleniyor</div>
+        <!-- Rehberler (Gists) -->
+        <section class="section">
+            <h2 class="section-title" id="guide-title">
+                <span class="title-text"># Rehber</span><span class="cursor"></span>
+            </h2>
+            <div class="cards-list" id="guides-container">
+                <div class="loading">Rehberler yükleniyor...</div>
             </div>
         </section>
-    </div>
+
+        <div class="footer">
+            &copy; 2025 – Dijital Bahçe
+        </div>
+    </main>
 
     <script>
         (function() {
             // --- Glitch Title Changer ---
-            const titleConfigs = {
+            const titleSets = {
                 projeler: [
                     '</Projeler>',
                     'def Projeler():',
@@ -421,105 +434,107 @@
                 ]
             };
 
-            function setupGlitchTitle(elementId, titlesArray) {
-                const titleElement = document.getElementById(elementId);
-                if (!titleElement) return;
-                const textSpan = titleElement.querySelector('.title-text');
-                const cursor = titleElement.querySelector('.cursor');
-                if (!textSpan) return;
-
-                let currentIndex = Math.floor(Math.random() * titlesArray.length);
-                textSpan.textContent = titlesArray[currentIndex];
+            function initGlitchTitle(elementId, titles) {
+                const el = document.getElementById(elementId);
+                if (!el) return;
+                const span = el.querySelector('.title-text');
+                if (!span) return;
+                let currentIndex = Math.floor(Math.random() * titles.length);
+                span.textContent = titles[currentIndex];
 
                 setInterval(() => {
-                    // Trigger glitch animation
-                    titleElement.classList.add('glitch-active');
-                    // Randomly pick a new title different from current
+                    el.classList.add('glitch-active');
                     let newIndex;
                     do {
-                        newIndex = Math.floor(Math.random() * titlesArray.length);
-                    } while (newIndex === currentIndex && titlesArray.length > 1);
+                        newIndex = Math.floor(Math.random() * titles.length);
+                    } while (newIndex === currentIndex && titles.length > 1);
                     currentIndex = newIndex;
-
-                    // Change text slightly after animation starts for realism
                     setTimeout(() => {
-                        textSpan.textContent = titlesArray[currentIndex];
-                    }, 80);
-
-                    // Remove glitch class after animation duration
+                        span.textContent = titles[currentIndex];
+                    }, 70);
                     setTimeout(() => {
-                        titleElement.classList.remove('glitch-active');
+                        el.classList.remove('glitch-active');
                     }, 350);
-                }, 1200); // change every 1.2 seconds
+                }, 1300);
             }
 
-            setupGlitchTitle('projeler-title', titleConfigs.projeler);
-            setupGlitchTitle('guide-title', titleConfigs.guide);
+            initGlitchTitle('projeler-title', titleSets.projeler);
+            initGlitchTitle('guide-title', titleSets.guide);
 
-            // --- GitHub API Fetch ---
+            // --- GitHub Data Fetching ---
             const username = 'Fistikcan';
-            const projectsContainer = document.getElementById('projects-container');
-            const guidesContainer = document.getElementById('guides-container');
+
+            async function fetchUserProfile() {
+                try {
+                    const res = await fetch(`https://api.github.com/users/${username}`);
+                    if (!res.ok) throw new Error('Kullanıcı bilgisi alınamadı');
+                    const data = await res.json();
+                    document.getElementById('avatar').src = data.avatar_url || '';
+                    document.getElementById('hero-name').textContent = data.name || data.login;
+                    document.getElementById('hero-bio').textContent = data.bio || 'Kod yazmayı seven biri.';
+                    const statsHTML = `
+                        <div class="stat-item"><span class="stat-number">${data.public_repos}</span><span class="stat-label">Repo</span></div>
+                        <div class="stat-item"><span class="stat-number">${data.followers}</span><span class="stat-label">Takipçi</span></div>
+                        <div class="stat-item"><span class="stat-number">${data.following}</span><span class="stat-label">Takip</span></div>
+                        ${data.public_gists ? `<div class="stat-item"><span class="stat-number">${data.public_gists}</span><span class="stat-label">Rehber</span></div>` : ''}
+                    `;
+                    document.getElementById('stats').innerHTML = statsHTML;
+                } catch (err) {
+                    document.getElementById('hero-bio').textContent = 'Bilgiler şu an yüklenemedi.';
+                }
+            }
 
             async function fetchRepos() {
+                const container = document.getElementById('projects-container');
                 try {
-                    const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=20`);
-                    if (!response.ok) throw new Error('GitHub API limit aşıldı veya hata oluştu.');
-                    const repos = await response.json();
+                    const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=15`);
+                    if (!res.ok) throw new Error('Limit aşımı veya hata');
+                    const repos = await res.json();
                     if (repos.length === 0) {
-                        projectsContainer.innerHTML =
-                            '<div class="loading">Henüz herkese açık repo bulunamadı.</div>';
+                        container.innerHTML = '<div class="loading">Henüz repo bulunmuyor.</div>';
                         return;
                     }
-                    projectsContainer.innerHTML = repos.map(repo => `
-                        <div class="card">
+                    container.innerHTML = repos.map(repo => `
+                        <a href="${repo.html_url}" target="_blank" rel="noopener" class="card">
                             <div class="card-title">📁 ${escapeHTML(repo.name)}</div>
                             <div class="card-desc">${escapeHTML(repo.description || 'Açıklama yok.')}</div>
                             <div class="card-meta">
                                 <span>⭐ ${repo.stargazers_count}</span>
                                 <span>🍴 ${repo.forks_count}</span>
-                                ${repo.language ? `<span><span class="language-dot"></span> ${escapeHTML(repo.language)}</span>` : ''}
+                                ${repo.language ? `<span><span class="language-dot"></span>${escapeHTML(repo.language)}</span>` : ''}
                             </div>
-                            <a href="${repo.html_url}" target="_blank" rel="noopener" class="card-link">
-                                Repoya Git ↗
-                            </a>
-                        </div>
+                        </a>
                     `).join('');
-                } catch (error) {
-                    projectsContainer.innerHTML = `<div class="error-state">⚠️ Projeler yüklenemedi: ${escapeHTML(error.message)}</div>`;
+                } catch (err) {
+                    container.innerHTML = `<div class="error-state loading">⚠️ Projeler yüklenemedi: ${escapeHTML(err.message)}</div>`;
                 }
             }
 
             async function fetchGists() {
+                const container = document.getElementById('guides-container');
                 try {
-                    const response = await fetch(`https://api.github.com/users/${username}/gists?per_page=12`);
-                    if (!response.ok) throw new Error('Gist verisi alınamadı.');
-                    const gists = await response.json();
+                    const res = await fetch(`https://api.github.com/users/${username}/gists?per_page=10`);
+                    if (!res.ok) throw new Error('Gist verisi alınamadı');
+                    const gists = await res.json();
                     if (gists.length === 0) {
-                        guidesContainer.innerHTML =
-                            '<div class="loading">Henüz herkese açık rehber (gist) bulunamadı.</div>';
+                        container.innerHTML = '<div class="loading">Henüz rehber bulunmuyor.</div>';
                         return;
                     }
-                    guidesContainer.innerHTML = gists.map(gist => {
+                    container.innerHTML = gists.map(gist => {
                         const title = Object.keys(gist.files)[0] || 'Rehber';
-                        const description = gist.description || 'Açıklama yok.';
                         return `
-                        <div class="card">
+                        <a href="${gist.html_url}" target="_blank" rel="noopener" class="card">
                             <div class="card-title">📝 ${escapeHTML(title)}</div>
-                            <div class="card-desc">${escapeHTML(description)}</div>
+                            <div class="card-desc">${escapeHTML(gist.description || 'Açıklama yok.')}</div>
                             <div class="card-meta">
                                 <span>📅 ${new Date(gist.created_at).toLocaleDateString('tr-TR')}</span>
                                 <span>💬 ${gist.comments} yorum</span>
                             </div>
-                            <a href="${gist.html_url}" target="_blank" rel="noopener" class="card-link">
-                                Rehberi Görüntüle ↗
-                            </a>
-                        </div>
+                        </a>
                     `;
                     }).join('');
-                } catch (error) {
-                    guidesContainer.innerHTML =
-                        `<div class="error-state">⚠️ Rehberler yüklenemedi: ${escapeHTML(error.message)}</div>`;
+                } catch (err) {
+                    container.innerHTML = `<div class="error-state loading">⚠️ Rehberler yüklenemedi: ${escapeHTML(err.message)}</div>`;
                 }
             }
 
@@ -529,11 +544,12 @@
                 return div.innerHTML;
             }
 
-            // Initial fetches
+            // Başlat
+            fetchUserProfile();
             fetchRepos();
             fetchGists();
 
-            // Optional: Refresh every 5 minutes to handle API caching gracefully
+            // 5 dakikada bir güncelle
             setInterval(() => {
                 fetchRepos();
                 fetchGists();
@@ -541,4 +557,4 @@
         })();
     </script>
 </body>
-    </html>
+</html>
