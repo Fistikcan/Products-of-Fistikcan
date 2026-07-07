@@ -3,7 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fistikcan · Dijital Bahçe</title>
+    
+    <!-- ✅ TAM SEO PAKETİ -->
+    <title>Products of Fistikcan · Açık Kaynak Projeler ve Rehberler</title>
+    <meta name="description" content="Fistikcan'ın resmi ürün sayfası. GitHub üzerindeki açık kaynak projeler, yazılım rehberleri ve güncel teknoloji paylaşımları. Products of Fistikcan.">
+    <meta name="keywords" content="products of fistikcan, fistikcan, fcandev, açık kaynak, yazılım projeleri, rehberler, github">
+    <meta name="author" content="Fistikcan">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    
+    <!-- Canonical (Kendi domainini işaret et, github.io'yu değil) -->
+    <link rel="canonical" href="https://products.fcandev.space/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Products of Fistikcan">
+    <meta property="og:description" content="Açık kaynak projeler, yazılım rehberleri ve GitHub çalışmaları.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://products.fcandev.space/">
+    <meta property="og:image" content="https://avatars.githubusercontent.com/Fistikcan">
+    <meta property="og:site_name" content="Products of Fistikcan">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Products of Fistikcan">
+    <meta name="twitter:description" content="Açık kaynak projeler ve yazılım rehberleri.">
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/Fistikcan">
+    
+    <!-- Google Search Console doğrulama (sana özel kodu ekleyeceksin) -->
+    <!-- <meta name="google-site-verification" content="SENIN_KODUN" /> -->
+    
+    <!-- Cloudflare Web Analytics (isteğe bağlı) -->
+    <!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "SENIN_TOKENIN"}'></script> -->
+
+    <!-- ✅ YAPISAL VERİ (Schema.org) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Fistikcan",
+            "alternateName": "fistikcan",
+            "url": "https://products.fcandev.space/",
+            "sameAs": [
+                "https://github.com/Fistikcan"
+            ],
+            "description": "Açık kaynak yazılım geliştirici. GitHub projeleri ve rehberler paylaşır.",
+            "image": "https://avatars.githubusercontent.com/Fistikcan",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://products.fcandev.space/"
+            }
+        }
+    </script>
+
     <style>
         :root {
             --bg: #070707;
@@ -19,11 +69,7 @@
             --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background: var(--bg);
@@ -39,22 +85,17 @@
             position: relative;
         }
 
-        /* Particle canvas arka plan */
         #particles-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 0;
             pointer-events: none;
         }
 
-        /* Product badge */
         .product-badge {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 20px; left: 20px;
             background: rgba(20, 20, 20, 0.8);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(147, 201, 15, 0.25);
@@ -64,8 +105,7 @@
             font-size: 0.8rem;
             font-family: var(--font-mono);
             z-index: 100;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
         }
 
         .product-badge a {
@@ -80,7 +120,6 @@
             text-shadow: 0 0 12px var(--accent-glow);
         }
 
-        /* Main wrapper */
         .main-wrapper {
             width: 100%;
             max-width: 720px;
@@ -93,40 +132,30 @@
             z-index: 1;
         }
 
-        /* Hero card */
         .hero {
             width: 100%;
             background: var(--surface);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
             border-radius: var(--radius);
             padding: 3rem 2rem;
             text-align: center;
             backdrop-filter: blur(10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(147, 201, 15, 0.1) inset;
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             animation: float 6s ease-in-out infinite;
         }
 
         @keyframes float {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-8px);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
-        /* Avatar konteyneri */
         .avatar-container {
-            position: relative;
             display: inline-block;
             margin-bottom: 1.5rem;
         }
 
         .avatar-border {
-            width: 120px;
-            height: 120px;
+            width: 120px; height: 120px;
             border-radius: 50%;
             background: conic-gradient(from 0deg, var(--accent), transparent 70%);
             padding: 3px;
@@ -137,17 +166,12 @@
         }
 
         @keyframes rotate-border {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .avatar {
-            width: 110px;
-            height: 110px;
+            width: 110px; height: 110px;
             border-radius: 50%;
             border: 3px solid var(--accent);
             object-fit: cover;
@@ -156,18 +180,13 @@
         }
 
         @keyframes avatar-pulse {
-            0%,
-            100% {
-                box-shadow: 0 0 20px var(--accent-soft);
-            }
-            50% {
-                box-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(147, 201, 15, 0.3);
-            }
+            0%, 100% { box-shadow: 0 0 20px var(--accent-soft); }
+            50% { box-shadow: 0 0 40px var(--accent-glow); }
         }
 
         .avatar-container:hover .avatar {
             transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 0 50px var(--accent-glow), 0 0 80px rgba(147, 201, 15, 0.4);
+            box-shadow: 0 0 50px var(--accent-glow);
         }
 
         .hero-name {
@@ -176,7 +195,6 @@
             font-family: var(--font-mono);
             color: white;
             margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
         }
 
         .hero-bio {
@@ -185,7 +203,6 @@
             max-width: 400px;
             margin: 0 auto 1.5rem;
             line-height: 1.5;
-            font-weight: 400;
         }
 
         .stats {
@@ -218,7 +235,6 @@
             color: #777;
         }
 
-        /* Sections */
         .section {
             width: 100%;
             text-align: center;
@@ -229,12 +245,11 @@
             font-size: 2rem;
             font-weight: 700;
             color: var(--accent);
-            display: inline-block;
-            margin-bottom: 2rem;
             text-shadow: 0 0 12px var(--accent-soft);
-            transition: text-shadow 0.3s;
-            position: relative;
+            margin-bottom: 2rem;
             cursor: default;
+            position: relative;
+            display: inline-block;
         }
 
         .section-title:hover {
@@ -246,30 +261,12 @@
         }
 
         @keyframes glitch-skew {
-            0% {
-                transform: translate(0);
-                text-shadow: -2px 0 red, 2px 0 blue;
-            }
-            20% {
-                transform: translate(-3px, 2px);
-                text-shadow: 2px 0 red, -2px 0 blue;
-            }
-            40% {
-                transform: translate(3px, -1px);
-                text-shadow: -1px 0 red, 1px 0 blue;
-            }
-            60% {
-                transform: translate(-1px, 1px);
-                text-shadow: 1px 0 red, -1px 0 blue;
-            }
-            80% {
-                transform: translate(2px, -2px);
-                text-shadow: -2px 0 red, 2px 0 blue;
-            }
-            100% {
-                transform: translate(0);
-                text-shadow: 0 0 15px var(--accent-glow);
-            }
+            0% { transform: translate(0); text-shadow: -2px 0 red, 2px 0 blue; }
+            20% { transform: translate(-3px, 2px); text-shadow: 2px 0 red, -2px 0 blue; }
+            40% { transform: translate(3px, -1px); text-shadow: -1px 0 red, 1px 0 blue; }
+            60% { transform: translate(-1px, 1px); text-shadow: 1px 0 red, -1px 0 blue; }
+            80% { transform: translate(2px, -2px); text-shadow: -2px 0 red, 2px 0 blue; }
+            100% { transform: translate(0); text-shadow: 0 0 15px var(--accent-glow); }
         }
 
         .cursor {
@@ -284,16 +281,10 @@
         }
 
         @keyframes blink {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
-        /* Cards dikey sıralı, ortada */
         .cards-list {
             display: flex;
             flex-direction: column;
@@ -304,39 +295,36 @@
         .card {
             width: 100%;
             background: var(--surface-elevated);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.03);
             border-radius: 16px;
             padding: 1.8rem 2rem;
             text-align: left;
-            transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
             backdrop-filter: blur(6px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             text-decoration: none;
             color: inherit;
             display: block;
-            position: relative;
-            overflow: hidden;
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.35s, border-color 0.35s;
         }
 
         .card.visible {
             opacity: 1;
             transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .card:hover {
             transform: translateY(-4px) scale(1.01);
-            border-color: rgba(147, 201, 15, 0.5);
-            box-shadow: 0 16px 35px rgba(147, 201, 15, 0.18);
+            border-color: rgba(147,201,15,0.5);
+            box-shadow: 0 16px 35px rgba(147,201,15,0.18);
         }
 
         .card::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
+            left: 0; top: 0;
             height: 100%;
             width: 3px;
             background: var(--accent);
@@ -372,8 +360,7 @@
         }
 
         .language-dot {
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
             border-radius: 50%;
             background: var(--accent);
             display: inline-block;
@@ -389,20 +376,14 @@
         }
 
         @keyframes pulse-text {
-            0%,
-            100% {
-                opacity: 0.4;
-            }
-            50% {
-                opacity: 1;
-            }
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
         }
 
         .error-state {
             color: #ff6b6b;
         }
 
-        /* footer */
         .footer {
             margin-top: 4rem;
             color: #444;
@@ -410,6 +391,7 @@
             font-family: var(--font-mono);
         }
 
+        /* Mobil iyileştirmeler */
         @media (max-width: 500px) {
             body {
                 padding: 1.5rem 0.8rem;
@@ -439,38 +421,43 @@
     </style>
 </head>
 <body>
-    <!-- Arka plan parçacıkları için canvas -->
+    <!-- Görünmez SEO başlığı -->
+    <div style="display:none;" aria-hidden="true">
+        <h1>Products of Fistikcan - Açık Kaynak Projeler ve Rehberler</h1>
+        <p>Fistikcan'ın GitHub projeleri, rehberleri ve açık kaynak çalışmaları. Resmi ürün sayfası.</p>
+    </div>
+
     <canvas id="particles-canvas"></canvas>
 
     <div class="product-badge">
-        🧬 Product of <a href="https://github.com/Fistikcan" target="_blank">@Fistikcan</a>
+        🧬 Product of <a href="https://github.com/Fistikcan" target="_blank" rel="noopener" title="Fistikcan GitHub Profili">@Fistikcan</a>
     </div>
 
     <main class="main-wrapper">
-        <!-- Hero / Hakkımda -->
+        <!-- Hero -->
         <div class="hero" id="hero">
             <div class="avatar-container">
                 <div class="avatar-border">
-                    <img class="avatar" id="avatar" src="" alt="avatar" loading="lazy">
+                    <img class="avatar" id="avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Fistikcan profil fotoğrafı" loading="lazy">
                 </div>
             </div>
-            <h1 class="hero-name" id="hero-name">Fistikcan</h1>
+            <h2 class="hero-name" id="hero-name">Fistikcan</h2>
             <p class="hero-bio" id="hero-bio">Yükleniyor...</p>
             <div class="stats" id="stats"></div>
         </div>
 
         <!-- Projeler -->
-        <section class="section">
+        <section class="section" aria-labelledby="projeler-title">
             <h2 class="section-title" id="projeler-title">
                 <span class="title-text">&lt;Projeler/&gt;</span><span class="cursor"></span>
             </h2>
             <div class="cards-list" id="projects-container">
-                <div class="loading">Depolar yükleniyor...</div>
+                <div class="loading">Projeler yükleniyor...</div>
             </div>
         </section>
 
-        <!-- Rehberler (Gists) -->
-        <section class="section">
+        <!-- Rehberler -->
+        <section class="section" aria-labelledby="guide-title">
             <h2 class="section-title" id="guide-title">
                 <span class="title-text">def Rehber():</span><span class="cursor"></span>
             </h2>
@@ -479,19 +466,17 @@
             </div>
         </section>
 
-        <div class="footer">
-            &copy; 2025 – Dijital Bahçe
-        </div>
+        <footer class="footer">
+            © 2025 – Products of Fistikcan · <a href="https://products.fcandev.space" style="color: var(--accent);">fcandev.space</a>
+        </footer>
     </main>
 
     <script>
         (function() {
-            // --- Arka plan parçacık efekti ---
+            // Arka plan parçacık animasyonu
             const canvas = document.getElementById('particles-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
-            const particleColor = '#93C90F';
-            const particleCount = 70;
 
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
@@ -526,18 +511,12 @@
             }
 
             function initParticles() {
-                particles = [];
-                for (let i = 0; i < particleCount; i++) {
-                    particles.push(new Particle());
-                }
+                particles = Array.from({ length: 70 }, () => new Particle());
             }
 
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                for (let p of particles) {
-                    p.update();
-                    p.draw();
-                }
+                particles.forEach(p => { p.update(); p.draw(); });
                 requestAnimationFrame(animateParticles);
             }
 
@@ -545,7 +524,7 @@
             initParticles();
             animateParticles();
 
-            // --- Glitch efekti hover ile (sabit başlık) ---
+            // Glitch efekti hover ile
             document.querySelectorAll('.section-title').forEach(title => {
                 title.addEventListener('mouseenter', () => {
                     title.classList.add('glitch-active');
@@ -555,7 +534,7 @@
                 });
             });
 
-            // --- Kartlar için reveal animasyonu (Intersection Observer) ---
+            // Kartlar için reveal
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -566,31 +545,29 @@
             }, { threshold: 0.1 });
 
             function observeCards() {
-                document.querySelectorAll('.card').forEach(card => {
-                    observer.observe(card);
-                });
+                document.querySelectorAll('.card').forEach(card => observer.observe(card));
             }
 
-            // --- GitHub API ---
+            // GitHub API
             const username = 'Fistikcan';
+            const EXCLUDED_REPO = 'Products-of-Fistikcan';
 
             async function fetchUserProfile() {
                 try {
                     const res = await fetch(`https://api.github.com/users/${username}`);
-                    if (!res.ok) throw new Error('Kullanıcı bilgisi alınamadı');
+                    if (!res.ok) throw new Error('Profil bilgisi alınamadı');
                     const data = await res.json();
-                    document.getElementById('avatar').src = data.avatar_url || '';
+                    document.getElementById('avatar').src = data.avatar_url;
                     document.getElementById('hero-name').textContent = data.name || data.login;
-                    document.getElementById('hero-bio').textContent = data.bio || 'Kod yazmayı seven biri.';
-                    const statsHTML = `
+                    document.getElementById('hero-bio').textContent = data.bio || 'Açık kaynak projeler ve yazılım rehberleri';
+                    document.getElementById('stats').innerHTML = `
                         <div class="stat-item"><span class="stat-number">${data.public_repos}</span><span class="stat-label">Repo</span></div>
                         <div class="stat-item"><span class="stat-number">${data.followers}</span><span class="stat-label">Takipçi</span></div>
                         <div class="stat-item"><span class="stat-number">${data.following}</span><span class="stat-label">Takip</span></div>
                         ${data.public_gists ? `<div class="stat-item"><span class="stat-number">${data.public_gists}</span><span class="stat-label">Rehber</span></div>` : ''}
                     `;
-                    document.getElementById('stats').innerHTML = statsHTML;
                 } catch (err) {
-                    document.getElementById('hero-bio').textContent = 'Bilgiler şu an yüklenemedi.';
+                    document.getElementById('hero-bio').textContent = 'Açık kaynak projeler ve yazılım rehberleri';
                 }
             }
 
@@ -598,25 +575,5 @@
                 const container = document.getElementById('projects-container');
                 try {
                     const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=20`);
-                    if (!res.ok) throw new Error('Limit aşımı veya hata');
-                    let repos = await res.json();
-                    // "Products-of-Fistikcan" reposunu filtrele
-                    repos = repos.filter(repo => repo.name !== 'Products-of-Fistikcan');
-                    if (repos.length === 0) {
-                        container.innerHTML = '<div class="loading">Henüz repo bulunmuyor.</div>';
-                        return;
-                    }
-                    container.innerHTML = repos.map(repo => `
-                        <a href="${repo.html_url}" target="_blank" rel="noopener" class="card">
-                            <div class="card-title">📁 ${escapeHTML(repo.name)}</div>
-                            <div class="card-desc">${escapeHTML(repo.description || 'Açıklama yok.')}</div>
-                            <div class="card-meta">
-                                <span>⭐ ${repo.stargazers_count}</span>
-                                <span>🍴 ${repo.forks_count}</span>
-                                ${repo.language ? `<span><span class="language-dot"></span>${escapeHTML(repo.language)}</span>` : ''}
-                            </div>
-                        </a>
-                    `).join('');
-                    observeCards();
-                } catch (err) {
-                    container.innerHTML = `<div class="error-state loading">⚠️ Projeler yüklenemedi: ${escapeHTML(err.message)}</di
+                    if (!res.ok) throw new Error('API limiti aşıldı');
+          
