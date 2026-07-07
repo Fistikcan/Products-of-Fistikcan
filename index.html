@@ -11,7 +11,7 @@
             --surface-elevated: #1a1a1a;
             --accent: #93C90F;
             --accent-soft: rgba(147, 201, 15, 0.15);
-            --accent-glow: rgba(147, 201, 15, 0.5);
+            --accent-glow: rgba(147, 201, 15, 0.6);
             --text: #eaeaea;
             --text-secondary: #9a9a9a;
             --radius: 20px;
@@ -35,10 +35,19 @@
             align-items: center;
             justify-content: flex-start;
             padding: 2rem 1rem;
-            background-image:
-                radial-gradient(circle at 30% 40%, rgba(147, 201, 15, 0.06) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(147, 201, 15, 0.04) 0%, transparent 50%);
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Particle canvas arka plan */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
         /* Product badge */
@@ -80,6 +89,8 @@
             align-items: center;
             gap: 4rem;
             margin-top: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         /* Hero card */
@@ -106,19 +117,57 @@
             }
         }
 
+        /* Avatar konteyneri */
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar-border {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--accent), transparent 70%);
+            padding: 3px;
+            animation: rotate-border 4s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes rotate-border {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
         .avatar {
             width: 110px;
             height: 110px;
             border-radius: 50%;
             border: 3px solid var(--accent);
-            box-shadow: 0 0 25px var(--accent-soft);
-            margin-bottom: 1.5rem;
-            transition: all 0.4s;
+            object-fit: cover;
+            animation: avatar-pulse 2s ease-in-out infinite;
+            transition: all 0.4s ease;
         }
 
-        .hero:hover .avatar {
-            box-shadow: 0 0 40px var(--accent-glow);
-            transform: scale(1.02);
+        @keyframes avatar-pulse {
+            0%,
+            100% {
+                box-shadow: 0 0 20px var(--accent-soft);
+            }
+            50% {
+                box-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(147, 201, 15, 0.3);
+            }
+        }
+
+        .avatar-container:hover .avatar {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 0 50px var(--accent-glow), 0 0 80px rgba(147, 201, 15, 0.4);
         }
 
         .hero-name {
@@ -159,6 +208,7 @@
             font-weight: 700;
             font-family: var(--font-mono);
             color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-soft);
         }
 
         .stat-label {
@@ -182,8 +232,13 @@
             display: inline-block;
             margin-bottom: 2rem;
             text-shadow: 0 0 12px var(--accent-soft);
-            transition: none;
+            transition: text-shadow 0.3s;
             position: relative;
+            cursor: default;
+        }
+
+        .section-title:hover {
+            text-shadow: 0 0 25px var(--accent-glow);
         }
 
         .glitch-active {
@@ -261,10 +316,18 @@
             display: block;
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.35s, border-color 0.35s;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-4px) scale(1.01);
             border-color: rgba(147, 201, 15, 0.5);
             box-shadow: 0 16px 35px rgba(147, 201, 15, 0.18);
         }
@@ -348,6 +411,15 @@
         }
 
         @media (max-width: 500px) {
+            body {
+                padding: 1.5rem 0.8rem;
+            }
+            .product-badge {
+                top: 10px;
+                left: 10px;
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+            }
             .hero {
                 padding: 2rem 1.2rem;
             }
@@ -357,6 +429,9 @@
             .stats {
                 gap: 1.5rem;
             }
+            .section-title {
+                font-size: 1.6rem;
+            }
             .card {
                 padding: 1.3rem 1.4rem;
             }
@@ -364,6 +439,9 @@
     </style>
 </head>
 <body>
+    <!-- Arka plan parçacıkları için canvas -->
+    <canvas id="particles-canvas"></canvas>
+
     <div class="product-badge">
         🧬 Product of <a href="https://github.com/Fistikcan" target="_blank">@Fistikcan</a>
     </div>
@@ -371,7 +449,11 @@
     <main class="main-wrapper">
         <!-- Hero / Hakkımda -->
         <div class="hero" id="hero">
-            <img class="avatar" id="avatar" src="" alt="avatar" loading="lazy">
+            <div class="avatar-container">
+                <div class="avatar-border">
+                    <img class="avatar" id="avatar" src="" alt="avatar" loading="lazy">
+                </div>
+            </div>
             <h1 class="hero-name" id="hero-name">Fistikcan</h1>
             <p class="hero-bio" id="hero-bio">Yükleniyor...</p>
             <div class="stats" id="stats"></div>
@@ -380,7 +462,7 @@
         <!-- Projeler -->
         <section class="section">
             <h2 class="section-title" id="projeler-title">
-                <span class="title-text">// Projeler</span><span class="cursor"></span>
+                <span class="title-text">&lt;Projeler/&gt;</span><span class="cursor"></span>
             </h2>
             <div class="cards-list" id="projects-container">
                 <div class="loading">Depolar yükleniyor...</div>
@@ -390,7 +472,7 @@
         <!-- Rehberler (Gists) -->
         <section class="section">
             <h2 class="section-title" id="guide-title">
-                <span class="title-text"># Rehber</span><span class="cursor"></span>
+                <span class="title-text">def Rehber():</span><span class="cursor"></span>
             </h2>
             <div class="cards-list" id="guides-container">
                 <div class="loading">Rehberler yükleniyor...</div>
@@ -404,64 +486,92 @@
 
     <script>
         (function() {
-            // --- Glitch Title Changer ---
-            const titleSets = {
-                projeler: [
-                    '</Projeler>',
-                    'def Projeler():',
-                    '<!-- Projeler -->',
-                    '# Projeler',
-                    '// Projeler',
-                    '/* Projeler */',
-                    'Projeler::',
-                    'project Projeler',
-                    'function Projeler()',
-                    'class Projeler:',
-                    '{ Projeler }',
-                ],
-                guide: [
-                    '</Rehber>',
-                    'def Rehber():',
-                    '<!-- Rehber -->',
-                    '# Rehber',
-                    '// Rehber',
-                    '/* Rehber */',
-                    'Rehber::',
-                    'guide Rehber',
-                    'func Rehber()',
-                    'class Rehber:',
-                    '@Rehber',
-                ]
-            };
+            // --- Arka plan parçacık efekti ---
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const particleColor = '#93C90F';
+            const particleCount = 70;
 
-            function initGlitchTitle(elementId, titles) {
-                const el = document.getElementById(elementId);
-                if (!el) return;
-                const span = el.querySelector('.title-text');
-                if (!span) return;
-                let currentIndex = Math.floor(Math.random() * titles.length);
-                span.textContent = titles[currentIndex];
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                initParticles();
+            });
 
-                setInterval(() => {
-                    el.classList.add('glitch-active');
-                    let newIndex;
-                    do {
-                        newIndex = Math.floor(Math.random() * titles.length);
-                    } while (newIndex === currentIndex && titles.length > 1);
-                    currentIndex = newIndex;
-                    setTimeout(() => {
-                        span.textContent = titles[currentIndex];
-                    }, 70);
-                    setTimeout(() => {
-                        el.classList.remove('glitch-active');
-                    }, 350);
-                }, 1300);
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.4;
+                    this.speedY = (Math.random() - 0.5) * 0.4;
+                    this.opacity = Math.random() * 0.5 + 0.2;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(147, 201, 15, ${this.opacity})`;
+                    ctx.fill();
+                }
             }
 
-            initGlitchTitle('projeler-title', titleSets.projeler);
-            initGlitchTitle('guide-title', titleSets.guide);
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+            }
 
-            // --- GitHub Data Fetching ---
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let p of particles) {
+                    p.update();
+                    p.draw();
+                }
+                requestAnimationFrame(animateParticles);
+            }
+
+            resizeCanvas();
+            initParticles();
+            animateParticles();
+
+            // --- Glitch efekti hover ile (sabit başlık) ---
+            document.querySelectorAll('.section-title').forEach(title => {
+                title.addEventListener('mouseenter', () => {
+                    title.classList.add('glitch-active');
+                });
+                title.addEventListener('animationend', () => {
+                    title.classList.remove('glitch-active');
+                });
+            });
+
+            // --- Kartlar için reveal animasyonu (Intersection Observer) ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            function observeCards() {
+                document.querySelectorAll('.card').forEach(card => {
+                    observer.observe(card);
+                });
+            }
+
+            // --- GitHub API ---
             const username = 'Fistikcan';
 
             async function fetchUserProfile() {
@@ -487,9 +597,11 @@
             async function fetchRepos() {
                 const container = document.getElementById('projects-container');
                 try {
-                    const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=15`);
+                    const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=20`);
                     if (!res.ok) throw new Error('Limit aşımı veya hata');
-                    const repos = await res.json();
+                    let repos = await res.json();
+                    // "Products-of-Fistikcan" reposunu filtrele
+                    repos = repos.filter(repo => repo.name !== 'Products-of-Fistikcan');
                     if (repos.length === 0) {
                         container.innerHTML = '<div class="loading">Henüz repo bulunmuyor.</div>';
                         return;
@@ -505,56 +617,6 @@
                             </div>
                         </a>
                     `).join('');
+                    observeCards();
                 } catch (err) {
-                    container.innerHTML = `<div class="error-state loading">⚠️ Projeler yüklenemedi: ${escapeHTML(err.message)}</div>`;
-                }
-            }
-
-            async function fetchGists() {
-                const container = document.getElementById('guides-container');
-                try {
-                    const res = await fetch(`https://api.github.com/users/${username}/gists?per_page=10`);
-                    if (!res.ok) throw new Error('Gist verisi alınamadı');
-                    const gists = await res.json();
-                    if (gists.length === 0) {
-                        container.innerHTML = '<div class="loading">Henüz rehber bulunmuyor.</div>';
-                        return;
-                    }
-                    container.innerHTML = gists.map(gist => {
-                        const title = Object.keys(gist.files)[0] || 'Rehber';
-                        return `
-                        <a href="${gist.html_url}" target="_blank" rel="noopener" class="card">
-                            <div class="card-title">📝 ${escapeHTML(title)}</div>
-                            <div class="card-desc">${escapeHTML(gist.description || 'Açıklama yok.')}</div>
-                            <div class="card-meta">
-                                <span>📅 ${new Date(gist.created_at).toLocaleDateString('tr-TR')}</span>
-                                <span>💬 ${gist.comments} yorum</span>
-                            </div>
-                        </a>
-                    `;
-                    }).join('');
-                } catch (err) {
-                    container.innerHTML = `<div class="error-state loading">⚠️ Rehberler yüklenemedi: ${escapeHTML(err.message)}</div>`;
-                }
-            }
-
-            function escapeHTML(str) {
-                const div = document.createElement('div');
-                div.textContent = str;
-                return div.innerHTML;
-            }
-
-            // Başlat
-            fetchUserProfile();
-            fetchRepos();
-            fetchGists();
-
-            // 5 dakikada bir güncelle
-            setInterval(() => {
-                fetchRepos();
-                fetchGists();
-            }, 300000);
-        })();
-    </script>
-</body>
-</html>
+                    container.innerHTML = `<div class="error-state loading">⚠️ Projeler yüklenemedi: ${escapeHTML(err.message)}</di
