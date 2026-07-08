@@ -255,20 +255,20 @@
 
             <!-- Form -->
             <div class="bg-white dark:bg-darkCard rounded-3xl p-8 border border-stone-200/60 dark:border-stone-800/60 reveal shadow-xl shadow-stone-200/10 dark:shadow-none">
-                <form class="space-y-6" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi!');">
+                <form action="https://formspree.io/f/xnjkylbv" method="POST" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-sm font-bold text-stone-500 dark:text-stone-400">Adınız</label>
-                            <input type="text" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
+                            <input type="text" name="name" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-bold text-stone-500 dark:text-stone-400">E-Posta Adresiniz</label>
-                            <input type="email" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
-                        </div>
-                    </div>
+                            <input type="email" name="email" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
+                       </div>
+                   </div>
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-stone-500 dark:text-stone-400">Mesajınız</label>
-                        <textarea required rows="5" class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm resize-none"></textarea>
+                        <textarea name="message" required rows="5" class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm resize-none"></textarea>
                     </div>
                     <button type="submit" class="w-full py-4 bg-primary text-stone-950 font-bold rounded-2xl hover:scale-[1.02] transition-all duration-300 glow-primary shadow-lg shadow-primary/25">
                         Gönder <i class="fa-solid fa-paper-plane ml-2"></i>
