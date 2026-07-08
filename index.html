@@ -1,579 +1,522 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ✅ TAM SEO PAKETİ -->
-    <title>Products of Fistikcan · Açık Kaynak Projeler ve Rehberler</title>
-    <meta name="description" content="Fistikcan'ın resmi ürün sayfası. GitHub üzerindeki açık kaynak projeler, yazılım rehberleri ve güncel teknoloji paylaşımları. Products of Fistikcan.">
-    <meta name="keywords" content="products of fistikcan, fistikcan, fcandev, açık kaynak, yazılım projeleri, rehberler, github">
-    <meta name="author" content="Fistikcan">
-    <meta name="robots" content="index, follow, max-image-preview:large">
-    
-    <!-- Canonical (Kendi domainini işaret et, github.io'yu değil) -->
-    <link rel="canonical" href="https://products.fcandev.space/">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Products of Fistikcan">
-    <meta property="og:description" content="Açık kaynak projeler, yazılım rehberleri ve GitHub çalışmaları.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://products.fcandev.space/">
-    <meta property="og:image" content="https://avatars.githubusercontent.com/Fistikcan">
-    <meta property="og:site_name" content="Products of Fistikcan">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Products of Fistikcan">
-    <meta name="twitter:description" content="Açık kaynak projeler ve yazılım rehberleri.">
-    <meta name="twitter:image" content="https://avatars.githubusercontent.com/Fistikcan">
-    
-    <!-- Google Search Console doğrulama (sana özel kodu ekleyeceksin) -->
-    <!-- <meta name="google-site-verification" content="SENIN_KODUN" /> -->
-    
-    <!-- Cloudflare Web Analytics (isteğe bağlı) -->
-    <!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "SENIN_TOKENIN"}'></script> -->
+    <title>fcandev | Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- ✅ YAPISAL VERİ (Schema.org) -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Person",
-            "name": "Fistikcan",
-            "alternateName": "fistikcan",
-            "url": "https://products.fcandev.space/",
-            "sameAs": [
-                "https://github.com/Fistikcan"
-            ],
-            "description": "Açık kaynak yazılım geliştirici. GitHub projeleri ve rehberler paylaşır.",
-            "image": "https://avatars.githubusercontent.com/Fistikcan",
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://products.fcandev.space/"
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#93C90F',
+                        darkBg: '#0B0F19',
+                        darkCard: '#151D30',
+                    }
+                }
             }
         }
     </script>
 
     <style>
-        :root {
-            --bg: #070707;
-            --surface: #111111;
-            --surface-elevated: #1a1a1a;
-            --accent: #93C90F;
-            --accent-soft: rgba(147, 201, 15, 0.15);
-            --accent-glow: rgba(147, 201, 15, 0.6);
-            --text: #eaeaea;
-            --text-secondary: #9a9a9a;
-            --radius: 20px;
-            --font-mono: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        /* Özel Animasyonlar ve Tasarım Detayları */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--font-sans);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 2rem 1rem;
-            overflow-x: hidden;
-            position: relative;
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(147, 201, 15, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(147, 201, 15, 0.6); }
         }
-
-        #particles-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .product-badge {
-            position: fixed;
-            top: 20px; left: 20px;
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(147, 201, 15, 0.25);
-            color: #aaa;
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
-            z-index: 100;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-        }
-
-        .product-badge a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            margin-left: 4px;
-            transition: text-shadow 0.3s;
-        }
-
-        .product-badge a:hover {
-            text-shadow: 0 0 12px var(--accent-glow);
-        }
-
-        .main-wrapper {
-            width: 100%;
-            max-width: 720px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4rem;
-            margin-top: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero {
-            width: 100%;
-            background: var(--surface);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: var(--radius);
-            padding: 3rem 2rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        .animate-float {
             animation: float 6s ease-in-out infinite;
         }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+        .glow-primary {
+            animation: pulseGlow 3s infinite;
         }
-
-        .avatar-container {
-            display: inline-block;
-            margin-bottom: 1.5rem;
+        /* İnce detay parlamaları */
+        .glow-hover:hover {
+            box-shadow: 0 0 25px rgba(147, 201, 15, 0.45);
+            border-color: #93C90F;
         }
-
-        .avatar-border {
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, var(--accent), transparent 70%);
-            padding: 3px;
-            animation: rotate-border 4s linear infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Özel kaydırma çubuğu */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        @keyframes rotate-border {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
-
-        .avatar {
-            width: 110px; height: 110px;
-            border-radius: 50%;
-            border: 3px solid var(--accent);
-            object-fit: cover;
-            animation: avatar-pulse 2s ease-in-out infinite;
-            transition: all 0.4s ease;
+        .dark ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
         }
-
-        @keyframes avatar-pulse {
-            0%, 100% { box-shadow: 0 0 20px var(--accent-soft); }
-            50% { box-shadow: 0 0 40px var(--accent-glow); }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
-
-        .avatar-container:hover .avatar {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 0 50px var(--accent-glow);
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #93C90F;
         }
-
-        .hero-name {
-            font-size: 2.4rem;
-            font-weight: 700;
-            font-family: var(--font-mono);
-            color: white;
-            margin-bottom: 0.5rem;
-        }
-
-        .hero-bio {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            max-width: 400px;
-            margin: 0 auto 1.5rem;
-            line-height: 1.5;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            font-family: var(--font-mono);
-            color: var(--accent);
-            text-shadow: 0 0 10px var(--accent-soft);
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #777;
-        }
-
-        .section {
-            width: 100%;
-            text-align: center;
-        }
-
-        .section-title {
-            font-family: var(--font-mono);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-            text-shadow: 0 0 12px var(--accent-soft);
-            margin-bottom: 2rem;
-            cursor: default;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title:hover {
-            text-shadow: 0 0 25px var(--accent-glow);
-        }
-
-        .glitch-active {
-            animation: glitch-skew 0.3s ease-in-out;
-        }
-
-        @keyframes glitch-skew {
-            0% { transform: translate(0); text-shadow: -2px 0 red, 2px 0 blue; }
-            20% { transform: translate(-3px, 2px); text-shadow: 2px 0 red, -2px 0 blue; }
-            40% { transform: translate(3px, -1px); text-shadow: -1px 0 red, 1px 0 blue; }
-            60% { transform: translate(-1px, 1px); text-shadow: 1px 0 red, -1px 0 blue; }
-            80% { transform: translate(2px, -2px); text-shadow: -2px 0 red, 2px 0 blue; }
-            100% { transform: translate(0); text-shadow: 0 0 15px var(--accent-glow); }
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2em;
-            background: var(--accent);
-            margin-left: 6px;
-            vertical-align: text-bottom;
-            animation: blink 1s step-end infinite;
-            box-shadow: 0 0 10px var(--accent);
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .cards-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            align-items: center;
-        }
-
-        .card {
-            width: 100%;
-            background: var(--surface-elevated);
-            border: 1px solid rgba(255,255,255,0.03);
-            border-radius: 16px;
-            padding: 1.8rem 2rem;
-            text-align: left;
-            transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-            backdrop-filter: blur(6px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px) scale(1.01);
-            border-color: rgba(147,201,15,0.5);
-            box-shadow: 0 16px 35px rgba(147,201,15,0.18);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0;
-            height: 100%;
-            width: 3px;
-            background: var(--accent);
-            transform: scaleY(0);
-            transition: transform 0.35s ease;
-        }
-
-        .card:hover::before {
-            transform: scaleY(1);
-        }
-
-        .card-title {
-            font-family: var(--font-mono);
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 0.4rem;
-        }
-
-        .card-desc {
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            line-height: 1.4;
-        }
-
-        .card-meta {
-            display: flex;
-            gap: 1.2rem;
-            font-size: 0.8rem;
-            color: #777;
-            font-family: var(--font-mono);
-        }
-
-        .language-dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: inline-block;
-            margin-right: 4px;
-            vertical-align: middle;
-        }
-
-        .loading {
-            color: #888;
-            font-family: var(--font-mono);
-            padding: 2rem;
-            animation: pulse-text 2s infinite;
-        }
-
-        @keyframes pulse-text {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-
-        .error-state {
-            color: #ff6b6b;
-        }
-
-        .footer {
-            margin-top: 4rem;
-            color: #444;
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
-        }
-
-        /* Mobil iyileştirmeler */
-        @media (max-width: 500px) {
-            body {
-                padding: 1.5rem 0.8rem;
-            }
-            .product-badge {
-                top: 10px;
-                left: 10px;
-                font-size: 0.7rem;
-                padding: 0.3rem 0.8rem;
-            }
-            .hero {
-                padding: 2rem 1.2rem;
-            }
-            .hero-name {
-                font-size: 1.8rem;
-            }
-            .stats {
-                gap: 1.5rem;
-            }
-            .section-title {
-                font-size: 1.6rem;
-            }
-            .card {
-                padding: 1.3rem 1.4rem;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #93C90F;
         }
     </style>
 </head>
-<body>
-    <!-- Görünmez SEO başlığı -->
-    <div style="display:none;" aria-hidden="true">
-        <h1>Products of Fistikcan - Açık Kaynak Projeler ve Rehberler</h1>
-        <p>Fistikcan'ın GitHub projeleri, rehberleri ve açık kaynak çalışmaları. Resmi ürün sayfası.</p>
-    </div>
+<body class="bg-slate-50 text-slate-800 dark:bg-darkBg dark:text-slate-200 transition-colors duration-500 font-sans overflow-x-hidden">
 
-    <canvas id="particles-canvas"></canvas>
+    <!-- Dinamik Arka Plan Parçacıkları (Canvas) -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-40 dark:opacity-60"></canvas>
 
-    <div class="product-badge">
-        🧬 Product of <a href="https://github.com/Fistikcan" target="_blank" rel="noopener" title="Fistikcan GitHub Profili">@Fistikcan</a>
-    </div>
+    <!-- Navigasyon Barı -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-darkBg/70 border-b border-slate-200/50 dark:border-slate-800/50 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-extrabold tracking-tight flex items-center gap-2 group">
+                <span class="text-primary group-hover:scale-110 transition-transform duration-300">&lt;</span>
+                <span>fcandev<span class="text-primary">.</span>space</span>
+                <span class="text-primary group-hover:scale-110 transition-transform duration-300">&gt;</span>
+            </a>
 
-    <main class="main-wrapper">
-        <!-- Hero -->
-        <div class="hero" id="hero">
-            <div class="avatar-container">
-                <div class="avatar-border">
-                    <img class="avatar" id="avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Fistikcan profil fotoğrafı" loading="lazy">
-                </div>
+            <!-- Masaüstü Menü -->
+            <div class="hidden md:flex items-center gap-8 font-medium">
+                <a href="#about" class="hover:text-primary transition-colors">Hakkımda</a>
+                <a href="#projects" class="hover:text-primary transition-colors">Projeler</a>
+                <a href="#skills" class="hover:text-primary transition-colors">Yetenekler</a>
+                <a href="#contact" class="hover:text-primary transition-colors">İletişim</a>
+                
+                <!-- Tema Değiştirici -->
+                <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-darkCard text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+                </button>
             </div>
-            <h2 class="hero-name" id="hero-name">Fistikcan</h2>
-            <p class="hero-bio" id="hero-bio">Yükleniyor...</p>
-            <div class="stats" id="stats"></div>
+
+            <!-- Mobil Menü Butonu & Tema Değiştirici -->
+            <div class="flex items-center gap-4 md:hidden">
+                <button id="mobile-theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-darkCard text-slate-600 dark:text-slate-300 hover:text-primary transition-all duration-300">
+                    <i id="mobile-theme-icon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+                <button id="menu-btn" class="p-2.5 rounded-xl bg-slate-100 dark:bg-darkCard text-slate-600 dark:text-slate-300 hover:text-primary transition-colors focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
         </div>
 
-        <!-- Projeler -->
-        <section class="section" aria-labelledby="projeler-title">
-            <h2 class="section-title" id="projeler-title">
-                <span class="title-text">&lt;Projeler/&gt;</span><span class="cursor"></span>
-            </h2>
-            <div class="cards-list" id="projects-container">
-                <div class="loading">Projeler yükleniyor...</div>
+        <!-- Mobil Menü İçeriği -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white dark:bg-darkBg border-b border-slate-200 dark:border-slate-800 px-6 py-6 space-y-4 transition-all duration-300">
+            <a href="#about" class="block text-lg font-medium hover:text-primary transition-colors py-2">Hakkımda</a>
+            <a href="#projects" class="block text-lg font-medium hover:text-primary transition-colors py-2">Projeler</a>
+            <a href="#skills" class="block text-lg font-medium hover:text-primary transition-colors py-2">Yetenekler</a>
+            <a href="#contact" class="block text-lg font-medium hover:text-primary transition-colors py-2">İletişim</a>
+        </div>
+    </nav>
+
+    <!-- Hero Alanı -->
+    <section id="about" class="min-h-[calc(100vh-80px)] flex items-center py-20 px-6 relative">
+        <!-- Arka Plan Dekoratif Yuvarlaklar -->
+        <div class="absolute top-1/4 left-10 w-72 h-72 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
+            <!-- Sol Sütun: Yazılar -->
+            <div class="md:col-span-7 space-y-6 text-center md:text-left reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 font-semibold text-sm animate-pulse">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span> Geliştirmeye Hazır
+                </div>
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+                    Merhaba, ben <span class="text-primary">Fatih</span> <br>
+                    <span id="typing-text" class="border-r-2 border-primary pr-2"></span>
+                </h1>
+                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto md:mx-0">
+                    Modern teknolojiler ve minimalist tasarımlar kullanarak web tabanlı çözümler üretiyorum. Kodun estetik ve performansla buluştuğu noktada çalışmayı seviyorum.
+                </p>
+                
+                <!-- Butonlar ve Sosyal Linkler -->
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start pt-4">
+                    <a href="#projects" class="w-full sm:w-auto px-8 py-4 bg-primary text-slate-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all duration-300 text-center glow-primary">
+                        Projelerimi Gör
+                    </a>
+                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-slate-100 dark:bg-darkCard hover:bg-slate-200 dark:hover:bg-slate-800 font-bold rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary/30 transition-all duration-300 text-center">
+                        İletişime Geç
+                    </a>
+                </div>
+
+                <!-- Sosyal İkonlar -->
+                <div class="flex gap-4 justify-center md:justify-start pt-6 text-2xl text-slate-400">
+                    <a href="https://github.com" target="_blank" class="hover:text-primary transition-colors duration-300"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://linkedin.com" target="_blank" class="hover:text-primary transition-colors duration-300"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="mailto:contact@fcandev.space" class="hover:text-primary transition-colors duration-300"><i class="fa-solid fa-envelope"></i></a>
+                </div>
             </div>
-        </section>
 
-        <!-- Rehberler -->
-        <section class="section" aria-labelledby="guide-title">
-            <h2 class="section-title" id="guide-title">
-                <span class="title-text">def Rehber():</span><span class="cursor"></span>
-            </h2>
-            <div class="cards-list" id="guides-container">
-                <div class="loading">Rehberler yükleniyor...</div>
+            <!-- Sağ Sütun: Görsel/Animasyon -->
+            <div class="md:col-span-5 flex justify-center items-center reveal">
+                <div class="relative w-72 h-72 sm:w-96 sm:h-96 animate-float">
+                    <!-- Dış Halka -->
+                    <div class="absolute inset-0 rounded-full border-2 border-dashed border-primary/40 animate-[spin_20s_linear_infinite]"></div>
+                    <!-- İç Bölüm (Görsel veya Logo Alanı) -->
+                    <div class="absolute inset-4 rounded-full bg-slate-200/50 dark:bg-darkCard/50 backdrop-blur-md border border-slate-300/30 dark:border-slate-700/30 flex items-center justify-center glow-primary">
+                        <div class="text-center">
+                            <!-- Profil Resmi Yerine Minimalist İkon / İllüstrasyon -->
+                            <i class="fa-solid fa-laptop-code text-7xl sm:text-8xl text-primary drop-shadow-[0_0_15px_rgba(147,201,15,0.5)]"></i>
+                            <div class="mt-4 font-bold tracking-widest text-sm text-slate-400 uppercase">products.fcandev</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <footer class="footer">
-            © 2025 – Products of Fistikcan · <a href="https://products.fcandev.space" style="color: var(--accent);">fcandev.space</a>
-        </footer>
-    </main>
+    <!-- Projeler Alanı -->
+    <section id="projects" class="py-24 px-6 relative bg-slate-100/50 dark:bg-slate-900/30 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto space-y-12">
+            <div class="text-center space-y-4 reveal">
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Öne Çıkan <span class="text-primary">Projelerim</span></h2>
+                <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+                <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Geliştirdiğim modern, kullanıcı odaklı ve açık kaynaklı projelerden bazıları.</p>
+            </div>
 
+            <!-- Proje Kartları Izgarası -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Proje 1 -->
+                <div class="group bg-white dark:bg-darkCard rounded-3xl p-6 border border-slate-200/60 dark:border-slate-800/60 transition-all duration-300 hover:-translate-y-2 glow-hover reveal">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <a href="#" target="_blank" class="text-slate-400 hover:text-primary transition-colors text-xl">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">Project Nexus</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-3">
+                        Tailwind ve Vue tabanlı, yüksek performanslı ve modern bir yönetim paneli şablonu.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Vue.js</span>
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Tailwind</span>
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Vite</span>
+                    </div>
+                </div>
+
+                <!-- Proje 2 -->
+                <div class="group bg-white dark:bg-darkCard rounded-3xl p-6 border border-slate-200/60 dark:border-slate-800/60 transition-all duration-300 hover:-translate-y-2 glow-hover reveal">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <a href="#" target="_blank" class="text-slate-400 hover:text-primary transition-colors text-xl">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">Aura API</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-3">
+                        Node.js ve Fastify mimarisiyle kurulmuş, ultra hızlı ve güvenli bir RESTful API kütüphanesi.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Node.js</span>
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Fastify</span>
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Redis</span>
+                    </div>
+                </div>
+
+                <!-- Proje 3 -->
+                <div class="group bg-white dark:bg-darkCard rounded-3xl p-6 border border-slate-200/60 dark:border-slate-800/60 transition-all duration-300 hover:-translate-y-2 glow-hover reveal">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <a href="#" target="_blank" class="text-slate-400 hover:text-primary transition-colors text-xl">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">CSS Magic Effects</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-3">
+                        Web geliştiricileri için hazır, animasyonlu modern kart tasarımları ve buton efektleri kütüphanesi.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">HTML5</span>
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">CSS3</span>
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">JavaScript</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Yetenekler Alanı -->
+    <section id="skills" class="py-24 px-6 relative">
+        <div class="max-w-6xl mx-auto space-y-12">
+            <div class="text-center space-y-4 reveal">
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Teknoloji <span class="text-primary">Yeteneklerim</span></h2>
+                <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+                <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Projelerimi hayata geçirirken sıkça kullandığım modern araçlar ve teknolojiler.</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 pt-6">
+                <!-- Skill 1 -->
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                    <i class="fa-brands fa-html5 text-4xl text-orange-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-sm">HTML5</span>
+                </div>
+                <!-- Skill 2 -->
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                    <i class="fa-brands fa-css3-alt text-4xl text-blue-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-sm">CSS3</span>
+                </div>
+                <!-- Skill 3 -->
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                    <i class="fa-brands fa-js text-4xl text-yellow-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-sm">JavaScript</span>
+                </div>
+                <!-- Skill 4 -->
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                    <i class="fa-brands fa-react text-4xl text-cyan-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-sm">React.js</span>
+                </div>
+                <!-- Skill 5 -->
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                    <i class="fa-brands fa-node-js text-4xl text-green-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-sm">Node.js</span>
+                </div>
+                <!-- Skill 6 -->
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                    <i class="fa-brands fa-github text-4xl text-slate-800 dark:text-slate-200 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-sm">Git & GitHub</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- İletişim Alanı -->
+    <section id="contact" class="py-24 px-6 relative bg-slate-100/50 dark:bg-slate-900/30 transition-colors duration-500">
+        <div class="max-w-4xl mx-auto space-y-12">
+            <div class="text-center space-y-4 reveal">
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Bana <span class="text-primary">Ulaşın</span></h2>
+                <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+                <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Sorularınız, iş ortaklıkları ya da sadece merhaba demek için bana mesaj gönderebilirsiniz.</p>
+            </div>
+
+            <!-- İletişim Formu -->
+            <div class="bg-white dark:bg-darkCard rounded-3xl p-8 border border-slate-200/60 dark:border-slate-800/60 reveal shadow-xl shadow-slate-200/10 dark:shadow-none">
+                <form class="space-y-6" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi! (Simüle edilmiştir.)');">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-slate-500 dark:text-slate-400">Adınız</label>
+                            <input type="text" required class="w-full px-5 py-4 bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-slate-800 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-slate-500 dark:text-slate-400">E-Posta Adresiniz</label>
+                            <input type="email" required class="w-full px-5 py-4 bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-slate-800 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-500 dark:text-slate-400">Mesajınız</label>
+                        <textarea required rows="5" class="w-full px-5 py-4 bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-slate-800 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-primary text-slate-950 font-bold rounded-2xl hover:scale-[1.02] transition-all duration-300 glow-primary">
+                        Gönder <i class="fa-solid fa-paper-plane ml-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-slate-200 dark:border-slate-800 px-6 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <p class="text-sm text-slate-500 dark:text-slate-400 text-center md:text-left">
+                &copy; 2026 fcandev. Tüm hakları saklıdır.
+            </p>
+            <div class="flex gap-6 text-sm text-slate-500 dark:text-slate-400">
+                <a href="#about" class="hover:text-primary transition-colors">Hakkımda</a>
+                <a href="#projects" class="hover:text-primary transition-colors">Projeler</a>
+                <a href="#contact" class="hover:text-primary transition-colors">İletişim</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT KODLARI -->
     <script>
-        (function() {
-            // Arka plan parçacık animasyonu
-            const canvas = document.getElementById('particles-canvas');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
+        // Mobil Menü Mantığı
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                initParticles();
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Tıklanınca Mobil Menüyü Kapatma
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
             });
+        });
 
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 2 + 0.5;
-                    this.speedX = (Math.random() - 0.5) * 0.4;
-                    this.speedY = (Math.random() - 0.5) * 0.4;
-                    this.opacity = Math.random() * 0.5 + 0.2;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(147, 201, 15, ${this.opacity})`;
-                    ctx.fill();
-                }
+        // KOYU/AÇIK TEMA YÖNETİMİ
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+
+        // Kullanıcı Tercihini Kontrol Etme
+        const currentTheme = localStorage.getItem('theme') || 'dark'; // Varsayılanı Koyu Tema Yaptım
+        if (currentTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            updateThemeIcons(true);
+        } else {
+            document.documentElement.classList.remove('dark');
+            updateThemeIcons(false);
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                updateThemeIcons(false);
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                updateThemeIcons(true);
             }
+        }
 
-            function initParticles() {
-                particles = Array.from({ length: 70 }, () => new Particle());
+        function updateThemeIcons(isDark) {
+            if (isDark) {
+                themeIcon.className = 'fa-solid fa-sun text-lg text-primary';
+                mobileThemeIcon.className = 'fa-solid fa-sun text-lg text-primary';
+            } else {
+                themeIcon.className = 'fa-solid fa-moon text-lg';
+                mobileThemeIcon.className = 'fa-solid fa-moon text-lg';
             }
+        }
 
-            function animateParticles() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => { p.update(); p.draw(); });
-                requestAnimationFrame(animateParticles);
+        themeToggle.addEventListener('click', toggleTheme);
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+
+
+        // CANVAS PARÇACIK (PARTICLE) SİSTEMİ (Arka plan animasyonu)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = window.innerWidth < 768 ? 25 : 60; // Mobilde performansı korumak için daha az parçacık
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.speedY = Math.random() * 0.8 - 0.4;
             }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
 
-            resizeCanvas();
-            initParticles();
-            animateParticles();
+                if (this.x > canvas.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = '#93C90F25'; // %15 Opaklıkta birincil renk
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 
-            // Glitch efekti hover ile
-            document.querySelectorAll('.section-title').forEach(title => {
-                title.addEventListener('mouseenter', () => {
-                    title.classList.add('glitch-active');
-                });
-                title.addEventListener('animationend', () => {
-                    title.classList.remove('glitch-active');
-                });
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
             });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
 
-            // Kartlar için reveal
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
 
-            function observeCards() {
-                document.querySelectorAll('.card').forEach(card => observer.observe(card));
+        // YAZI YAZMA EFECTİ (TYPING EFFECT)
+        const words = ["Frontend Developer", "Açık Kaynak Geliştiricisi", "UI/UX Meraklısı"];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingText = document.getElementById('typing-text');
+
+        function type() {
+            const currentWord = words[wordIndex];
+            if (isDeleting) {
+                typingText.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
             }
 
-            // GitHub API
-            const username = 'Fistikcan';
-            const EXCLUDED_REPO = 'Products-of-Fistikcan';
+            let speed = isDeleting ? 40 : 80;
 
-            async function fetchUserProfile() {
-                try {
-                    const res = await fetch(`https://api.github.com/users/${username}`);
-                    if (!res.ok) throw new Error('Profil bilgisi alınamadı');
-                    const data = await res.json();
-                    document.getElementById('avatar').src = data.avatar_url;
-                    document.getElementById('hero-name').textContent = data.name || data.login;
-                    document.getElementById('hero-bio').textContent = data.bio || 'Açık kaynak projeler ve yazılım rehberleri';
-                    document.getElementById('stats').innerHTML = `
-                        <div class="stat-item"><span class="stat-number">${data.public_repos}</span><span class="stat-label">Repo</span></div>
-                        <div class="stat-item"><span class="stat-number">${data.followers}</span><span class="stat-label">Takipçi</span></div>
-                        <div class="stat-item"><span class="stat-number">${data.following}</span><span class="stat-label">Takip</span></div>
-                        ${data.public_gists ? `<div class="stat-item"><span class="stat-number">${data.public_gists}</span><span class="stat-label">Rehber</span></div>` : ''}
-                    `;
-                } catch (err) {
-                    document.getElementById('hero-bio').textContent = 'Açık kaynak projeler ve yazılım rehberleri';
+            if (!isDeleting && charIndex === currentWord.length) {
+                speed = 2000; // Kelime bittiğinde bekleme süresi
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                speed = 500; // Yeni kelimeye geçmeden önceki bekleme süresi
+            }
+
+            setTimeout(type, speed);
+        }
+        document.addEventListener('DOMContentLoaded', type);
+
+
+        // KAYDIRDIKÇA YAVAŞÇA ORTAYA ÇIKMA (INTERSECTION OBSERVER - SCROLL REVEAL)
+        const observerOptions = {
+            root: null,
+            threshold: 0.1,
+        };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    observer.unobserve(entry.target);
                 }
-            }
+            });
+        }, observerOptions);
 
-            async function fetchRepos() {
-                const container = document.getElementById('projects-container');
-                try {
-                    const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=20`);
-                    if (!res.ok) throw new Error('API limiti aşıldı');
-          
+        document.querySelectorAll('.reveal').forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-1000', 'ease-out');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
