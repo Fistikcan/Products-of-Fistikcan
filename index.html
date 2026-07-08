@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fcandev | Portfolio</title>
+    <title>Fıstıkcan | Portfolio</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,9 +22,9 @@
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#93C90F',
-                        darkBg: '#0B0F19',
-                        darkCard: '#151D30',
+                        primary: '#93C90F', // Fıstık Yeşili
+                        darkBg: '#0F1115',  // Koyu Tema Arka Planı
+                        darkCard: '#181C24', // Koyu Tema Kart Rengi
                     }
                 }
             }
@@ -32,14 +32,14 @@
     </script>
 
     <style>
-        /* Özel Animasyonlar ve Tasarım Detayları */
+        /* Özel Efektler & Animasyonlar */
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
+            50% { transform: translateY(-12px) rotate(1deg); }
         }
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 15px rgba(147, 201, 15, 0.2); }
-            50% { box-shadow: 0 0 30px rgba(147, 201, 15, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(147, 201, 15, 0.5); }
         }
         .animate-float {
             animation: float 6s ease-in-out infinite;
@@ -47,286 +47,213 @@
         .glow-primary {
             animation: pulseGlow 3s infinite;
         }
-        /* İnce detay parlamaları */
         .glow-hover:hover {
-            box-shadow: 0 0 25px rgba(147, 201, 15, 0.45);
+            box-shadow: 0 0 25px rgba(147, 201, 15, 0.3);
             border-color: #93C90F;
         }
-        /* Özel kaydırma çubuğu */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background: #93C90F;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #93C90F;
+        /* Yumuşak geçişler */
+        .transition-theme {
+            transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, box-shadow 0.3s ease;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-darkBg dark:text-slate-200 transition-colors duration-500 font-sans overflow-x-hidden">
+<body class="bg-stone-50 text-stone-800 dark:bg-darkBg dark:text-stone-100 transition-theme overflow-x-hidden font-sans">
 
-    <!-- Dinamik Arka Plan Parçacıkları (Canvas) -->
-    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-40 dark:opacity-60"></canvas>
+    <!-- İnteraktif Arka Plan -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-50 dark:opacity-40"></canvas>
 
-    <!-- Navigasyon Barı -->
-    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-darkBg/70 border-b border-slate-200/50 dark:border-slate-800/50 transition-colors duration-300">
+    <!-- Navigasyon Alanı -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-darkBg/70 border-b border-stone-200/50 dark:border-stone-800/50 transition-theme">
         <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
             <!-- Logo -->
             <a href="#" class="text-2xl font-extrabold tracking-tight flex items-center gap-2 group">
-                <span class="text-primary group-hover:scale-110 transition-transform duration-300">&lt;</span>
+                <span class="text-primary group-hover:scale-110 transition-transform">&lt;</span>
                 <span>fcandev<span class="text-primary">.</span>space</span>
-                <span class="text-primary group-hover:scale-110 transition-transform duration-300">&gt;</span>
+                <span class="text-primary group-hover:scale-110 transition-transform">&gt;</span>
             </a>
 
-            <!-- Masaüstü Menü -->
-            <div class="hidden md:flex items-center gap-8 font-medium">
+            <!-- Masaüstü Navigasyon -->
+            <div class="hidden md:flex items-center gap-8 font-semibold text-sm">
                 <a href="#about" class="hover:text-primary transition-colors">Hakkımda</a>
-                <a href="#projects" class="hover:text-primary transition-colors">Projeler</a>
+                <a href="#repos-section" class="hover:text-primary transition-colors">Ürünler</a>
                 <a href="#skills" class="hover:text-primary transition-colors">Yetenekler</a>
                 <a href="#contact" class="hover:text-primary transition-colors">İletişim</a>
                 
                 <!-- Tema Değiştirici -->
-                <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-darkCard text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-all duration-300 border border-transparent hover:border-primary/20">
+                <button id="theme-toggle" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-theme border border-transparent hover:border-primary/20">
                     <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
                 </button>
             </div>
 
-            <!-- Mobil Menü Butonu & Tema Değiştirici -->
+            <!-- Mobil Menü Butonları -->
             <div class="flex items-center gap-4 md:hidden">
-                <button id="mobile-theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-darkCard text-slate-600 dark:text-slate-300 hover:text-primary transition-all duration-300">
+                <button id="mobile-theme-toggle" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-theme">
                     <i id="mobile-theme-icon" class="fa-solid fa-moon text-lg"></i>
                 </button>
-                <button id="menu-btn" class="p-2.5 rounded-xl bg-slate-100 dark:bg-darkCard text-slate-600 dark:text-slate-300 hover:text-primary transition-colors focus:outline-none">
+                <button id="menu-btn" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-colors">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobil Menü İçeriği -->
-        <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white dark:bg-darkBg border-b border-slate-200 dark:border-slate-800 px-6 py-6 space-y-4 transition-all duration-300">
-            <a href="#about" class="block text-lg font-medium hover:text-primary transition-colors py-2">Hakkımda</a>
-            <a href="#projects" class="block text-lg font-medium hover:text-primary transition-colors py-2">Projeler</a>
-            <a href="#skills" class="block text-lg font-medium hover:text-primary transition-colors py-2">Yetenekler</a>
-            <a href="#contact" class="block text-lg font-medium hover:text-primary transition-colors py-2">İletişim</a>
+        <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white dark:bg-darkBg border-b border-stone-200 dark:border-stone-800 px-6 py-6 space-y-4 shadow-lg transition-theme">
+            <a href="#about" class="block text-lg font-semibold hover:text-primary py-2">Hakkımda</a>
+            <a href="#repos-section" class="block text-lg font-semibold hover:text-primary py-2">Ürünler</a>
+            <a href="#skills" class="block text-lg font-semibold hover:text-primary py-2">Yetenekler</a>
+            <a href="#contact" class="block text-lg font-semibold hover:text-primary py-2">İletişim</a>
         </div>
     </nav>
 
-    <!-- Hero Alanı -->
-    <section id="about" class="min-h-[calc(100vh-80px)] flex items-center py-20 px-6 relative">
-        <!-- Arka Plan Dekoratif Yuvarlaklar -->
+    <!-- Hero / Giriş Bölümü -->
+    <section id="about" class="min-h-[calc(100vh-80px)] flex items-center py-16 px-6 relative">
         <div class="absolute top-1/4 left-10 w-72 h-72 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-10 w-80 h-80 bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
 
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
-            <!-- Sol Sütun: Yazılar -->
+            <!-- Sol Bölüm: Tanıtım -->
             <div class="md:col-span-7 space-y-6 text-center md:text-left reveal">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 font-semibold text-sm animate-pulse">
-                    <span class="w-2 h-2 rounded-full bg-primary"></span> Geliştirmeye Hazır
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 font-bold text-xs uppercase tracking-wider animate-pulse">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span> Aktif Olarak Geliştiriyor
                 </div>
-                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
-                    Merhaba, ben <span class="text-primary">Fatih</span> <br>
-                    <span id="typing-text" class="border-r-2 border-primary pr-2"></span>
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-stone-900 dark:text-white">
+                    Ben <span class="text-primary">Fıstıkcan</span> <br>
+                    <span id="typing-text" class="border-r-2 border-primary pr-1"></span>
                 </h1>
-                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto md:mx-0">
-                    Modern teknolojiler ve minimalist tasarımlar kullanarak web tabanlı çözümler üretiyorum. Kodun estetik ve performansla buluştuğu noktada çalışmayı seviyorum.
-                </p>
                 
-                <!-- Butonlar ve Sosyal Linkler -->
+                <!-- Canlı GitHub Bio Verisi -->
+                <p id="profile-bio" class="text-base sm:text-lg text-stone-500 dark:text-stone-400 max-w-xl mx-auto md:mx-0">
+                    Açık kaynak dünyasında fikirler üreten ve bunları kullanıcı dostu modern web uygulamalarına dönüştüren bir geliştiriciyim.
+                </p>
+
+                <!-- Canlı Mini İstatistikler -->
+                <div class="flex gap-6 justify-center md:justify-start py-2">
+                    <div class="text-center md:text-left">
+                        <span id="profile-followers" class="block text-2xl font-extrabold text-stone-900 dark:text-white">0</span>
+                        <span class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Takipçi</span>
+                    </div>
+                    <div class="w-px bg-stone-200 dark:bg-stone-800"></div>
+                    <div class="text-center md:text-left">
+                        <span id="profile-public-repos" class="block text-2xl font-extrabold text-stone-900 dark:text-white">0</span>
+                        <span class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Açık Repo</span>
+                    </div>
+                </div>
+                
+                <!-- Butonlar -->
                 <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start pt-4">
-                    <a href="#projects" class="w-full sm:w-auto px-8 py-4 bg-primary text-slate-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all duration-300 text-center glow-primary">
-                        Projelerimi Gör
+                    <a href="#repos-section" class="w-full sm:w-auto px-8 py-4 bg-primary text-stone-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all text-center glow-primary">
+                        Ürünleri İncele
                     </a>
-                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-slate-100 dark:bg-darkCard hover:bg-slate-200 dark:hover:bg-slate-800 font-bold rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary/30 transition-all duration-300 text-center">
-                        İletişime Geç
+                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-darkCard hover:bg-stone-100 dark:hover:bg-stone-800 font-bold rounded-2xl border border-stone-200 dark:border-stone-800 hover:border-primary/40 transition-all text-center">
+                        İletişim
                     </a>
-                </div>
-
-                <!-- Sosyal İkonlar -->
-                <div class="flex gap-4 justify-center md:justify-start pt-6 text-2xl text-slate-400">
-                    <a href="https://github.com" target="_blank" class="hover:text-primary transition-colors duration-300"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://linkedin.com" target="_blank" class="hover:text-primary transition-colors duration-300"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="mailto:contact@fcandev.space" class="hover:text-primary transition-colors duration-300"><i class="fa-solid fa-envelope"></i></a>
                 </div>
             </div>
 
-            <!-- Sağ Sütun: Görsel/Animasyon -->
+            <!-- Sağ Bölüm: Profil Kartı / İllüstrasyon -->
             <div class="md:col-span-5 flex justify-center items-center reveal">
-                <div class="relative w-72 h-72 sm:w-96 sm:h-96 animate-float">
-                    <!-- Dış Halka -->
-                    <div class="absolute inset-0 rounded-full border-2 border-dashed border-primary/40 animate-[spin_20s_linear_infinite]"></div>
-                    <!-- İç Bölüm (Görsel veya Logo Alanı) -->
-                    <div class="absolute inset-4 rounded-full bg-slate-200/50 dark:bg-darkCard/50 backdrop-blur-md border border-slate-300/30 dark:border-slate-700/30 flex items-center justify-center glow-primary">
-                        <div class="text-center">
-                            <!-- Profil Resmi Yerine Minimalist İkon / İllüstrasyon -->
-                            <i class="fa-solid fa-laptop-code text-7xl sm:text-8xl text-primary drop-shadow-[0_0_15px_rgba(147,201,15,0.5)]"></i>
-                            <div class="mt-4 font-bold tracking-widest text-sm text-slate-400 uppercase">products.fcandev</div>
-                        </div>
+                <div class="relative w-64 h-64 sm:w-80 sm:h-80 animate-float">
+                    <!-- Dışarıdaki dönen fıstık yeşili halka -->
+                    <div class="absolute inset-0 rounded-full border border-dashed border-primary/50 animate-[spin_30s_linear_infinite]"></div>
+                    <!-- API'den çekilecek profil fotoğrafı alanı -->
+                    <div class="absolute inset-3 rounded-full overflow-hidden bg-stone-200 dark:bg-darkCard border-4 border-white dark:border-darkBg shadow-2xl flex items-center justify-center">
+                        <img id="profile-avatar" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Projeler Alanı -->
-    <section id="projects" class="py-24 px-6 relative bg-slate-100/50 dark:bg-slate-900/30 transition-colors duration-500">
+    <!-- @Fistikcan's Products Bölümü (Dinamik GitHub Repoları) -->
+    <section id="repos-section" class="py-24 px-6 relative bg-stone-100/40 dark:bg-stone-900/10 transition-theme">
         <div class="max-w-6xl mx-auto space-y-12">
+            <!-- Başlık -->
             <div class="text-center space-y-4 reveal">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Öne Çıkan <span class="text-primary">Projelerim</span></h2>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">
+                    <a href="https://github.com/Fistikcan" target="_blank" class="text-primary hover:underline transition-all">@Fistikcan</a>'s Products
+                </h2>
                 <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Geliştirdiğim modern, kullanıcı odaklı ve açık kaynaklı projelerden bazıları.</p>
+                <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">GitHub hesabımdan anlık olarak çekilen açık kaynaklı yazılım projelerim.</p>
             </div>
 
-            <!-- Proje Kartları Izgarası -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Proje 1 -->
-                <div class="group bg-white dark:bg-darkCard rounded-3xl p-6 border border-slate-200/60 dark:border-slate-800/60 transition-all duration-300 hover:-translate-y-2 glow-hover reveal">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
-                            <i class="fa-solid fa-code"></i>
-                        </div>
-                        <a href="#" target="_blank" class="text-slate-400 hover:text-primary transition-colors text-xl">
-                            <i class="fa-brands fa-github"></i>
-                        </a>
-                    </div>
-                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">Project Nexus</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-3">
-                        Tailwind ve Vue tabanlı, yüksek performanslı ve modern bir yönetim paneli şablonu.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Vue.js</span>
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Tailwind</span>
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Vite</span>
-                    </div>
-                </div>
-
-                <!-- Proje 2 -->
-                <div class="group bg-white dark:bg-darkCard rounded-3xl p-6 border border-slate-200/60 dark:border-slate-800/60 transition-all duration-300 hover:-translate-y-2 glow-hover reveal">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
-                            <i class="fa-solid fa-bolt"></i>
-                        </div>
-                        <a href="#" target="_blank" class="text-slate-400 hover:text-primary transition-colors text-xl">
-                            <i class="fa-brands fa-github"></i>
-                        </a>
-                    </div>
-                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">Aura API</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-3">
-                        Node.js ve Fastify mimarisiyle kurulmuş, ultra hızlı ve güvenli bir RESTful API kütüphanesi.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Node.js</span>
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Fastify</span>
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">Redis</span>
-                    </div>
-                </div>
-
-                <!-- Proje 3 -->
-                <div class="group bg-white dark:bg-darkCard rounded-3xl p-6 border border-slate-200/60 dark:border-slate-800/60 transition-all duration-300 hover:-translate-y-2 glow-hover reveal">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        </div>
-                        <a href="#" target="_blank" class="text-slate-400 hover:text-primary transition-colors text-xl">
-                            <i class="fa-brands fa-github"></i>
-                        </a>
-                    </div>
-                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">CSS Magic Effects</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-3">
-                        Web geliştiricileri için hazır, animasyonlu modern kart tasarımları ve buton efektleri kütüphanesi.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">HTML5</span>
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">CSS3</span>
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-medium">JavaScript</span>
-                    </div>
-                </div>
+            <!-- Repoların Yükleneceği Izgara (Grid) -->
+            <div id="repos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Burası JavaScript tarafından doldurulacak -->
             </div>
         </div>
     </section>
 
-    <!-- Yetenekler Alanı -->
+    <!-- Yetenekler Bölümü -->
     <section id="skills" class="py-24 px-6 relative">
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="text-center space-y-4 reveal">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Teknoloji <span class="text-primary">Yeteneklerim</span></h2>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">Teknoloji <span class="text-primary">Yelpazem</span></h2>
                 <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Projelerimi hayata geçirirken sıkça kullandığım modern araçlar ve teknolojiler.</p>
+                <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">Projelerimi geliştirirken gücümü aldığım diller ve modern kütüphaneler.</p>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 pt-6">
                 <!-- Skill 1 -->
-                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal shadow-sm">
                     <i class="fa-brands fa-html5 text-4xl text-orange-500 mb-3 group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold text-sm">HTML5</span>
                 </div>
                 <!-- Skill 2 -->
-                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal shadow-sm">
                     <i class="fa-brands fa-css3-alt text-4xl text-blue-500 mb-3 group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold text-sm">CSS3</span>
                 </div>
                 <!-- Skill 3 -->
-                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal shadow-sm">
                     <i class="fa-brands fa-js text-4xl text-yellow-500 mb-3 group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold text-sm">JavaScript</span>
                 </div>
                 <!-- Skill 4 -->
-                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal shadow-sm">
                     <i class="fa-brands fa-react text-4xl text-cyan-400 mb-3 group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold text-sm">React.js</span>
                 </div>
                 <!-- Skill 5 -->
-                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal shadow-sm">
                     <i class="fa-brands fa-node-js text-4xl text-green-500 mb-3 group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold text-sm">Node.js</span>
                 </div>
                 <!-- Skill 6 -->
-                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-slate-200/50 dark:border-slate-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal">
-                    <i class="fa-brands fa-github text-4xl text-slate-800 dark:text-slate-200 mb-3 group-hover:scale-110 transition-transform"></i>
+                <div class="flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-105 group reveal shadow-sm">
+                    <i class="fa-brands fa-github text-4xl text-stone-800 dark:text-stone-200 mb-3 group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold text-sm">Git & GitHub</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- İletişim Alanı -->
-    <section id="contact" class="py-24 px-6 relative bg-slate-100/50 dark:bg-slate-900/30 transition-colors duration-500">
+    <!-- İletişim Bölümü -->
+    <section id="contact" class="py-24 px-6 relative bg-stone-100/40 dark:bg-stone-900/20 border-t border-stone-200/50 dark:border-stone-800/50 transition-colors duration-500">
         <div class="max-w-4xl mx-auto space-y-12">
             <div class="text-center space-y-4 reveal">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Bana <span class="text-primary">Ulaşın</span></h2>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">Yeni Bir <span class="text-primary">Fikir mi Var?</span></h2>
                 <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Sorularınız, iş ortaklıkları ya da sadece merhaba demek için bana mesaj gönderebilirsiniz.</p>
+                <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">Sorularınız, projeleriniz ya da sadece tanışmak için bana mesaj bırakabilirsiniz.</p>
             </div>
 
-            <!-- İletişim Formu -->
-            <div class="bg-white dark:bg-darkCard rounded-3xl p-8 border border-slate-200/60 dark:border-slate-800/60 reveal shadow-xl shadow-slate-200/10 dark:shadow-none">
-                <form class="space-y-6" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi! (Simüle edilmiştir.)');">
+            <!-- Form -->
+            <div class="bg-white dark:bg-darkCard rounded-3xl p-8 border border-stone-200/60 dark:border-stone-800/60 reveal shadow-xl shadow-stone-200/10 dark:shadow-none">
+                <form class="space-y-6" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi!');">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-slate-500 dark:text-slate-400">Adınız</label>
-                            <input type="text" required class="w-full px-5 py-4 bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-slate-800 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
+                            <label class="text-sm font-bold text-stone-500 dark:text-stone-400">Adınız</label>
+                            <input type="text" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-slate-500 dark:text-slate-400">E-Posta Adresiniz</label>
-                            <input type="email" required class="w-full px-5 py-4 bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-slate-800 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
+                            <label class="text-sm font-bold text-stone-500 dark:text-stone-400">E-Posta Adresiniz</label>
+                            <input type="email" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-slate-500 dark:text-slate-400">Mesajınız</label>
-                        <textarea required rows="5" class="w-full px-5 py-4 bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-slate-800 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm resize-none"></textarea>
+                        <label class="text-sm font-bold text-stone-500 dark:text-stone-400">Mesajınız</label>
+                        <textarea required rows="5" class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm resize-none"></textarea>
                     </div>
-                    <button type="submit" class="w-full py-4 bg-primary text-slate-950 font-bold rounded-2xl hover:scale-[1.02] transition-all duration-300 glow-primary">
+                    <button type="submit" class="w-full py-4 bg-primary text-stone-950 font-bold rounded-2xl hover:scale-[1.02] transition-all duration-300 glow-primary shadow-lg shadow-primary/25">
                         Gönder <i class="fa-solid fa-paper-plane ml-2"></i>
                     </button>
                 </form>
@@ -335,14 +262,14 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-10 border-t border-slate-200 dark:border-slate-800 px-6 transition-colors duration-500">
+    <footer class="py-10 border-t border-stone-200/60 dark:border-stone-800/60 px-6 transition-colors duration-500">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <p class="text-sm text-slate-500 dark:text-slate-400 text-center md:text-left">
-                &copy; 2026 fcandev. Tüm hakları saklıdır.
+            <p class="text-sm text-stone-500 dark:text-stone-400 text-center md:text-left">
+                &copy; 2026 Fıstıkcan. Tüm hakları saklıdır.
             </p>
-            <div class="flex gap-6 text-sm text-slate-500 dark:text-slate-400">
+            <div class="flex gap-6 text-sm text-stone-500 dark:text-stone-400">
                 <a href="#about" class="hover:text-primary transition-colors">Hakkımda</a>
-                <a href="#projects" class="hover:text-primary transition-colors">Projeler</a>
+                <a href="#repos-section" class="hover:text-primary transition-colors">Projelerim</a>
                 <a href="#contact" class="hover:text-primary transition-colors">İletişim</a>
             </div>
         </div>
@@ -350,7 +277,7 @@
 
     <!-- JAVASCRIPT KODLARI -->
     <script>
-        // Mobil Menü Mantığı
+        // Mobil Menü Yönetimi
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
 
@@ -358,21 +285,20 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Tıklanınca Mobil Menüyü Kapatma
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
             });
         });
 
-        // KOYU/AÇIK TEMA YÖNETİMİ
+        // KOYU/AÇIK TEMA YÖNETİMİ (VARSAYILAN: AÇIK TEMA)
         const themeToggle = document.getElementById('theme-toggle');
         const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const mobileThemeIcon = document.getElementById('mobile-theme-icon');
 
-        // Kullanıcı Tercihini Kontrol Etme
-        const currentTheme = localStorage.getItem('theme') || 'dark'; // Varsayılanı Koyu Tema Yaptım
+        // Kullanıcı tercihini kontrol et (Hafızada yoksa varsayılanı AÇIK yap)
+        const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
             document.documentElement.classList.add('dark');
             updateThemeIcons(true);
@@ -408,11 +334,11 @@
         mobileThemeToggle.addEventListener('click', toggleTheme);
 
 
-        // CANVAS PARÇACIK (PARTICLE) SİSTEMİ (Arka plan animasyonu)
+        // CANVAS PARÇACIK (PARTICLE) ANIMASYONU
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        const particleCount = window.innerWidth < 768 ? 25 : 60; // Mobilde performansı korumak için daha az parçacık
+        const particleCount = window.innerWidth < 768 ? 25 : 60;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -426,8 +352,8 @@
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.8 - 0.4;
-                this.speedY = Math.random() * 0.8 - 0.4;
+                this.speedX = Math.random() * 0.6 - 0.3;
+                this.speedY = Math.random() * 0.6 - 0.3;
             }
             update() {
                 this.x += this.speedX;
@@ -439,7 +365,7 @@
                 else if (this.y < 0) this.y = canvas.height;
             }
             draw() {
-                ctx.fillStyle = '#93C90F25'; // %15 Opaklıkta birincil renk
+                ctx.fillStyle = '#93C90F20'; // Birincil yeşil tonu (Hafif saydam)
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -465,8 +391,8 @@
         animateParticles();
 
 
-        // YAZI YAZMA EFECTİ (TYPING EFFECT)
-        const words = ["Frontend Developer", "Açık Kaynak Geliştiricisi", "UI/UX Meraklısı"];
+        // YAZI YAZMA EFEKTİ (TYPING EFFECT)
+        const words = ["Açık Kaynak Geliştiricisi", "Modern Web Mimarı", "UI/UX Hayranı", "Fıstık Yeşili Sevdalısı"];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -485,20 +411,19 @@
             let speed = isDeleting ? 40 : 80;
 
             if (!isDeleting && charIndex === currentWord.length) {
-                speed = 2000; // Kelime bittiğinde bekleme süresi
+                speed = 2000;
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 wordIndex = (wordIndex + 1) % words.length;
-                speed = 500; // Yeni kelimeye geçmeden önceki bekleme süresi
+                speed = 500;
             }
 
             setTimeout(type, speed);
         }
-        document.addEventListener('DOMContentLoaded', type);
 
 
-        // KAYDIRDIKÇA YAVAŞÇA ORTAYA ÇIKMA (INTERSECTION OBSERVER - SCROLL REVEAL)
+        // SCROLL REVEAL (KAYDIRDIKÇA YAVAŞÇA GELME)
         const observerOptions = {
             root: null,
             threshold: 0.1,
@@ -516,6 +441,111 @@
         document.querySelectorAll('.reveal').forEach(el => {
             el.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-1000', 'ease-out');
             observer.observe(el);
+        });
+
+
+        // GITHUB API ENTEGRASYONU (@Fistikcan)
+        const githubUsername = 'Fistikcan';
+
+        async function fetchGithubProfile() {
+            try {
+                const response = await fetch(`https://api.github.com/users/${githubUsername}`);
+                if (!response.ok) throw new Error('GitHub profil bilgileri çekilemedi.');
+                const data = await response.json();
+                
+                // Gelen verileri HTML'e aktar
+                if (data.avatar_url) {
+                    document.getElementById('profile-avatar').src = data.avatar_url;
+                }
+                if (data.bio) {
+                    document.getElementById('profile-bio').textContent = data.bio;
+                }
+                document.getElementById('profile-followers').textContent = data.followers;
+                document.getElementById('profile-public-repos').textContent = data.public_repos;
+            } catch (error) {
+                console.error(error);
+                // Hata durumunda varsayılan takipçi sayısını koru
+            }
+        }
+
+        async function fetchGithubRepos() {
+            const container = document.getElementById('repos-container');
+            // Yükleniyor iskeleti
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <i class="fa-solid fa-circle-notch animate-spin text-4xl text-primary mb-4"></i>
+                    <p class="text-stone-500 dark:text-stone-400">GitHub repolarınız taranıyor...</p>
+                </div>
+            `;
+
+            try {
+                // En son güncellenen ilk 6 projeyi çek
+                const response = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=6`);
+                if (!response.ok) throw new Error('Repolar çekilemedi.');
+                const repos = await response.json();
+
+                if (repos.length === 0) {
+                    container.innerHTML = `<p class="col-span-full text-center text-stone-500">Açık kaynaklı bir proje bulunamadı.</p>`;
+                    return;
+                }
+
+                container.innerHTML = ''; // Yükleniyor durumunu temizle
+
+                repos.forEach(repo => {
+                    const card = document.createElement('div');
+                    // Başlangıçta görünmez yapıp observer'a ekleyeceğiz
+                    card.className = "group bg-white dark:bg-darkCard rounded-3xl p-6 border border-stone-200/60 dark:border-stone-800/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/5 dark:hover:shadow-none glow-hover opacity-0 translate-y-10 transition-all duration-700 ease-out flex flex-col justify-between";
+
+                    const language = repo.language || 'Markdown';
+                    const description = repo.description || 'Bu proje için herhangi bir açıklama eklenmemiş.';
+                    const stars = repo.stargazers_count;
+                    const forks = repo.forks_count;
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
+                                    <i class="fa-solid fa-code"></i>
+                                </div>
+                                <a href="${repo.html_url}" target="_blank" class="text-stone-400 hover:text-primary transition-colors text-xl">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                            </div>
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2 break-all">${repo.name}</h3>
+                            <p class="text-sm text-stone-500 dark:text-stone-400 mb-6 line-clamp-3">${description}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/80">
+                            <span class="text-xs px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800/80 font-semibold text-stone-600 dark:text-stone-300">${language}</span>
+                            <div class="flex items-center gap-3 text-stone-400 text-xs">
+                                <span><i class="fa-regular fa-star mr-1"></i> ${stars}</span>
+                                <span><i class="fa-solid fa-code-fork mr-1"></i> ${forks}</span>
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(card);
+                    // Dinamik olarak oluşturulan kartı Scroll Reveal sistemine dahil et
+                    observer.observe(card);
+                });
+
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-red-500 mb-4">GitHub API limitine ulaşıldı veya bağlantı hatası oluştu.</p>
+                        <a href="https://github.com/${githubUsername}" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-stone-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+                            Profilime Doğrudan Git <i class="fa-brands fa-github"></i>
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        // Sayfa Yüklendiğinde Çalıştır
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchGithubProfile();
+            fetchGithubRepos();
+            type();
         });
     </script>
 </body>
