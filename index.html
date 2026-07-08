@@ -59,6 +59,11 @@
             0%, 100% { box-shadow: 0 0 15px rgba(147, 201, 15, 0.2); }
             50% { box-shadow: 0 0 30px rgba(147, 201, 15, 0.5); }
         }
+        /* Sürekli Dönen ve Parlayan Profil Halka Efekti */
+        @keyframes avatarPulse {
+            0%, 100% { border-color: rgba(147, 201, 15, 0.3); box-shadow: 0 0 15px rgba(147, 201, 15, 0.2); }
+            50% { border-color: rgba(147, 201, 15, 0.8); box-shadow: 0 0 30px rgba(147, 201, 15, 0.5); }
+        }
         /* Yukarıdan Aşağı Döne Döne Süzülen Kod Animasyonu */
         @keyframes fallAndSpin {
             0% {
@@ -85,9 +90,16 @@
         .glow-primary {
             animation: pulseGlow 3s infinite;
         }
+        .avatar-glow {
+            animation: avatarPulse 4s infinite ease-in-out;
+        }
+        .glow-hover {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
         .glow-hover:hover {
-            box-shadow: 0 0 25px rgba(147, 201, 15, 0.3);
-            border-color: #93C90F;
+            box-shadow: 0 15px 30px rgba(147, 201, 15, 0.22);
+            border-color: #93C90F !important;
+            transform: translateY(-8px) scale(1.02);
         }
         /* Yumuşak geçişler */
         .transition-theme {
@@ -188,8 +200,8 @@
             <!-- Sağ Bölüm: Profil Kartı -->
             <div class="md:col-span-5 flex justify-center items-center reveal">
                 <div class="relative w-64 h-64 sm:w-80 sm:h-80 animate-float">
-                    <!-- Dışarıdaki dönen fıstık yeşili halka -->
-                    <div class="absolute inset-0 rounded-full border border-dashed border-primary/50 animate-[spin_30s_linear_infinite]"></div>
+                    <!-- Dışarıdaki dönen fıstık yeşili halka (Canlı dalgalanma efekti eklendi) -->
+                    <div class="absolute inset-0 rounded-full border border-dashed border-primary/50 animate-[spin_30s_linear_infinite] avatar-glow"></div>
                     <!-- API'den çekilecek profil fotoğrafı alanı -->
                     <div class="absolute inset-3 rounded-full overflow-hidden bg-stone-200 dark:bg-darkCard border-4 border-white dark:border-darkBg shadow-2xl flex items-center justify-center">
                         <img id="profile-avatar" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="w-full h-full object-cover">
@@ -227,31 +239,28 @@
                 <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">Geliştirme süreçlerinde en çok kullandığım diller ve ekosistemler.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-6 max-w-5xl mx-auto">
-                <!-- Birleşik Python, HTML, JS, CSS Kartı (Geniş alan kaplar) -->
-                <div class="sm:col-span-2 flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-[1.02] group reveal shadow-sm">
-                    <div class="flex items-center gap-6 mb-4 text-4xl">
-                        <i class="fa-brands fa-python text-[#3776AB] group-hover:scale-110 transition-transform" title="Python"></i>
-                        <i class="fa-brands fa-html5 text-[#E34F26] group-hover:scale-110 transition-transform" title="HTML5"></i>
-                        <i class="fa-brands fa-js text-[#F7DF1E] group-hover:scale-110 transition-transform" title="JavaScript"></i>
-                        <i class="fa-brands fa-css3-alt text-[#1572B6] group-hover:scale-110 transition-transform" title="CSS3"></i>
+            <!-- Diller Izgarası (Yenilendi - Sadece Simge ve İsim) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 max-w-4xl mx-auto">
+                <!-- Birleşik HTML, JS, CSS Kartı -->
+                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme glow-hover group reveal shadow-sm">
+                    <div class="flex items-center gap-5 mb-4 text-4xl">
+                        <i class="fa-brands fa-html5 text-[#E34F26] group-hover:scale-115 transition-transform" title="HTML5"></i>
+                        <i class="fa-brands fa-js text-[#F7DF1E] group-hover:scale-115 transition-transform" title="JavaScript"></i>
+                        <i class="fa-brands fa-css3-alt text-[#1572B6] group-hover:scale-115 transition-transform" title="CSS3"></i>
                     </div>
-                    <span class="font-extrabold text-lg text-stone-900 dark:text-white">Python, HTML, JS, CSS</span>
-                    <span class="text-xs text-stone-400 mt-1 uppercase tracking-wider font-semibold">Web & Scripting Yapay Zekası</span>
+                    <span class="font-extrabold text-lg text-stone-900 dark:text-white">HTML, JS, CSS</span>
+                </div>
+
+                <!-- Python Kartı -->
+                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme glow-hover group reveal shadow-sm">
+                    <i class="fa-brands fa-python text-5xl text-[#3776AB] mb-4 group-hover:scale-115 transition-transform" title="Python"></i>
+                    <span class="font-extrabold text-lg text-stone-900 dark:text-white">Python</span>
                 </div>
 
                 <!-- C++ Kartı -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-[1.03] group reveal shadow-sm">
-                    <div class="text-3xl font-black text-[#00599C] dark:text-sky-400 mb-4 tracking-tighter group-hover:scale-110 transition-transform">C++</div>
-                    <span class="font-extrabold text-sm text-stone-900 dark:text-white">C++</span>
-                    <span class="text-xs text-stone-400 mt-1 uppercase tracking-wider font-semibold">Sistem ve Performans</span>
-                </div>
-
-                <!-- C# Kartı -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 hover:border-primary/40 transition-all duration-300 hover:scale-[1.03] group reveal shadow-sm">
-                    <div class="text-3xl font-black text-[#239120] mb-4 tracking-tighter group-hover:scale-110 transition-transform">C#</div>
-                    <span class="font-extrabold text-sm text-stone-900 dark:text-white">C#</span>
-                    <span class="text-xs text-stone-400 mt-1 uppercase tracking-wider font-semibold">Masaüstü ve Oyun</span>
+                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme glow-hover group reveal shadow-sm">
+                    <div class="text-4xl font-black text-[#00599C] dark:text-sky-400 mb-4 tracking-tighter group-hover:scale-115 transition-transform">C++</div>
+                    <span class="font-extrabold text-lg text-stone-900 dark:text-white">C++</span>
                 </div>
             </div>
         </div>
@@ -363,7 +372,7 @@
         mobileThemeToggle.addEventListener('click', toggleTheme);
 
 
-        // SÜZÜLEN KOD YAĞMURU ANIMASYONU (Rastgele yukarıdan aşağıya akış)
+        // SÜZÜLEN DERİNLİKLİ KOD YAĞMURU ANIMASYONU (Rastgele yukarıdan aşağıya akış)
         const codeRainContainer = document.getElementById('code-rain-container');
         const codeSnippets = [
             'def fıstık():',
@@ -375,6 +384,7 @@
         ];
 
         function createFallingCode() {
+            if (!codeRainContainer) return;
             const el = document.createElement('div');
             el.innerHTML = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
             el.className = 'falling-code';
@@ -382,35 +392,51 @@
             // Rastgele özellikler tanımla
             const leftPosition = Math.random() * 92 + 2; // Ekrana yayılması için %2 ile %94 arası
             const duration = Math.random() * 10 + 10;   // 10s ile 20s arası süzülme hızı
-            const fontSize = Math.random() * 0.4 + 0.75; // 0.75rem ile 1.15rem arası boyut
-            const opacity = Math.random() * 0.14 + 0.08; // Arka planda kalması için düşük opaklık (%8 - %22)
+            const fontSize = Math.random() * 0.45 + 0.7; // 0.7rem ile 1.15rem arası boyut
+
+            // Bol Efekt & 3D Derinlik Hissi: Uzaktaki kodlar hafif bulanık ve daha opak akacak
+            const depthValue = Math.random();
+            let blurValue = 'none';
+            let opacity = Math.random() * 0.12 + 0.08;
+            let zIndex = '-10';
+
+            if (depthValue < 0.4) {
+                blurValue = 'blur(1.5px)';
+                zIndex = '-15';
+                opacity = Math.random() * 0.05 + 0.03; // Oldukça loş arka plan
+            } else if (depthValue > 0.8) {
+                zIndex = '-5'; // Ön plana daha yakın ve canlı
+                opacity = Math.random() * 0.18 + 0.12;
+            }
 
             el.style.left = `${leftPosition}%`;
             el.style.fontSize = `${fontSize}rem`;
             el.style.animationDuration = `${duration}s`;
             el.style.opacity = opacity;
+            el.style.filter = blurValue;
+            el.style.zIndex = zIndex;
             
             // Fıstık yeşili tonunu uygula
             el.style.color = '#93C90F';
 
             codeRainContainer.appendChild(el);
 
-            // Ekrandan çıktıktan sonra DOM'dan temizle
-            setTimeout(() => {
+            // Ekrandan çıktıktan sonra DOM'dan temizle (Memory leak engelleme)
+            el.addEventListener('animationend', () => {
                 el.remove();
-            }, duration * 1000);
+            });
         }
 
         // Sayfa ilk yüklendiğinde rastgele gecikmelerle başlangıç kodlarını oluştur
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 15; i++) {
             setTimeout(createFallingCode, Math.random() * 8000);
         }
-        // Her 2 saniyede bir yeni kod satırı süzülmeye başlar
-        setInterval(createFallingCode, 2000);
+        // Her 1.8 saniyede bir yeni kod satırı süzülmeye başlar (Daha sık ve bol efekt)
+        setInterval(createFallingCode, 1800);
 
 
         // YAZI YAZMA EFEKTİ (Diller listelenecek şekilde güncellendi)
-        const words = ["Python Geliştiricisi", "HTML & CSS Mimarı", "JS Yazarı", "CPP Geliştiricisi", "C# Kodlayıcısı"];
+        const words = ["Python Geliştiricisi", "HTML & CSS & JS Geliştiricisi", "C++ Geliştiricisi"];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
