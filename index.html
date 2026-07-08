@@ -41,6 +41,26 @@
             0%, 100% { box-shadow: 0 0 15px rgba(147, 201, 15, 0.2); }
             50% { box-shadow: 0 0 30px rgba(147, 201, 15, 0.5); }
         }
+        /* Yukarıdan Aşağı Döne Döne Süzülen Kod Animasyonu */
+        @keyframes fallAndSpin {
+            0% {
+                transform: translateY(-150px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+        .falling-code {
+            position: fixed;
+            top: 0;
+            pointer-events: none;
+            font-family: monospace;
+            white-space: nowrap;
+            z-index: -10;
+            animation-name: fallAndSpin;
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+        }
         .animate-float {
             animation: float 6s ease-in-out infinite;
         }
@@ -59,8 +79,8 @@
 </head>
 <body class="bg-stone-50 text-stone-800 dark:bg-darkBg dark:text-stone-100 transition-theme overflow-x-hidden font-sans">
 
-    <!-- İnteraktif Arka Plan -->
-    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-50 dark:opacity-40"></canvas>
+    <!-- Süzülen Kod Yağmuru Konteyneri (JS ile doldurulacak) -->
+    <div id="code-rain-container" class="fixed inset-0 pointer-events-none z-[-10]"></div>
 
     <!-- Navigasyon Alanı -->
     <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-darkBg/70 border-b border-stone-200/50 dark:border-stone-800/50 transition-theme">
@@ -113,9 +133,6 @@
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
             <!-- Sol Bölüm: Tanıtım -->
             <div class="md:col-span-7 space-y-6 text-center md:text-left reveal">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 font-bold text-xs uppercase tracking-wider animate-pulse">
-                    <span class="w-2 h-2 rounded-full bg-primary"></span> Aktif Olarak Geliştiriyor
-                </div>
                 <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-stone-900 dark:text-white">
                     Ben <span class="text-primary">Fıstıkcan</span> <br>
                     <span id="typing-text" class="border-r-2 border-primary pr-1"></span>
@@ -150,7 +167,7 @@
                 </div>
             </div>
 
-            <!-- Sağ Bölüm: Profil Kartı / İllüstrasyon -->
+            <!-- Sağ Bölüm: Profil Kartı -->
             <div class="md:col-span-5 flex justify-center items-center reveal">
                 <div class="relative w-64 h-64 sm:w-80 sm:h-80 animate-float">
                     <!-- Dışarıdaki dönen fıstık yeşili halka -->
@@ -297,7 +314,6 @@
         const themeIcon = document.getElementById('theme-icon');
         const mobileThemeIcon = document.getElementById('mobile-theme-icon');
 
-        // Kullanıcı tercihini kontrol et (Hafızada yoksa varsayılanı AÇIK yap)
         const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
             document.documentElement.classList.add('dark');
@@ -334,65 +350,54 @@
         mobileThemeToggle.addEventListener('click', toggleTheme);
 
 
-        // CANVAS PARÇACIK (PARTICLE) ANIMASYONU
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const particleCount = window.innerWidth < 768 ? 25 : 60;
+        // SÜZÜLEN KOD YAĞMURU ANIMASYONU (Rastgele yukarıdan aşağıya akış)
+        const codeRainContainer = document.getElementById('code-rain-container');
+        const codeSnippets = [
+            'def fıstık():',
+            '&lt;script&gt;function fıstık() {}&lt;/script&gt;',
+            'function fıstık() {}',
+            '@fıstık { }',
+            'void fıstık() {}',
+            'void Fıstık() {}'
+        ];
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function createFallingCode() {
+            const el = document.createElement('div');
+            el.innerHTML = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+            el.className = 'falling-code';
+
+            // Rastgele özellikler tanımla
+            const leftPosition = Math.random() * 92 + 2; // Ekrana yayılması için %2 ile %94 arası
+            const duration = Math.random() * 10 + 10;   // 10s ile 20s arası süzülme hızı
+            const fontSize = Math.random() * 0.4 + 0.75; // 0.75rem ile 1.15rem arası boyut
+            const opacity = Math.random() * 0.14 + 0.08; // Arka planda kalması için düşük opaklık (%8 - %22)
+
+            el.style.left = `${leftPosition}%`;
+            el.style.fontSize = `${fontSize}rem`;
+            el.style.animationDuration = `${duration}s`;
+            el.style.opacity = opacity;
+            
+            // Fıstık yeşili tonunu uygula
+            el.style.color = '#93C90F';
+
+            codeRainContainer.appendChild(el);
+
+            // Ekrandan çıktıktan sonra DOM'dan temizle
+            setTimeout(() => {
+                el.remove();
+            }, duration * 1000);
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.6 - 0.3;
-                this.speedY = Math.random() * 0.6 - 0.3;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x > canvas.width) this.x = 0;
-                else if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                else if (this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = '#93C90F20'; // Birincil yeşil tonu (Hafif saydam)
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+        // Sayfa ilk yüklendiğinde rastgele gecikmelerle başlangıç kodlarını oluştur
+        for (let i = 0; i < 12; i++) {
+            setTimeout(createFallingCode, Math.random() * 8000);
         }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
+        // Her 2 saniyede bir yeni kod satırı süzülmeye başlar
+        setInterval(createFallingCode, 2000);
 
 
-        // YAZI YAZMA EFEKTİ (TYPING EFFECT)
-        const words = ["Açık Kaynak Geliştiricisi", "Modern Web Mimarı", "UI/UX Hayranı", "Fıstık Yeşili Sevdalısı"];
+        // YAZI YAZMA EFEKTİ (Diller listelenecek şekilde güncellendi)
+        const words = ["Python Geliştiricisi", "HTML & CSS Mimarı", "JS Yazarı", "CPP Geliştiricisi", "C# Kodlayıcısı"];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -408,22 +413,22 @@
                 charIndex++;
             }
 
-            let speed = isDeleting ? 40 : 80;
+            let speed = isDeleting ? 45 : 85;
 
             if (!isDeleting && charIndex === currentWord.length) {
-                speed = 2000;
+                speed = 2200; // Kelime bittikten sonra bekleme süresi
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 wordIndex = (wordIndex + 1) % words.length;
-                speed = 500;
+                speed = 400; // Yeni kelimeye geçiş öncesi bekleme süresi
             }
 
             setTimeout(type, speed);
         }
 
 
-        // SCROLL REVEAL (KAYDIRDIKÇA YAVAŞÇA GELME)
+        // SCROLL REVEAL (AŞAĞI KAYDIRDIKÇA YAVAŞÇA BELİRME)
         const observerOptions = {
             root: null,
             threshold: 0.1,
@@ -444,16 +449,15 @@
         });
 
 
-        // GITHUB API ENTEGRASYONU (@Fistikcan)
+        // GITHUB API ENTEGRASYONU VE FİLTRELEME (@Fistikcan)
         const githubUsername = 'Fistikcan';
 
         async function fetchGithubProfile() {
             try {
                 const response = await fetch(`https://api.github.com/users/${githubUsername}`);
-                if (!response.ok) throw new Error('GitHub profil bilgileri çekilemedi.');
+                if (!response.ok) throw new Error('Profil yüklenemedi.');
                 const data = await response.json();
                 
-                // Gelen verileri HTML'e aktar
                 if (data.avatar_url) {
                     document.getElementById('profile-avatar').src = data.avatar_url;
                 }
@@ -464,40 +468,49 @@
                 document.getElementById('profile-public-repos').textContent = data.public_repos;
             } catch (error) {
                 console.error(error);
-                // Hata durumunda varsayılan takipçi sayısını koru
             }
         }
 
         async function fetchGithubRepos() {
             const container = document.getElementById('repos-container');
-            // Yükleniyor iskeleti
             container.innerHTML = `
                 <div class="col-span-full text-center py-12">
                     <i class="fa-solid fa-circle-notch animate-spin text-4xl text-primary mb-4"></i>
-                    <p class="text-stone-500 dark:text-stone-400">GitHub repolarınız taranıyor...</p>
+                    <p class="text-stone-500 dark:text-stone-400">Ürünler listeleniyor...</p>
                 </div>
             `;
 
             try {
-                // En son güncellenen ilk 6 projeyi çek
-                const response = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=6`);
-                if (!response.ok) throw new Error('Repolar çekilemedi.');
+                // En son güncellenen tüm depoları çekelim (Filtreleri JS üzerinde uygulayacağız)
+                const response = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=30`);
+                if (!response.ok) throw new Error('Depolar çekilemedi.');
                 const repos = await response.json();
 
-                if (repos.length === 0) {
-                    container.innerHTML = `<p class="col-span-full text-center text-stone-500">Açık kaynaklı bir proje bulunamadı.</p>`;
-                    return;
-                }
+                container.innerHTML = ''; // Yükleniyor ekranını temizle
 
-                container.innerHTML = ''; // Yükleniyor durumunu temizle
+                let displayedReposCount = 0;
 
                 repos.forEach(repo => {
+                    const repoNameLower = repo.name.toLowerCase();
+                    const repoDesc = repo.description || '';
+
+                    // 1. ENGELLEME KOŞULU: Fistikcan-s-Products olan depoyu gösterme
+                    if (repoNameLower === 'fistikcan-s-products') {
+                        return;
+                    }
+
+                    // 2. ENGELLEME KOŞULU: Açıklamasında (s) yani secret geçen depoları gösterme
+                    if (repoDesc.includes('(s)')) {
+                        return;
+                    }
+
+                    displayedReposCount++;
+
                     const card = document.createElement('div');
-                    // Başlangıçta görünmez yapıp observer'a ekleyeceğiz
                     card.className = "group bg-white dark:bg-darkCard rounded-3xl p-6 border border-stone-200/60 dark:border-stone-800/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/5 dark:hover:shadow-none glow-hover opacity-0 translate-y-10 transition-all duration-700 ease-out flex flex-col justify-between";
 
                     const language = repo.language || 'Markdown';
-                    const description = repo.description || 'Bu proje için herhangi bir açıklama eklenmemiş.';
+                    const cleanedDescription = repoDesc.replace('(s)', '').trim() || 'Bu proje için herhangi bir açıklama eklenmemiş.';
                     const stars = repo.stargazers_count;
                     const forks = repo.forks_count;
 
@@ -512,7 +525,7 @@
                                 </a>
                             </div>
                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2 break-all">${repo.name}</h3>
-                            <p class="text-sm text-stone-500 dark:text-stone-400 mb-6 line-clamp-3">${description}</p>
+                            <p class="text-sm text-stone-500 dark:text-stone-400 mb-6 line-clamp-3">${cleanedDescription}</p>
                         </div>
                         <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/80">
                             <span class="text-xs px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800/80 font-semibold text-stone-600 dark:text-stone-300">${language}</span>
@@ -524,24 +537,27 @@
                     `;
 
                     container.appendChild(card);
-                    // Dinamik olarak oluşturulan kartı Scroll Reveal sistemine dahil et
                     observer.observe(card);
                 });
+
+                if (displayedReposCount === 0) {
+                    container.innerHTML = `<p class="col-span-full text-center text-stone-500 py-8">Gösterilebilir herhangi bir açık kaynaklı ürün bulunamadı.</p>`;
+                }
 
             } catch (error) {
                 console.error(error);
                 container.innerHTML = `
                     <div class="col-span-full text-center py-8">
-                        <p class="text-red-500 mb-4">GitHub API limitine ulaşıldı veya bağlantı hatası oluştu.</p>
+                        <p class="text-red-500 mb-4">Veriler çekilirken bir hata oluştu veya API limitine ulaşıldı.</p>
                         <a href="https://github.com/${githubUsername}" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-stone-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all">
-                            Profilime Doğrudan Git <i class="fa-brands fa-github"></i>
+                            Profilime Git <i class="fa-brands fa-github"></i>
                         </a>
                     </div>
                 `;
             }
         }
 
-        // Sayfa Yüklendiğinde Çalıştır
+        // Başlangıç Çalıştırmaları
         document.addEventListener('DOMContentLoaded', () => {
             fetchGithubProfile();
             fetchGithubRepos();
