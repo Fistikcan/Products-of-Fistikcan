@@ -115,10 +115,10 @@
 
         /* Profil Çatlama Görsel Yapısı */
         .left-half {
-            clip-path: polygon(0 0, 50% 0, 47% 20%, 53% 45%, 46% 70%, 52% 100%, 0 100%);
+            clip-path: polygon(0 0, 51% 0, 48% 20%, 54% 45%, 47% 70%, 53% 100%, 0 100%);
         }
         .right-half {
-            clip-path: polygon(50% 0, 100% 0, 100% 100%, 52% 100%, 46% 70%, 53% 45%, 47% 20%);
+            clip-path: polygon(49% 0, 100% 0, 100% 100%, 53% 100%, 47% 70%, 54% 45%, 48% 20%);
         }
 
         /* Profil Fırlayan Kod Efekti Stil Tanımı (JS Fizik Motoru Tarafından Yönetilir) */
@@ -277,13 +277,18 @@
                     <!-- Çatlayan Resim Kapsayıcısı -->
                     <div id="avatar-split-container" class="absolute inset-3 rounded-full overflow-hidden bg-stone-200 dark:bg-darkCard border-4 border-white dark:border-darkBg shadow-2xl">
                         
-                        <!-- Sol Parça -->
-                        <div class="left-half absolute inset-0 transition-transform duration-300 ease-out origin-center">
+                        <!-- BÜTÜN RESİM KATMANI: Mouse üzerinde değilken tam ve pürüzsüz görünmesi için (Çizgi Bug Fix) -->
+                        <div class="unsplit-avatar absolute inset-0 transition-opacity duration-300 ease-out z-10">
+                            <img id="profile-avatar-whole" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
+                        </div>
+
+                        <!-- Sol Parça (Yalnızca Hover Sırasında Görünür ve Aralanır) -->
+                        <div class="left-half absolute inset-0 opacity-0 transition-all duration-300 ease-out origin-center">
                             <img id="profile-avatar-left" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
                         </div>
 
-                        <!-- Sağ Parça -->
-                        <div class="right-half absolute inset-0 transition-transform duration-300 ease-out origin-center">
+                        <!-- Sağ Parça (Yalnızca Hover Sırasında Görünür ve Aralanır) -->
+                        <div class="right-half absolute inset-0 opacity-0 transition-all duration-300 ease-out origin-center">
                             <img id="profile-avatar-right" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
                         </div>
 
@@ -564,6 +569,7 @@
         // GELİŞMİŞ FİZİK MOTORLU KOD FIRLAMA VE PATLAMA EFECTİ
         const profileLink = document.getElementById('profile-link');
         const crackGlow = document.getElementById('avatar-crack-glow');
+        const avatarWhole = document.querySelector('.unsplit-avatar');
         const avatarHalfLeft = document.querySelector('.left-half');
         const avatarHalfRight = document.querySelector('.right-half');
         
@@ -581,16 +587,16 @@
                 this.x = startX;
                 this.y = startY;
                 
-                // Yukarı fışkırma hızı ve rastgele yön fırlama fiziği
-                this.vx = (Math.random() - 0.5) * 8; // -4 ile +4 arası yatay hız
-                this.vy = (Math.random() * -6) - 4;   // -4 ile -10 arası dikey (yukarı doğru) fırlama hızı
-                this.gravity = 0.28;                  // Yerçekimi ivmesi (aşağı çeker)
-                this.friction = 0.98;                 // Sürtünme direnci (havada yavaşlama)
-                this.bounce = -0.3;                   // Tabana çarpınca sekme oranı
+                // Fiziksel rastgele fırlama oranları (Fıskiye etkisi)
+                this.vx = (Math.random() - 0.5) * 8; 
+                this.vy = (Math.random() * -6) - 4;   
+                this.gravity = 0.28;                  
+                this.friction = 0.98;                 
+                this.bounce = -0.3;                   
                 this.opacity = 1;
                 this.isDead = false;
                 
-                this.el.style.fontSize = `${Math.random() * 4 + 11}px`; // 11px - 15px arası
+                this.el.style.fontSize = `${Math.random() * 4 + 11}px`; 
                 this.el.style.left = `${this.x}px`;
                 this.el.style.top = `${this.y}px`;
                 this.el.style.opacity = this.opacity;
@@ -605,19 +611,16 @@
                 this.x += this.vx;
                 this.y += this.vy;
                 
-                const bottomBound = window.innerHeight - 35; // Ekranın tabanı
+                const bottomBound = window.innerHeight - 35; 
                 
-                // Taban çarpışma testi (Seker ve durur)
                 if (this.y >= bottomBound) {
                     this.y = bottomBound;
-                    this.vy *= this.bounce; // Yukarı geri sekme hızı
-                    this.vx *= 0.6;         // Tabandaki zemin sürtünmesi
-                    
-                    // Tabana ulaştıktan sonra daha hızlı solmaya başla
+                    this.vy *= this.bounce; 
+                    this.vx *= 0.6;         
                     this.opacity -= 0.02;
                 }
                 
-                this.opacity -= 0.005; // Genel havada solma oranı
+                this.opacity -= 0.005; 
                 
                 if (this.opacity <= 0 || this.x < -100 || this.x > window.innerWidth + 100) {
                     this.isDead = true;
@@ -645,7 +648,11 @@
 
         if (profileLink) {
             profileLink.addEventListener('mouseenter', () => {
-                // Çatlama ve aralama hareketi
+                // Bütün resim kaybolur, çatlayan parçalar ortaya çıkıp iki yana ayrılır
+                avatarWhole.style.opacity = '0';
+                avatarHalfLeft.style.opacity = '1';
+                avatarHalfRight.style.opacity = '1';
+
                 avatarHalfLeft.style.transform = 'translateX(-15px) rotate(-3deg)';
                 avatarHalfRight.style.transform = 'translateX(15px) rotate(3deg)';
                 crackGlow.style.opacity = '1';
@@ -656,20 +663,23 @@
                     requestAnimationFrame(particlePhysicsLoop);
                 }
 
-                // Kodları akıtmaya (fırlatmaya) başla
+                // Fışkırma parçacıklarını başlat
                 avatarRainInterval = setInterval(() => {
                     const rect = profileLink.getBoundingClientRect();
                     const startX = rect.left + rect.width / 2;
                     const startY = rect.top + rect.height / 2;
 
-                    // Her döngüde 2 farklı parçacık fırlat
                     particles.push(new CodeParticle(startX, startY, codeSnippets[Math.floor(Math.random() * codeSnippets.length)]));
                     particles.push(new CodeParticle(startX, startY, codeSnippets[Math.floor(Math.random() * codeSnippets.length)]));
                 }, 80);
             });
 
             profileLink.addEventListener('mouseleave', () => {
-                // Resimleri normal haline geri döndür
+                // Her şey pürüzsüzce eski birleşik haline döner
+                avatarWhole.style.opacity = '1';
+                avatarHalfLeft.style.opacity = '0';
+                avatarHalfRight.style.opacity = '0';
+
                 avatarHalfLeft.style.transform = 'translateX(0px) rotate(0deg)';
                 avatarHalfRight.style.transform = 'translateX(0px) rotate(0deg)';
                 crackGlow.style.opacity = '0';
@@ -682,8 +692,13 @@
         }
 
 
-        // YAZI YAZMA EFEKTİ
-        const words = ["Python Geliştiricisi", "HTML & CSS & JS Geliştiricisi", "C++ Geliştiricisi"];
+        // YAZI YAZMA EFEKTİ (Diller Ayrıldı)
+        const words = [
+            "Python Geliştiricisi", 
+            "HTML & CSS Geliştiricisi", 
+            "JavaScript Geliştiricisi", 
+            "C++ Geliştiricisi"
+        ];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -759,6 +774,8 @@
 
         function applyProfileData(data) {
             if (data.avatar_url) {
+                // Üç farklı avatar katmanına da kaynağı uyguluyoruz
+                document.getElementById('profile-avatar-whole').src = data.avatar_url;
                 document.getElementById('profile-avatar-left').src = data.avatar_url;
                 document.getElementById('profile-avatar-right').src = data.avatar_url;
             }
@@ -837,7 +854,6 @@
                 const forks = repo.forks_count;
 
                 card.innerHTML = `
-                    <!-- 3D transformlardan etkilenmeyen kararlı flexbox yapısı -->
                     <div class="tilt-inner flex flex-col justify-between h-full w-full pointer-events-none">
                         <div>
                             <!-- İkon Hizalama Alanı -->
