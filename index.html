@@ -30,7 +30,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Vanilla Tilt JS CDN (3D Eğilme Efekti İçerir) -->
+    <!-- Vanilla Tilt JS CDN (3D Eğilme Efekti) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
     <script>
@@ -43,8 +43,8 @@
                     },
                     colors: {
                         primary: '#93C90F', // Fıstık Yeşili
-                        darkBg: '#0F1115',  // Koyu Tema Arka Planı
-                        darkCard: '#181C24', // Koyu Tema Kart Rengi
+                        darkBg: '#090B0E',  // Koyu SaaS Arka Planı
+                        darkCard: '#13161C', // Koyu Tema Kart Rengi
                     }
                 }
             }
@@ -96,20 +96,34 @@
             animation: avatarPulse 4s infinite ease-in-out;
         }
 
-        /* 3D Derinlik (Perspektif) Ayarları */
+        /* 20 LEVEL TİLT AYARLARI (Ultra Derinlik ve Perspektif) */
         .tilt-card {
             transform-style: preserve-3d;
-            perspective: 1000px;
+            perspective: 600px; /* Perspektif düştükçe 3D etkisi keskinleşir */
+            will-change: transform;
         }
-        /* Kart içindeki nesnelerin kartın üstünde havada süzülüyormuş gibi durması için */
+        /* Kartın üzerine gelince elemanların yukarı doğru fırlaması için */
         .tilt-inner {
-            transform: translateZ(35px);
+            transform: translateZ(50px);
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .tilt-inner-lg {
-            transform: translateZ(60px);
+            transform: translateZ(85px);
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Mouse Spotlight Efekti (Işık Takibi) */
+        /* Modern SaaS Grid Kafes Arka Planı */
+        .bg-grid {
+            background-size: 35px 35px;
+            background-image: linear-gradient(to right, rgba(147, 201, 15, 0.04) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(147, 201, 15, 0.04) 1px, transparent 1px);
+        }
+        .dark .bg-grid {
+            background-image: linear-gradient(to right, rgba(147, 201, 15, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(147, 201, 15, 0.02) 1px, transparent 1px);
+        }
+
+        /* Mouse Takip Eden Spotlight Efekti */
         .spotlight-card {
             position: relative;
         }
@@ -119,9 +133,9 @@
             inset: 0;
             border-radius: inherit;
             background: radial-gradient(
-                250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-                rgba(147, 201, 15, 0.12),
-                transparent 80%
+                200px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+                rgba(147, 201, 15, 0.1),
+                transparent 85%
             );
             z-index: 1;
             pointer-events: none;
@@ -140,7 +154,11 @@
 </head>
 <body class="bg-stone-50 text-stone-800 dark:bg-darkBg dark:text-stone-100 transition-theme overflow-x-hidden font-sans">
 
-    <!-- Süzülen Kod Yağmuru Konteyneri (JS ile doldurulacak) -->
+    <!-- SaaS Grid ve Mouse Takip Eden Küresel Ortam Işığı -->
+    <div class="fixed inset-0 pointer-events-none z-[-20] bg-grid opacity-50"></div>
+    <div id="ambient-spotlight" class="fixed inset-0 pointer-events-none z-[-15] transition-opacity duration-500 opacity-0 md:opacity-100" style="background: radial-gradient(650px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(147, 201, 15, 0.03), transparent 80%);"></div>
+
+    <!-- Süzülen Kod Yağmuru Konteyneri -->
     <div id="code-rain-container" class="fixed inset-0 pointer-events-none z-[-10]"></div>
 
     <!-- Navigasyon Alanı -->
@@ -194,6 +212,13 @@
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
             <!-- Sol Bölüm: Tanıtım -->
             <div class="md:col-span-7 space-y-6 text-center md:text-left reveal">
+                <!-- Discord Live Widget -->
+                <div id="discord-status-wrapper" class="inline-flex items-center gap-2.5 px-4 py-2 bg-stone-100 dark:bg-darkCard/80 border border-stone-200/50 dark:border-stone-800/80 rounded-full text-xs font-semibold shadow-sm transition-theme">
+                    <span id="discord-status-dot" class="w-2.5 h-2.5 rounded-full bg-stone-400"></span>
+                    <span id="discord-status-text" class="text-stone-500 dark:text-stone-400">Discord Durumu Yükleniyor...</span>
+                    <span id="discord-activity" class="hidden text-stone-400 dark:text-stone-500 border-l border-stone-300 dark:border-stone-800 pl-2.5 max-w-[200px] truncate"></span>
+                </div>
+
                 <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-stone-900 dark:text-white">
                     Ben <span class="text-primary">Fıstıkcan</span> <br>
                     <span id="typing-text" class="border-r-2 border-primary pr-1"></span>
@@ -228,12 +253,19 @@
                 </div>
             </div>
 
-            <!-- Sağ Bölüm: Profil Kartı (3D Tilt uygulandı) -->
+            <!-- Sağ Bölüm: Profil Kartı (Level 20 Tilt & Parallax Glare uygulandı) -->
             <div class="md:col-span-5 flex justify-center items-center reveal">
-                <div class="relative w-64 h-64 sm:w-80 sm:h-80 tilt-card cursor-pointer" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <div class="relative w-64 h-64 sm:w-80 sm:h-80 tilt-card cursor-pointer" 
+                     data-tilt 
+                     data-tilt-max="25" 
+                     data-tilt-speed="1000" 
+                     data-tilt-scale="1.06"
+                     data-tilt-perspective="600"
+                     data-tilt-glare="true" 
+                     data-tilt-max-glare="0.35">
                     <!-- Dışarıdaki dönen fıstık yeşili halka -->
                     <div class="absolute inset-0 rounded-full border border-dashed border-primary/50 animate-[spin_30s_linear_infinite] avatar-glow"></div>
-                    <!-- API'den çekilecek profil fotoğrafı alanı (Derinlik efekti eklendi) -->
+                    <!-- API'den çekilecek profil fotoğrafı alanı (Derinlik efekti havaya kalkar) -->
                     <div class="absolute inset-3 rounded-full overflow-hidden bg-stone-200 dark:bg-darkCard border-4 border-white dark:border-darkBg shadow-2xl flex items-center justify-center tilt-inner-lg">
                         <img id="profile-avatar" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="w-full h-full object-cover">
                     </div>
@@ -242,7 +274,7 @@
         </div>
     </section>
 
-    <!-- @Fistikcan's Products Bölümü (Dinamik GitHub Repoları) -->
+    <!-- @Fistikcan's Products Bölümü -->
     <section id="repos-section" class="py-24 px-6 relative bg-stone-100/40 dark:bg-stone-900/10 transition-theme">
         <div class="max-w-6xl mx-auto space-y-12">
             <!-- Başlık -->
@@ -252,6 +284,18 @@
                 </h2>
                 <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
                 <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">GitHub hesabımdan anlık olarak çekilen açık kaynaklı yazılım projelerim.</p>
+            </div>
+
+            <!-- Interaktif Arama Kutusu (Mousela 3D Eğilir) -->
+            <div class="max-w-md mx-auto mb-12 relative reveal tilt-card"
+                 data-tilt 
+                 data-tilt-max="10" 
+                 data-tilt-speed="800"
+                 data-tilt-scale="1.03">
+                <div class="relative tilt-inner">
+                    <input type="text" id="repo-search" placeholder="Projelerde anahtar kelime ara..." class="w-full pl-12 pr-4 py-4 bg-white dark:bg-darkCard border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm shadow-md">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                </div>
             </div>
 
             <!-- Repoların Yükleneceği Izgara (Grid) -->
@@ -273,24 +317,45 @@
             <!-- Diller Izgarası (3D Tilt & Spotlight uygulandı) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 max-w-4xl mx-auto">
                 <!-- Birleşik HTML, JS, CSS Kartı -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme tilt-card spotlight-card group reveal shadow-sm cursor-pointer" data-tilt data-tilt-max="12" data-tilt-glare="true" data-tilt-max-glare="0.15">
+                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme tilt-card spotlight-card group reveal shadow-sm cursor-pointer" 
+                     data-tilt 
+                     data-tilt-max="25" 
+                     data-tilt-speed="1000"
+                     data-tilt-scale="1.06"
+                     data-tilt-perspective="600"
+                     data-tilt-glare="true" 
+                     data-tilt-max-glare="0.25">
                     <div class="flex items-center gap-5 mb-4 text-4xl tilt-inner">
-                        <i class="fa-brands fa-html5 text-[#E34F26] group-hover:scale-110 transition-transform" title="HTML5"></i>
-                        <i class="fa-brands fa-js text-[#F7DF1E] group-hover:scale-110 transition-transform" title="JavaScript"></i>
-                        <i class="fa-brands fa-css3-alt text-[#1572B6] group-hover:scale-110 transition-transform" title="CSS3"></i>
+                        <i class="fa-brands fa-html5 text-[#E34F26] group-hover:scale-115 transition-transform" title="HTML5"></i>
+                        <i class="fa-brands fa-js text-[#F7DF1E] group-hover:scale-115 transition-transform" title="JavaScript"></i>
+                        <i class="fa-brands fa-css3-alt text-[#1572B6] group-hover:scale-115 transition-transform" title="CSS3"></i>
                     </div>
                     <span class="font-extrabold text-lg text-stone-900 dark:text-white tilt-inner">HTML, JS, CSS</span>
                 </div>
 
                 <!-- Python Kartı -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme tilt-card spotlight-card group reveal shadow-sm cursor-pointer" data-tilt data-tilt-max="12" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <i class="fa-brands fa-python text-5xl text-[#3776AB] mb-4 group-hover:scale-110 transition-transform tilt-inner" title="Python"></i>
+                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme tilt-card spotlight-card group reveal shadow-sm cursor-pointer" 
+                     data-tilt 
+                     data-tilt-max="25" 
+                     data-tilt-speed="1000"
+                     data-tilt-scale="1.06"
+                     data-tilt-perspective="600"
+                     data-tilt-glare="true" 
+                     data-tilt-max-glare="0.25">
+                    <i class="fa-brands fa-python text-5xl text-[#3776AB] mb-4 group-hover:scale-115 transition-transform tilt-inner" title="Python"></i>
                     <span class="font-extrabold text-lg text-stone-900 dark:text-white tilt-inner">Python</span>
                 </div>
 
                 <!-- C++ Kartı -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme tilt-card spotlight-card group reveal shadow-sm cursor-pointer" data-tilt data-tilt-max="12" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <div class="text-4xl font-black text-[#00599C] dark:text-sky-400 mb-4 tracking-tighter group-hover:scale-110 transition-transform tilt-inner">C++</div>
+                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme tilt-card spotlight-card group reveal shadow-sm cursor-pointer" 
+                     data-tilt 
+                     data-tilt-max="25" 
+                     data-tilt-speed="1000"
+                     data-tilt-scale="1.06"
+                     data-tilt-perspective="600"
+                     data-tilt-glare="true" 
+                     data-tilt-max-glare="0.25">
+                    <div class="text-4xl font-black text-[#00599C] dark:text-sky-400 mb-4 tracking-tighter group-hover:scale-115 transition-transform tilt-inner">C++</div>
                     <span class="font-extrabold text-lg text-stone-900 dark:text-white tilt-inner">C++</span>
                 </div>
             </div>
@@ -307,7 +372,13 @@
             </div>
 
             <!-- Form Kartı (3D Tilt uygulandı) -->
-            <div class="bg-white dark:bg-darkCard rounded-3xl p-8 border border-stone-200/60 dark:border-stone-800/60 reveal shadow-xl shadow-stone-200/10 dark:shadow-none tilt-card" data-tilt data-tilt-max="6" data-tilt-glare="true" data-tilt-max-glare="0.05">
+            <div class="bg-white dark:bg-darkCard rounded-3xl p-8 border border-stone-200/60 dark:border-stone-800/60 reveal shadow-xl shadow-stone-200/10 dark:shadow-none tilt-card" 
+                 data-tilt 
+                 data-tilt-max="8" 
+                 data-tilt-speed="800"
+                 data-tilt-scale="1.02"
+                 data-tilt-glare="true" 
+                 data-tilt-max-glare="0.08">
                 <form id="contact-form" action="https://formspree.io/f/xnjkylbv" method="POST" class="space-y-6 tilt-inner">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
@@ -350,6 +421,59 @@
 
     <!-- JAVASCRIPT KODLARI -->
     <script>
+        // DISCORD CANLI DURUM ENTEGRASYONU (Lanyard API)
+        // Lanyard API'nin doğru çalışması için kendi Discord ID'nizi tırnak içerisine yazın.
+        const discordUserId = '112233445566778899'; 
+
+        async function fetchDiscordStatus() {
+            const statusDot = document.getElementById('discord-status-dot');
+            const statusText = document.getElementById('discord-status-text');
+            const discordActivity = document.getElementById('discord-activity');
+
+            try {
+                const response = await fetch(`https://api.lanyard.rest/v1/users/${discordUserId}`);
+                if (!response.ok) return;
+                const { data } = await response.json();
+
+                const colors = {
+                    online: 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]',
+                    idle: 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]',
+                    dnd: 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]',
+                    offline: 'bg-stone-400'
+                };
+
+                const labels = {
+                    online: 'Discord Çevrimiçi',
+                    idle: 'Discord Boşta',
+                    dnd: 'Discord Rahatsız Etmeyin',
+                    offline: 'Discord Çevrimdışı'
+                };
+
+                const status = data.active_on_discord ? data.discord_status : 'offline';
+                
+                statusDot.className = `w-2.5 h-2.5 rounded-full ${colors[status]} animate-pulse`;
+                statusText.textContent = labels[status];
+
+                // Discord Aktivitesi (Spotify veya Oyun)
+                if (data.listening_to_spotify && data.spotify) {
+                    discordActivity.innerHTML = `<i class="fa-brands fa-spotify text-green-500 mr-1.5 animate-bounce"></i> Spotify: ${data.spotify.song} - ${data.spotify.artist}`;
+                    discordActivity.classList.remove('hidden');
+                } else if (data.activities && data.activities.length > 0) {
+                    const customAct = data.activities.find(act => act.type !== 4);
+                    if (customAct) {
+                        discordActivity.innerHTML = `<i class="fa-solid fa-gamepad text-primary mr-1.5"></i> ${customAct.name}`;
+                        discordActivity.classList.remove('hidden');
+                    }
+                } else {
+                    discordActivity.classList.add('hidden');
+                }
+
+            } catch (error) {
+                console.error("Discord durumu alınamadı:", error);
+                statusText.textContent = "Discord durumuna erişilemedi";
+            }
+        }
+
         // Mobil Menü Yönetimi
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -406,8 +530,16 @@
         mobileThemeToggle.addEventListener('click', toggleTheme);
 
 
-        // SPOTLIGHT (MOUSE IŞIK TAKİBİ) KONTROLÜ
+        // MOUSE SPOTLIGHT (ARKA PLAN VE KART IŞIĞI)
         document.addEventListener('mousemove', (e) => {
+            // Ortam ışığı
+            const ambient = document.getElementById('ambient-spotlight');
+            if (ambient) {
+                ambient.style.setProperty('--mouse-x', `${e.clientX}px`);
+                ambient.style.setProperty('--mouse-y', `${e.clientY}px`);
+            }
+
+            // Kart içi parlamaları
             const cards = document.querySelectorAll('.spotlight-card');
             cards.forEach(card => {
                 const rect = card.getBoundingClientRect();
@@ -419,7 +551,25 @@
         });
 
 
-        // SÜZÜLEN DERİNLİKLİ KOD YAĞMURU ANIMASYONU
+        // LOCALSTORAGE İÇİN ÖNBELLEKLEME (CACHE) YARDIMCILARI (GitHub API Sınırı Aşımı Çözümü)
+        function setCache(key, data, durationInMinutes = 60) {
+            const expires = Date.now() + (durationInMinutes * 60 * 1000);
+            localStorage.setItem(key, JSON.stringify({ data, expires }));
+        }
+
+        function getCache(key) {
+            const cached = localStorage.getItem(key);
+            if (!cached) return null;
+            const { data, expires } = JSON.parse(cached);
+            if (Date.now() > expires) {
+                localStorage.removeItem(key); 
+                return null;
+            }
+            return data;
+        }
+
+
+        // SÜZÜLEN DERİNLİKLİ KOD YAĞMURU
         const codeRainContainer = document.getElementById('code-rain-container');
         const codeSnippets = [
             'def fıstık():',
@@ -507,7 +657,7 @@
         }
 
 
-        // SCROLL REVEAL (AŞAĞI KAYDIRDIKÇA BELİRME)
+        // SCROLL REVEAL (BELİRME)
         const observerOptions = {
             root: null,
             threshold: 0.1,
@@ -528,26 +678,38 @@
         });
 
 
-        // GITHUB API ENTEGRASYONU VE FİLTRELEME
+        // GITHUB API ENTEGRASYONU VE FİLTRELEME (Önbellek destekli)
         const githubUsername = 'Fistikcan';
 
         async function fetchGithubProfile() {
+            // Önbellek kontrolü
+            const cachedProfile = getCache('github_profile');
+            if (cachedProfile) {
+                applyProfileData(cachedProfile);
+                return;
+            }
+
             try {
                 const response = await fetch(`https://api.github.com/users/${githubUsername}`);
                 if (!response.ok) throw new Error('Profil yüklenemedi.');
                 const data = await response.json();
                 
-                if (data.avatar_url) {
-                    document.getElementById('profile-avatar').src = data.avatar_url;
-                }
-                if (data.bio) {
-                    document.getElementById('profile-bio').textContent = data.bio;
-                }
-                document.getElementById('profile-followers').textContent = data.followers;
-                document.getElementById('profile-public-repos').textContent = data.public_repos;
+                setCache('github_profile', data, 60); // 1 saat önbelleğe al
+                applyProfileData(data);
             } catch (error) {
                 console.error(error);
             }
+        }
+
+        function applyProfileData(data) {
+            if (data.avatar_url) {
+                document.getElementById('profile-avatar').src = data.avatar_url;
+            }
+            if (data.bio) {
+                document.getElementById('profile-bio').textContent = data.bio;
+            }
+            document.getElementById('profile-followers').textContent = data.followers;
+            document.getElementById('profile-public-repos').textContent = data.public_repos;
         }
 
         async function fetchGithubRepos() {
@@ -559,73 +721,20 @@
                 </div>
             `;
 
+            // Önbellek kontrolü
+            const cachedRepos = getCache('github_repos');
+            if (cachedRepos) {
+                renderRepos(cachedRepos);
+                return;
+            }
+
             try {
                 const response = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=30`);
                 if (!response.ok) throw new Error('Depolar çekilemedi.');
                 const repos = await response.json();
 
-                container.innerHTML = ''; 
-
-                let displayedReposCount = 0;
-
-                repos.forEach(repo => {
-                    const repoNameLower = repo.name.toLowerCase();
-                    const repoDesc = repo.description || '';
-
-                    if (repoNameLower === 'fistikcan-s-products') return;
-                    if (repoDesc.includes('(s)')) return;
-
-                    displayedReposCount++;
-
-                    const card = document.createElement('div');
-                    // Yeni 3D Tilt ve Spotlight Sınıfları Eklendi
-                    card.className = "group bg-white dark:bg-darkCard rounded-3xl p-6 border border-stone-200/60 dark:border-stone-800/60 transition-all duration-300 hover:shadow-xl opacity-0 translate-y-10 ease-out flex flex-col justify-between tilt-card spotlight-card cursor-pointer";
-                    card.setAttribute('data-tilt', '');
-                    card.setAttribute('data-tilt-max', '15');
-                    card.setAttribute('data-tilt-speed', '400');
-                    card.setAttribute('data-tilt-glare', 'true');
-                    card.setAttribute('data-tilt-max-glare', '0.15');
-
-                    const language = repo.language || 'Markdown';
-                    const cleanedDescription = repoDesc.replace('(s)', '').trim() || 'Bu proje için herhangi bir açıklama eklenmemiş.';
-                    const stars = repo.stargazers_count;
-                    const forks = repo.forks_count;
-
-                    card.innerHTML = `
-                        <div class="tilt-inner">
-                            <div class="flex justify-between items-start mb-6">
-                                <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
-                                    <i class="fa-solid fa-code"></i>
-                                </div>
-                                <a href="${repo.html_url}" target="_blank" class="text-stone-400 hover:text-primary transition-colors text-xl relative z-20">
-                                    <i class="fa-brands fa-github"></i>
-                                </a>
-                            </div>
-                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2 break-all">${repo.name}</h3>
-                            <p class="text-sm text-stone-500 dark:text-stone-400 mb-6 line-clamp-3">${cleanedDescription}</p>
-                        </div>
-                        <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/80 tilt-inner">
-                            <span class="text-xs px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800/80 font-semibold text-stone-600 dark:text-stone-300">${language}</span>
-                            <div class="flex items-center gap-3 text-stone-400 text-xs">
-                                <span><i class="fa-regular fa-star mr-1"></i> ${stars}</span>
-                                <span><i class="fa-solid fa-code-fork mr-1"></i> ${forks}</span>
-                            </div>
-                        </div>
-                    `;
-
-                    container.appendChild(card);
-                    observer.observe(card);
-                });
-
-                // Dinamik olarak eklenen GitHub kartları için 3D Tilt kütüphanesini tetikle
-                if (window.VanillaTilt) {
-                    VanillaTilt.init(document.querySelectorAll("#repos-container .tilt-card"));
-                }
-
-                if (displayedReposCount === 0) {
-                    container.innerHTML = `<p class="col-span-full text-center text-stone-500 py-8">Gösterilebilir herhangi bir açık kaynaklı ürün bulunamadı.</p>`;
-                }
-
+                setCache('github_repos', repos, 60); // 1 saat önbelleğe al
+                renderRepos(repos);
             } catch (error) {
                 console.error(error);
                 container.innerHTML = `
@@ -637,6 +746,94 @@
                     </div>
                 `;
             }
+        }
+
+        function renderRepos(repos) {
+            const container = document.getElementById('repos-container');
+            container.innerHTML = ''; 
+
+            let displayedReposCount = 0;
+
+            repos.forEach(repo => {
+                const repoNameLower = repo.name.toLowerCase();
+                const repoDesc = repo.description || '';
+
+                if (repoNameLower === 'fistikcan-s-products') return;
+                if (repoDesc.includes('(s)')) return;
+
+                displayedReposCount++;
+
+                const card = document.createElement('div');
+                // Seviye 20 Eğilme Parametreleri (Daha agresif bükülme ve büyük ölçeklenme)
+                card.className = "group bg-white dark:bg-darkCard rounded-3xl p-6 border border-stone-200/60 dark:border-stone-800/60 transition-all duration-300 hover:shadow-2xl opacity-0 translate-y-10 ease-out flex flex-col justify-between tilt-card spotlight-card cursor-pointer";
+                card.setAttribute('data-tilt', '');
+                card.setAttribute('data-tilt-max', '25'); // Max eğilme açısını 25'e çıkardık
+                card.setAttribute('data-tilt-speed', '1000'); 
+                card.setAttribute('data-tilt-scale', '1.06'); // Üzerine gelince kart %6 büyür
+                card.setAttribute('data-tilt-perspective', '600'); // Perspektif yakınlığı artırıldı
+                card.setAttribute('data-tilt-glare', 'true');
+                card.setAttribute('data-tilt-max-glare', '0.25');
+
+                const language = repo.language || 'Markdown';
+                const cleanedDescription = repoDesc.replace('(s)', '').trim() || 'Bu proje için herhangi bir açıklama eklenmemiş.';
+                const stars = repo.stargazers_count;
+                const forks = repo.forks_count;
+
+                card.innerHTML = `
+                    <div class="tilt-inner">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <a href="${repo.html_url}" target="_blank" class="text-stone-400 hover:text-primary transition-colors text-xl relative z-20">
+                                <i class="fa-brands fa-github"></i>
+                            </a>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2 break-all">${repo.name}</h3>
+                        <p class="text-sm text-stone-500 dark:text-stone-400 mb-6 line-clamp-3">${cleanedDescription}</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/80 tilt-inner">
+                        <span class="text-xs px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800/80 font-semibold text-stone-600 dark:text-stone-300">${language}</span>
+                        <div class="flex items-center gap-3 text-stone-400 text-xs">
+                            <span><i class="fa-regular fa-star mr-1"></i> ${stars}</span>
+                            <span><i class="fa-solid fa-code-fork mr-1"></i> ${forks}</span>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+                observer.observe(card);
+            });
+
+            // Dinamik olarak eklenen GitHub kartları için 3D Tilt kütüphanesini yeniden başlat
+            if (window.VanillaTilt) {
+                VanillaTilt.init(document.querySelectorAll("#repos-container .tilt-card"));
+            }
+
+            if (displayedReposCount === 0) {
+                container.innerHTML = `<p class="col-span-full text-center text-stone-500 py-8">Gösterilebilir herhangi bir açık kaynaklı ürün bulunamadı.</p>`;
+            }
+        }
+
+
+        // ANLIK ARAMA / FİLTRELEME MOTORU
+        const searchInput = document.getElementById('repo-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const value = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('#repos-container > .tilt-card');
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const desc = card.querySelector('p').textContent.toLowerCase();
+                    
+                    if (title.includes(value) || desc.includes(value)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
         }
 
 
@@ -667,7 +864,6 @@
                         formStatus.className = "block text-center text-sm font-semibold mt-4 text-green-500 animate-pulse";
                         contactForm.reset();
                         
-                        // 5 saniye sonra başarı mesajını gizle
                         setTimeout(() => {
                             formStatus.classList.add("hidden");
                         }, 5000);
@@ -684,10 +880,19 @@
         }
 
 
+        // KONSOL SÜRPRİZ YUMURTASI (Easter Egg)
+        console.log(
+            '%cFıstıkcan Portfolio %c\nMerhaba yazılımcı dostum! Kodları mı inceliyorsun? Projelerime göz atmayı unutma: https://github.com/Fistikcan',
+            'color: #93C90F; font-size: 20px; font-weight: bold; font-family: sans-serif;',
+            'color: #8b949e; font-size: 14px; font-family: sans-serif;'
+        );
+
+
         // Başlangıç Çalıştırmaları
         document.addEventListener('DOMContentLoaded', () => {
             fetchGithubProfile();
             fetchGithubRepos();
+            fetchDiscordStatus();
             type();
             
             // Statik elemanlar için 3D Tilt'i başlat
