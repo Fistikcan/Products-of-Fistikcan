@@ -61,11 +61,6 @@
             0%, 100% { box-shadow: 0 0 15px rgba(147, 201, 15, 0.2); }
             50% { box-shadow: 0 0 30px rgba(147, 201, 15, 0.5); }
         }
-        /* Sürekli Dönen ve Parlayan Profil Halka Efekti */
-        @keyframes avatarPulse {
-            0%, 100% { border-color: rgba(147, 201, 15, 0.3); box-shadow: 0 0 15px rgba(147, 201, 15, 0.2); }
-            50% { border-color: rgba(147, 201, 15, 0.8); box-shadow: 0 0 30px rgba(147, 201, 15, 0.5); }
-        }
         /* Arka Plan Kod Yağmuru */
         @keyframes fallAndSpin {
             0% { transform: translateY(-150px) rotate(0deg); }
@@ -108,20 +103,22 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
         }
         .standard-hover-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-8px) scale(1.015);
             border-color: #93C90F !important;
             box-shadow: 0 12px 30px rgba(147, 201, 15, 0.15);
         }
 
-        /* Profil Çatlama Görsel Yapısı */
+        /* Yavaş Profil Çatlama Görsel Yapısı (Geliştirildi: 1.2s Süre) */
         .left-half {
             clip-path: polygon(0 0, 51% 0, 48% 20%, 54% 45%, 47% 70%, 53% 100%, 0 100%);
+            transition: transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
         }
         .right-half {
             clip-path: polygon(49% 0, 100% 0, 100% 100%, 53% 100%, 47% 70%, 54% 45%, 48% 20%);
+            transition: transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
         }
 
-        /* Profil Fırlayan Kod Efekti Stil Tanımı (JS Fizik Motoru Tarafından Yönetilir) */
+        /* Profil Fırlayan Kod Efekti Stil Tanımı */
         .avatar-falling-code {
             position: fixed;
             pointer-events: none;
@@ -183,253 +180,300 @@
     <!-- Süzülen Kod Yağmuru Konteyneri -->
     <div id="code-rain-container" class="fixed inset-0 pointer-events-none z-[-10]"></div>
 
-    <!-- Navigasyon Alanı -->
-    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-darkBg/70 border-b border-stone-200/50 dark:border-stone-800/50 transition-theme">
-        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="#" class="text-2xl font-extrabold tracking-tight flex items-center gap-2 group">
-                <span class="text-primary group-hover:scale-110 transition-transform">&lt;</span>
-                <span>fcandev<span class="text-primary">.</span>space</span>
-                <span class="text-primary group-hover:scale-110 transition-transform">&gt;</span>
-            </a>
-
-            <!-- Masaüstü Navigasyon -->
-            <div class="hidden md:flex items-center gap-8 font-semibold text-sm">
-                <a href="#about" class="hover:text-primary transition-colors">Hakkımda</a>
-                <a href="#repos-section" class="hover:text-primary transition-colors">Ürünler</a>
-                <a href="#skills" class="hover:text-primary transition-colors">Yetenekler</a>
-                <a href="#contact" class="hover:text-primary transition-colors">İletişim</a>
-                
-                <!-- Tema Değiştirici -->
-                <button id="theme-toggle" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-theme border border-transparent hover:border-primary/20">
-                    <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
-                </button>
-            </div>
-
-            <!-- Mobil Menü Butonları -->
-            <div class="flex items-center gap-4 md:hidden">
-                <button id="mobile-theme-toggle" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-theme">
-                    <i id="mobile-theme-icon" class="fa-solid fa-moon text-lg"></i>
-                </button>
-                <button id="menu-btn" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-colors">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
-            </div>
+    <!-- EFSANE SAYFA GEÇİŞ PERDESİ (Curtain) -->
+    <div id="page-transition-curtain" class="fixed inset-0 bg-darkBg z-[100] transform translate-y-full transition-transform duration-700 ease-in-out pointer-events-none flex flex-col items-center justify-center">
+        <div class="text-center space-y-4">
+            <i class="fa-solid fa-code text-5xl text-primary animate-pulse"></i>
+            <div class="text-sm font-bold text-stone-400 uppercase tracking-widest animate-pulse">fcandev.space yükleniyor...</div>
         </div>
+    </div>
 
-        <!-- Mobil Menü İçeriği -->
-        <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white dark:bg-darkBg border-b border-stone-200 dark:border-stone-800 px-6 py-6 space-y-4 shadow-lg transition-theme">
-            <a href="#about" class="block text-lg font-semibold hover:text-primary py-2">Hakkımda</a>
-            <a href="#repos-section" class="block text-lg font-semibold hover:text-primary py-2">Ürünler</a>
-            <a href="#skills" class="block text-lg font-semibold hover:text-primary py-2">Yetenekler</a>
-            <a href="#contact" class="block text-lg font-semibold hover:text-primary py-2">İletişim</a>
-        </div>
-    </nav>
-
-    <!-- Hero / Giriş Bölümü -->
-    <section id="about" class="min-h-[calc(100vh-80px)] flex items-center py-16 px-6 relative">
-        <div class="absolute top-1/4 left-10 w-72 h-72 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div class="absolute bottom-1/4 right-10 w-80 h-80 bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
-
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
-            <!-- Sol Bölüm: Tanıtım -->
-            <div class="md:col-span-7 space-y-6 text-center md:text-left reveal">
-                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-stone-900 dark:text-white">
-                    Ben <span class="text-primary">Fıstıkcan</span> <br>
-                    <span id="typing-text" class="border-r-2 border-primary pr-1"></span>
-                </h1>
-                
-                <!-- Canlı GitHub Bio Verisi -->
-                <p id="profile-bio" class="text-base sm:text-lg text-stone-500 dark:text-stone-400 max-w-xl mx-auto md:mx-0">
-                    Açık kaynak dünyasında fikirler üreten ve bunları kullanıcı dostu modern web uygulamalarına dönüştüren bir geliştiriciyim.
-                </p>
-
-                <!-- Canlı Mini İstatistikler -->
-                <div class="flex gap-6 justify-center md:justify-start py-2">
-                    <div class="text-center md:text-left">
-                        <span id="profile-followers" class="block text-2xl font-extrabold text-stone-900 dark:text-white">0</span>
-                        <span class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Takipçi</span>
-                    </div>
-                    <div class="w-px bg-stone-200 dark:bg-stone-800"></div>
-                    <div class="text-center md:text-left">
-                        <span id="profile-public-repos" class="block text-2xl font-extrabold text-stone-900 dark:text-white">0</span>
-                        <span class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Açık Repo</span>
-                    </div>
-                </div>
-                
-                <!-- Butonlar -->
-                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start pt-4">
-                    <a href="#repos-section" class="w-full sm:w-auto px-8 py-4 bg-primary text-stone-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all text-center glow-primary">
-                        Ürünleri İncele
-                    </a>
-                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-darkCard hover:bg-stone-100 dark:hover:bg-stone-800 font-bold rounded-2xl border border-stone-200 dark:border-stone-800 hover:border-primary/40 transition-all text-center">
-                        İletişim
-                    </a>
-                </div>
-            </div>
-
-            <!-- Sağ Bölüm: Profil Kartı (Çatlama & Yönlendirme Efektli Alan) -->
-            <div class="md:col-span-5 flex justify-center items-center reveal">
-                <a href="https://github.com/Fistikcan" target="_blank" id="profile-link" class="relative w-64 h-64 sm:w-80 sm:h-80 block group cursor-pointer animate-float select-none">
-                    <!-- Dışarıdaki dönen fıstık yeşili halka -->
-                    <div class="absolute inset-0 rounded-full border border-dashed border-primary/50 animate-[spin_30s_linear_infinite] avatar-glow"></div>
-                    
-                    <!-- Çatlayan Resim Kapsayıcısı -->
-                    <div id="avatar-split-container" class="absolute inset-3 rounded-full overflow-hidden bg-stone-200 dark:bg-darkCard border-4 border-white dark:border-darkBg shadow-2xl">
-                        
-                        <!-- BÜTÜN RESİM KATMANI: Mouse üzerinde değilken tam ve pürüzsüz görünmesi için (Çizgi Bug Fix) -->
-                        <div class="unsplit-avatar absolute inset-0 transition-opacity duration-300 ease-out z-10">
-                            <img id="profile-avatar-whole" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
-                        </div>
-
-                        <!-- Sol Parça (Yalnızca Hover Sırasında Görünür ve Aralanır) -->
-                        <div class="left-half absolute inset-0 opacity-0 transition-all duration-300 ease-out origin-center">
-                            <img id="profile-avatar-left" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
-                        </div>
-
-                        <!-- Sağ Parça (Yalnızca Hover Sırasında Görünür ve Aralanır) -->
-                        <div class="right-half absolute inset-0 opacity-0 transition-all duration-300 ease-out origin-center">
-                            <img id="profile-avatar-right" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
-                        </div>
-
-                        <!-- Ortadaki Çatlak Parlaması -->
-                        <div id="avatar-crack-glow" class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1.5 bg-primary/90 blur-[3px] opacity-0 transition-opacity duration-300 pointer-events-none"></div>
-
-                    </div>
+    <!-- ANA GÖRÜNÜM (Home View) -->
+    <div id="home-view" class="transition-opacity duration-500">
+        <!-- Navigasyon Alanı -->
+        <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-darkBg/70 border-b border-stone-200/50 dark:border-stone-800/50 transition-theme">
+            <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+                <!-- Logo -->
+                <a href="#" class="text-2xl font-extrabold tracking-tight flex items-center gap-2 group">
+                    <span class="text-primary group-hover:scale-110 transition-transform">&lt;</span>
+                    <span>fcandev<span class="text-primary">.</span>space</span>
+                    <span class="text-primary group-hover:scale-110 transition-transform">&gt;</span>
                 </a>
-            </div>
-        </div>
-    </section>
 
-    <!-- @Fistikcan's Products Bölümü -->
-    <section id="repos-section" class="py-24 px-6 relative bg-stone-100/40 dark:bg-stone-900/10 transition-theme">
-        <div class="max-w-6xl mx-auto space-y-12">
-            <!-- Başlık -->
-            <div class="text-center space-y-4 reveal">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">
-                    <a href="https://github.com/Fistikcan" target="_blank" class="text-primary hover:underline transition-all">@Fistikcan</a>'s Products
-                </h2>
-                <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">GitHub hesabımdan anlık olarak çekilen açık kaynaklı yazılım projelerim.</p>
-            </div>
-
-            <!-- İnteraktif Arama Kutusu -->
-            <div class="max-w-md mx-auto mb-12 relative reveal standard-hover-card border border-stone-200/50 dark:border-stone-800/50 rounded-2xl">
-                <div class="relative">
-                    <input type="text" id="repo-search" placeholder="Projelerde anahtar kelime ara..." class="w-full pl-12 pr-4 py-4 bg-white dark:bg-darkCard border-0 rounded-2xl outline-none transition-all duration-300 text-sm shadow-md">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
-                </div>
-            </div>
-
-            <!-- Repoların Yükleneceği Izgara -->
-            <div id="repos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Burası JavaScript tarafından doldurulacak -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Yetenekler Bölümü -->
-    <section id="skills" class="py-24 px-6 relative">
-        <div class="max-w-6xl mx-auto space-y-12">
-            <div class="text-center space-y-4 reveal">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">Kullandığım <span class="text-primary">Diller</span></h2>
-                <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">Geliştirme süreçlerinde en çok kullandığım diller ve ekosistemler.</p>
-            </div>
-
-            <!-- Diller Izgarası -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 max-w-4xl mx-auto">
-                <!-- HTML, JS, CSS Kartı -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme spotlight-card standard-hover-card group reveal shadow-sm cursor-pointer">
-                    <div class="flex items-center gap-5 mb-4 text-4xl">
-                        <i class="fa-brands fa-html5 text-[#E34F26] group-hover:scale-110 transition-transform" title="HTML5"></i>
-                        <i class="fa-brands fa-js text-[#F7DF1E] group-hover:scale-110 transition-transform" title="JavaScript"></i>
-                        <i class="fa-brands fa-css3-alt text-[#1572B6] group-hover:scale-110 transition-transform" title="CSS3"></i>
-                    </div>
-                    <span class="font-extrabold text-lg text-stone-900 dark:text-white">HTML, JS, CSS</span>
-                </div>
-
-                <!-- Python Kartı -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme spotlight-card standard-hover-card group reveal shadow-sm cursor-pointer">
-                    <i class="fa-brands fa-python text-5xl text-[#3776AB] mb-4 group-hover:scale-115 transition-transform" title="Python"></i>
-                    <span class="font-extrabold text-lg text-stone-900 dark:text-white">Python</span>
-                </div>
-
-                <!-- C++ Kartı -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme spotlight-card standard-hover-card group reveal shadow-sm cursor-pointer">
-                    <div class="text-4xl font-black text-[#00599C] dark:text-sky-400 mb-4 tracking-tighter group-hover:scale-115 transition-transform">C++</div>
-                    <span class="font-extrabold text-lg text-stone-900 dark:text-white">C++</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- İletişim Bölümü -->
-    <section id="contact" class="py-24 px-6 relative bg-stone-100/40 dark:bg-stone-900/20 border-t border-stone-200/50 dark:border-stone-800/50 transition-colors duration-500">
-        <div class="max-w-4xl mx-auto space-y-12">
-            <div class="text-center space-y-4 reveal">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">Yeni Bir <span class="text-primary">Fikir mi Var?</span></h2>
-                <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">Sorularınız, projeleriniz ya da sadece tanışmak için bana mesaj bırakabilirsiniz.</p>
-            </div>
-
-            <!-- Form Kartı -->
-            <div class="bg-white dark:bg-darkCard rounded-3xl p-8 border border-stone-200/60 dark:border-stone-800/60 reveal shadow-xl shadow-stone-200/10 dark:shadow-none standard-hover-card">
-                <form id="contact-form" action="https://formspree.io/f/xnjkylbv" method="POST" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-stone-500 dark:text-stone-400">Adınız</label>
-                            <input type="text" name="name" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-stone-500 dark:text-stone-400">E-Posta Adresiniz</label>
-                            <input type="email" name="email" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-stone-500 dark:text-stone-400">Mesajınız</label>
-                        <textarea name="message" required rows="5" class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm resize-none"></textarea>
-                    </div>
-                    <button type="submit" class="w-full py-4 bg-primary text-stone-950 font-bold rounded-2xl hover:scale-[1.02] transition-all duration-300 glow-primary shadow-lg shadow-primary/25">
-                        Gönder <i class="fa-solid fa-paper-plane ml-2"></i>
-                    </button>
+                <!-- Masaüstü Navigasyon -->
+                <div class="hidden md:flex items-center gap-8 font-semibold text-sm">
+                    <a href="#about" class="hover:text-primary transition-colors">Hakkımda</a>
+                    <a href="#repos-section" class="hover:text-primary transition-colors">Ürünler</a>
+                    <a href="#skills" class="hover:text-primary transition-colors">Yetenekler</a>
+                    <a href="#contact" class="hover:text-primary transition-colors">İletişim</a>
                     
-                    <!-- AJAX Sonuç Durumu -->
-                    <div id="form-status" class="hidden text-center text-sm font-semibold mt-4 transition-all duration-300"></div>
-                </form>
-            </div>
-        </div>
-    </section>
+                    <!-- Tema Değiştirici -->
+                    <button id="theme-toggle" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-theme border border-transparent hover:border-primary/20">
+                        <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+                    </button>
+                </div>
 
-    <!-- Footer -->
-    <footer class="py-10 border-t border-stone-200/60 dark:border-stone-800/60 px-6 transition-colors duration-500">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <p class="text-sm text-stone-500 dark:text-stone-400 text-center md:text-left">
-                &copy; 2026 Fıstıkcan. Tüm hakları saklıdır.
-            </p>
-            <div class="flex gap-6 text-sm text-stone-500 dark:text-stone-400">
-                <a href="#about" class="hover:text-primary transition-colors">Hakkımda</a>
-                <a href="#repos-section" class="hover:text-primary transition-colors">Projelerim</a>
-                <a href="#contact" class="hover:text-primary transition-colors">İletişim</a>
+                <!-- Mobil Menü Butonları -->
+                <div class="flex items-center gap-4 md:hidden">
+                    <button id="mobile-theme-toggle" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-theme">
+                        <i id="mobile-theme-icon" class="fa-solid fa-moon text-lg"></i>
+                    </button>
+                    <button id="menu-btn" class="p-2.5 rounded-xl bg-stone-100 dark:bg-darkCard text-stone-600 dark:text-stone-300 hover:text-primary transition-colors">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobil Menü İçeriği -->
+            <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white dark:bg-darkBg border-b border-stone-200 dark:border-stone-800 px-6 py-6 space-y-4 shadow-lg transition-theme">
+                <a href="#about" class="block text-lg font-semibold hover:text-primary py-2">Hakkımda</a>
+                <a href="#repos-section" class="block text-lg font-semibold hover:text-primary py-2">Ürünler</a>
+                <a href="#skills" class="block text-lg font-semibold hover:text-primary py-2">Yetenekler</a>
+                <a href="#contact" class="block text-lg font-semibold hover:text-primary py-2">İletişim</a>
+            </div>
+        </nav>
+
+        <!-- Hero / Giriş Bölümü -->
+        <section id="about" class="min-h-[calc(100vh-80px)] flex items-center py-16 px-6 relative">
+            <div class="absolute top-1/4 left-10 w-72 h-72 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="absolute bottom-1/4 right-10 w-80 h-80 bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
+
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
+                <!-- Sol Bölüm: Tanıtım -->
+                <div class="md:col-span-7 space-y-6 text-center md:text-left reveal">
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-stone-900 dark:text-white">
+                        Ben <span class="text-primary">Fıstıkcan</span> <br>
+                        <span id="typing-text" class="text-2xl sm:text-4xl lg:text-5xl border-r-2 border-primary pr-1 whitespace-nowrap inline-block"></span>
+                    </h1>
+                    
+                    <!-- Canlı GitHub Bio Verisi -->
+                    <p id="profile-bio" class="text-base sm:text-lg text-stone-500 dark:text-stone-400 max-w-xl mx-auto md:mx-0">
+                        Açık kaynak dünyasında fikirler üreten ve bunları kullanıcı dostu modern web uygulamalarına dönüştüren bir geliştiriciyim.
+                    </p>
+
+                    <!-- Canlı Mini İstatistikler -->
+                    <div class="flex gap-6 justify-center md:justify-start py-2">
+                        <div class="text-center md:text-left">
+                            <span id="profile-followers" class="block text-2xl font-extrabold text-stone-900 dark:text-white">0</span>
+                            <span class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Takipçi</span>
+                        </div>
+                        <div class="w-px bg-stone-200 dark:bg-stone-800"></div>
+                        <div class="text-center md:text-left">
+                            <span id="profile-public-repos" class="block text-2xl font-extrabold text-stone-900 dark:text-white">0</span>
+                            <span class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Açık Repo</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Butonlar -->
+                    <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start pt-4">
+                        <a href="#repos-section" class="w-full sm:w-auto px-8 py-4 bg-primary text-stone-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all text-center glow-primary">
+                            Ürünleri İncele
+                        </a>
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-darkCard hover:bg-stone-100 dark:hover:bg-stone-800 font-bold rounded-2xl border border-stone-200 dark:border-stone-800 hover:border-primary/40 transition-all text-center">
+                            İletişim
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sağ Bölüm: Profil Kartı -->
+                <div class="md:col-span-5 flex justify-center items-center reveal">
+                    <a href="https://github.com/Fistikcan" target="_blank" id="profile-link" class="relative w-64 h-64 sm:w-80 sm:h-80 block group cursor-pointer animate-float select-none">
+                        <!-- Dışarıdaki dönen fıstık yeşili halka -->
+                        <div class="absolute inset-0 rounded-full border border-dashed border-primary/50 animate-[spin_30s_linear_infinite] avatar-glow"></div>
+                        
+                        <!-- Çatlayan Resim Kapsayıcısı -->
+                        <div id="avatar-split-container" class="absolute inset-3 rounded-full overflow-hidden bg-stone-200 dark:bg-darkCard border-4 border-white dark:border-darkBg shadow-2xl">
+                            
+                            <!-- BÜTÜN RESİM KATMANI (Hiçbir çizgi görünmez) -->
+                            <div class="unsplit-avatar absolute inset-0 transition-opacity duration-300 ease-out z-10">
+                                <img id="profile-avatar-whole" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
+                            </div>
+
+                            <!-- Sol Parça (Yavaş Çatlama 1.2s) -->
+                            <div class="left-half absolute inset-0 opacity-0 transition-all duration-[1200ms] ease-out origin-center">
+                                <img id="profile-avatar-left" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
+                            </div>
+
+                            <!-- Sağ Parça (Yavaş Çatlama 1.2s) -->
+                            <div class="right-half absolute inset-0 opacity-0 transition-all duration-[1200ms] ease-out origin-center">
+                                <img id="profile-avatar-right" src="https://avatars.githubusercontent.com/u/9919?v=4" alt="Fıstıkcan Profile" class="absolute inset-0 w-full h-full object-cover">
+                            </div>
+
+                            <!-- Ortadaki Çatlak Parlaması -->
+                            <div id="avatar-crack-glow" class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1.5 bg-primary/90 blur-[3px] opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- @Fistikcan's Products Bölümü -->
+        <section id="repos-section" class="py-24 px-6 relative bg-stone-100/40 dark:bg-stone-900/10 transition-theme">
+            <div class="max-w-6xl mx-auto space-y-12">
+                <!-- Başlık -->
+                <div class="text-center space-y-4 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">
+                        <a href="https://github.com/Fistikcan" target="_blank" class="text-primary hover:underline transition-all">@Fistikcan</a>'s Products
+                    </h2>
+                    <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+                    <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">GitHub hesabımdan anlık olarak çekilen açık kaynaklı yazılım projelerim.</p>
+                </div>
+
+                <!-- İnteraktif Arama Kutusu -->
+                <div class="max-w-md mx-auto mb-12 relative reveal standard-hover-card border border-stone-200/50 dark:border-stone-800/50 rounded-2xl">
+                    <div class="relative">
+                        <input type="text" id="repo-search" placeholder="Projelerde anahtar kelime ara..." class="w-full pl-12 pr-4 py-4 bg-white dark:bg-darkCard border-0 rounded-2xl outline-none transition-all duration-300 text-sm shadow-md">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                    </div>
+                </div>
+
+                <!-- Repoların Yükleneceği Izgara (Boyut Orantısızlığı Giderildi - items-stretch aktif) -->
+                <div id="repos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+                    <!-- Burası JavaScript tarafından doldurulacak -->
+                </div>
+
+                <!-- Tüm Repoları Gör Butonu -->
+                <div class="text-center pt-8 reveal">
+                    <button id="view-all-repos-btn" class="px-8 py-4 bg-primary text-stone-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all glow-primary inline-flex items-center gap-2">
+                        Tüm Ürünleri Gör <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Yetenekler Bölümü -->
+        <section id="skills" class="py-24 px-6 relative">
+            <div class="max-w-6xl mx-auto space-y-12">
+                <div class="text-center space-y-4 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">Kullandığım <span class="text-primary">Diller</span></h2>
+                    <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+                    <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">Geliştirme süreçlerinde en çok kullandığım diller ve ekosistemler.</p>
+                </div>
+
+                <!-- Diller Izgarası -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 max-w-4xl mx-auto">
+                    <!-- HTML, JS, CSS Kartı -->
+                    <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme spotlight-card standard-hover-card group reveal shadow-sm cursor-pointer">
+                        <div class="flex items-center gap-5 mb-4 text-4xl">
+                            <i class="fa-brands fa-html5 text-[#E34F26] group-hover:scale-110 transition-transform" title="HTML5"></i>
+                            <i class="fa-brands fa-js text-[#F7DF1E] group-hover:scale-110 transition-transform" title="JavaScript"></i>
+                            <i class="fa-brands fa-css3-alt text-[#1572B6] group-hover:scale-110 transition-transform" title="CSS3"></i>
+                        </div>
+                        <span class="font-extrabold text-lg text-stone-900 dark:text-white">HTML, JS, CSS</span>
+                    </div>
+
+                    <!-- Python Kartı -->
+                    <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme spotlight-card standard-hover-card group reveal shadow-sm cursor-pointer">
+                        <i class="fa-brands fa-python text-5xl text-[#3776AB] mb-4 group-hover:scale-115 transition-transform" title="Python"></i>
+                        <span class="font-extrabold text-lg text-stone-900 dark:text-white">Python</span>
+                    </div>
+
+                    <!-- C++ Kartı -->
+                    <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme spotlight-card standard-hover-card group reveal shadow-sm cursor-pointer">
+                        <div class="text-4xl font-black text-[#00599C] dark:text-sky-400 mb-4 tracking-tighter group-hover:scale-115 transition-transform">C++</div>
+                        <span class="font-extrabold text-lg text-stone-900 dark:text-white">C++</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- İletişim Bölümü -->
+        <section id="contact" class="py-24 px-6 relative bg-stone-100/40 dark:bg-stone-900/20 border-t border-stone-200/50 dark:border-stone-800/50 transition-colors duration-500">
+            <div class="max-w-4xl mx-auto space-y-12">
+                <div class="text-center space-y-4 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">Yeni Bir <span class="text-primary">Fikir mi Var?</span></h2>
+                    <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+                    <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">Sorularınız, projeleriniz ya da sadece tanışmak için bana mesaj bırakabilirsiniz.</p>
+                </div>
+
+                <!-- Form Kartı -->
+                <div class="bg-white dark:bg-darkCard rounded-3xl p-8 border border-stone-200/60 dark:border-stone-800/60 reveal shadow-xl shadow-stone-200/10 dark:shadow-none standard-hover-card">
+                    <form id="contact-form" action="https://formspree.io/f/xnjkylbv" method="POST" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-stone-500 dark:text-stone-400">Adınız</label>
+                                <input type="text" name="name" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-stone-500 dark:text-stone-400">E-Posta Adresiniz</label>
+                                <input type="email" name="email" required class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-stone-500 dark:text-stone-400">Mesajınız</label>
+                            <textarea name="message" required rows="5" class="w-full px-5 py-4 bg-stone-50 dark:bg-darkBg border border-stone-200/80 dark:border-stone-800/80 focus:border-primary focus:ring-1 focus:ring-primary rounded-2xl outline-none transition-all duration-300 text-sm resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 bg-primary text-stone-950 font-bold rounded-2xl hover:scale-[1.02] transition-all duration-300 glow-primary shadow-lg shadow-primary/25">
+                            Gönder <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+                        
+                        <!-- AJAX Sonuç Durumu -->
+                        <div id="form-status" class="hidden text-center text-sm font-semibold mt-4 transition-all duration-300"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- TÜM REPOLAR SIRALI LİSTE GÖRÜNÜMÜ (All Repos View) -->
+    <div id="all-repos-view" class="hidden min-h-screen py-24 px-6 relative transition-opacity duration-500">
+        <div class="max-w-4xl mx-auto space-y-12">
+            <!-- Başlık Alnı ve Geri Dön Butonu -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-6 border-b border-stone-200/50 dark:border-stone-800/50">
+                <div class="space-y-2">
+                    <h2 class="text-3xl font-extrabold text-stone-900 dark:text-white">Tüm Projelerim</h2>
+                    <p class="text-stone-500 dark:text-stone-400 text-sm">GitHub üzerinde geliştirdiğim açık kaynaklı tüm yazılımların sıralı ve detaylı listesi.</p>
+                </div>
+                <!-- Geri Dön Butonu -->
+                <button id="back-to-home-btn" class="px-6 py-3 bg-white dark:bg-darkCard hover:bg-stone-100 dark:hover:bg-stone-800 font-bold rounded-2xl border border-stone-200 dark:border-stone-800 hover:border-primary/40 transition-all text-sm flex items-center gap-2 self-start sm:self-auto shadow-md">
+                    <i class="fa-solid fa-arrow-left"></i> Ana Sayfaya Dön
+                </button>
+            </div>
+
+            <!-- Repoların Sıralı Listeleneceği Alan (Sequential List) -->
+            <div id="all-repos-list" class="space-y-6">
+                <!-- Burası JavaScript tarafından dinamik olarak doldurulacaktır -->
             </div>
         </div>
-    </footer>
+    </div>
 
     <!-- JAVASCRIPT KODLARI -->
     <script>
-        // Mobil Menü Yönetimi
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+        // SANAL SAYFA GEÇİŞ KONTROLÜ (Efsane Perde Geçişi)
+        const viewAllBtn = document.getElementById('view-all-repos-btn');
+        const backToHomeBtn = document.getElementById('back-to-home-btn');
+        const transitionCurtain = document.getElementById('page-transition-curtain');
+        const homeView = document.getElementById('home-view');
+        const allReposView = document.getElementById('all-repos-view');
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        function triggerViewTransition(toAllRepos) {
+            // Perde yukarı kayar (ekranı kaplar)
+            transitionCurtain.classList.remove('translate-y-full');
+            transitionCurtain.classList.add('translate-y-0');
 
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
+            setTimeout(() => {
+                if (toAllRepos) {
+                    homeView.classList.add('hidden');
+                    allReposView.classList.remove('hidden');
+                } else {
+                    allReposView.classList.add('hidden');
+                    homeView.classList.remove('hidden');
+                }
+                // Görünüm değişiminde sayfa başına kaydır
+                window.scrollTo({ top: 0 });
+
+                setTimeout(() => {
+                    // Perde aşağı kayar (ekrandan çekilir)
+                    transitionCurtain.classList.remove('translate-y-0');
+                    transitionCurtain.classList.add('translate-y-full');
+                }, 300);
+            }, 700);
+        }
+
+        if (viewAllBtn) viewAllBtn.addEventListener('click', () => triggerViewTransition(true));
+        if (backToHomeBtn) backToHomeBtn.addEventListener('click', () => triggerViewTransition(false));
+
 
         // KOYU/AÇIK TEMA YÖNETİMİ
         const themeToggle = document.getElementById('theme-toggle');
@@ -566,7 +610,7 @@
         setInterval(createFallingCode, 1800);
 
 
-        // GELİŞMİŞ FİZİK MOTORLU KOD FIRLAMA VE PATLAMA EFECTİ
+        // GELİŞMİŞ FİZİK MOTORLU (YAVAŞ ÇATLAMA + GERÇEKÇİ KOD PATLAMASI)
         const profileLink = document.getElementById('profile-link');
         const crackGlow = document.getElementById('avatar-crack-glow');
         const avatarWhole = document.querySelector('.unsplit-avatar');
@@ -577,9 +621,10 @@
         let isSpawningParticles = false;
         let isLoopRunning = false;
         let avatarRainInterval = null;
+        let hoverStartTime = 0; // Çatlama süresini izlemek için
 
         class CodeParticle {
-            constructor(startX, startY, text) {
+            constructor(startX, startY, vx, vy, text) {
                 this.el = document.createElement('div');
                 this.el.className = 'avatar-falling-code';
                 this.el.innerHTML = text;
@@ -587,12 +632,11 @@
                 this.x = startX;
                 this.y = startY;
                 
-                // Fiziksel rastgele fırlama oranları (Fıskiye etkisi)
-                this.vx = (Math.random() - 0.5) * 8; 
-                this.vy = (Math.random() * -6) - 4;   
+                this.vx = vx; // Dinamik fırlama hızı
+                this.vy = vy; // Dinamik dikey fırlama hızı
                 this.gravity = 0.28;                  
                 this.friction = 0.98;                 
-                this.bounce = -0.3;                   
+                this.bounce = -0.35; // Hafif seker                 
                 this.opacity = 1;
                 this.isDead = false;
                 
@@ -605,7 +649,6 @@
             }
             
             update() {
-                // Fizik hesaplamaları
                 this.vy += this.gravity;
                 this.vx *= this.friction;
                 this.x += this.vx;
@@ -617,7 +660,7 @@
                     this.y = bottomBound;
                     this.vy *= this.bounce; 
                     this.vx *= 0.6;         
-                    this.opacity -= 0.02;
+                    this.opacity -= 0.025; // Tabanda biraz bekleyip hızlıca söner
                 }
                 
                 this.opacity -= 0.005; 
@@ -648,7 +691,10 @@
 
         if (profileLink) {
             profileLink.addEventListener('mouseenter', () => {
-                // Bütün resim kaybolur, çatlayan parçalar ortaya çıkıp iki yana ayrılır
+                // Çatlama süresi başlangıcı
+                hoverStartTime = Date.now();
+
+                // Yavaş çatlama (1.2 saniye sürer)
                 avatarWhole.style.opacity = '0';
                 avatarHalfLeft.style.opacity = '1';
                 avatarHalfRight.style.opacity = '1';
@@ -663,19 +709,35 @@
                     requestAnimationFrame(particlePhysicsLoop);
                 }
 
-                // Fışkırma parçacıklarını başlat
+                // Kod fışkırtma (Çatlama genişliğine göre ivmelenir)
                 avatarRainInterval = setInterval(() => {
                     const rect = profileLink.getBoundingClientRect();
                     const startX = rect.left + rect.width / 2;
                     const startY = rect.top + rect.height / 2;
 
-                    particles.push(new CodeParticle(startX, startY, codeSnippets[Math.floor(Math.random() * codeSnippets.length)]));
-                    particles.push(new CodeParticle(startX, startY, codeSnippets[Math.floor(Math.random() * codeSnippets.length)]));
-                }, 80);
+                    const elapsed = (Date.now() - hoverStartTime) / 1000; // Saniye cinsinden
+                    const scaleFactor = Math.min(elapsed / 1.2, 1.0); // 1.2 saniyede maksimum patlama gücü
+
+                    // Çatlama genişledikçe fışkırma miktarı ve hızları katlanarak artar
+                    const spawnCount = Math.floor(scaleFactor * 2) + 1; 
+
+                    for (let i = 0; i < spawnCount; i++) {
+                        const vx = (Math.random() - 0.5) * (12 * scaleFactor); // Yatay fırlama ivmesi
+                        const vy = (Math.random() * -7 * scaleFactor) - 2;     // Dikey fışkırma ivmesi
+
+                        particles.push(new CodeParticle(
+                            startX, 
+                            startY, 
+                            vx, 
+                            vy, 
+                            codeSnippets[Math.floor(Math.random() * codeSnippets.length)]
+                        ));
+                    }
+                }, 85);
             });
 
             profileLink.addEventListener('mouseleave', () => {
-                // Her şey pürüzsüzce eski birleşik haline döner
+                // Pürüzsüz geri birleşme
                 avatarWhole.style.opacity = '1';
                 avatarHalfLeft.style.opacity = '0';
                 avatarHalfRight.style.opacity = '0';
@@ -692,7 +754,7 @@
         }
 
 
-        // YAZI YAZMA EFEKTİ (Diller Ayrıldı)
+        // YAZI YAZMA EFEKTİ (Diller Ayrıldı & whitespace-nowrap)
         const words = [
             "Python Geliştiricisi", 
             "HTML & CSS Geliştiricisi", 
@@ -774,7 +836,6 @@
 
         function applyProfileData(data) {
             if (data.avatar_url) {
-                // Üç farklı avatar katmanına da kaynağı uyguluyoruz
                 document.getElementById('profile-avatar-whole').src = data.avatar_url;
                 document.getElementById('profile-avatar-left').src = data.avatar_url;
                 document.getElementById('profile-avatar-right').src = data.avatar_url;
@@ -787,8 +848,8 @@
         }
 
         async function fetchGithubRepos() {
-            const container = document.getElementById('repos-container');
-            container.innerHTML = `
+            const gridContainer = document.getElementById('repos-container');
+            gridContainer.innerHTML = `
                 <div class="col-span-full text-center py-12">
                     <i class="fa-solid fa-circle-notch animate-spin text-4xl text-primary mb-4"></i>
                     <p class="text-stone-500 dark:text-stone-400">Ürünler listeleniyor...</p>
@@ -810,7 +871,7 @@
                 renderRepos(repos);
             } catch (error) {
                 console.error(error);
-                container.innerHTML = `
+                gridContainer.innerHTML = `
                     <div class="col-span-full text-center py-8">
                         <p class="text-red-500 mb-4">Veriler çekilirken bir hata oluştu veya API limitine ulaşıldı.</p>
                         <a href="https://github.com/${githubUsername}" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-stone-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all">
@@ -822,8 +883,11 @@
         }
 
         function renderRepos(repos) {
-            const container = document.getElementById('repos-container');
-            container.innerHTML = ''; 
+            const gridContainer = document.getElementById('repos-container');
+            const listContainer = document.getElementById('all-repos-list');
+            
+            gridContainer.innerHTML = ''; 
+            listContainer.innerHTML = '';
 
             let displayedReposCount = 0;
 
@@ -836,61 +900,83 @@
 
                 displayedReposCount++;
 
-                const card = document.createElement('div');
-                // TERS TİLT ÖZELLİKLERİ VE BOYUTLANDIRILMIŞ HİZALAMA
-                card.className = "group bg-white dark:bg-darkCard rounded-3xl p-6 border border-stone-200/60 dark:border-stone-800/60 transition-all duration-300 hover:shadow-2xl opacity-0 translate-y-10 ease-out flex flex-col justify-between h-[300px] tilt-card spotlight-card cursor-pointer";
-                card.setAttribute('data-tilt', '');
-                card.setAttribute('data-tilt-reverse', 'true'); 
-                card.setAttribute('data-tilt-max', '20'); 
-                card.setAttribute('data-tilt-speed', '800'); 
-                card.setAttribute('data-tilt-scale', '1.03'); 
-                card.setAttribute('data-tilt-perspective', '700'); 
-                card.setAttribute('data-tilt-glare', 'true');
-                card.setAttribute('data-tilt-max-glare', '0.2');
-
                 const language = repo.language || 'Markdown';
                 const cleanedDescription = repoDesc.replace('(s)', '').trim() || 'Bu proje için herhangi bir açıklama eklenmemiş.';
                 const stars = repo.stargazers_count;
                 const forks = repo.forks_count;
 
-                card.innerHTML = `
-                    <div class="tilt-inner flex flex-col justify-between h-full w-full pointer-events-none">
-                        <div>
-                            <!-- İkon Hizalama Alanı -->
-                            <div class="flex justify-between items-center mb-4">
-                                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-xl text-primary text-lg flex-shrink-0">
-                                    <i class="fa-solid fa-code"></i>
+                // 1. ANA SAYFADAKİ IZGARA (İlk 6 repo gösterilir, orantısızlık çözüldü - h-full aktif)
+                if (displayedReposCount <= 6) {
+                    const card = document.createElement('div');
+                    card.className = "group bg-white dark:bg-darkCard rounded-3xl p-6 border border-stone-200/60 dark:border-stone-800/60 transition-all duration-300 hover:shadow-2xl opacity-0 translate-y-10 ease-out flex flex-col justify-between h-full tilt-card spotlight-card cursor-pointer";
+                    card.setAttribute('data-tilt', '');
+                    card.setAttribute('data-tilt-reverse', 'true'); 
+                    card.setAttribute('data-tilt-max', '20'); 
+                    card.setAttribute('data-tilt-speed', '800'); 
+                    card.setAttribute('data-tilt-scale', '1.03'); 
+                    card.setAttribute('data-tilt-perspective', '700'); 
+                    card.setAttribute('data-tilt-glare', 'true');
+                    card.setAttribute('data-tilt-max-glare', '0.2');
+
+                    card.innerHTML = `
+                        <div class="tilt-inner flex flex-col justify-between h-full w-full pointer-events-none">
+                            <div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-xl text-primary text-lg flex-shrink-0">
+                                        <i class="fa-solid fa-code"></i>
+                                    </div>
+                                    <div class="text-stone-400 group-hover:text-primary transition-colors text-xl flex-shrink-0 pointer-events-auto">
+                                        <a href="${repo.html_url}" target="_blank" class="relative z-20 block">
+                                            <i class="fa-brands fa-github"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="text-stone-400 group-hover:text-primary transition-colors text-xl flex-shrink-0 pointer-events-auto">
-                                    <a href="${repo.html_url}" target="_blank" class="relative z-20 block">
-                                        <i class="fa-brands fa-github"></i>
-                                    </a>
+                                <h3 class="text-lg font-bold group-hover:text-primary transition-colors mb-2 break-all line-clamp-1">${repo.name}</h3>
+                                <p class="text-xs text-stone-500 dark:text-stone-400 mb-4 line-clamp-3">${cleanedDescription}</p>
+                            </div>
+                            <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/80">
+                                <span class="text-xs px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800/80 font-semibold text-stone-600 dark:text-stone-300">${language}</span>
+                                <div class="flex items-center gap-3 text-stone-400 text-xs">
+                                    <span><i class="fa-regular fa-star mr-1"></i> ${stars}</span>
+                                    <span><i class="fa-solid fa-code-fork mr-1"></i> ${forks}</span>
                                 </div>
                             </div>
-                            <h3 class="text-lg font-bold group-hover:text-primary transition-colors mb-2 break-all line-clamp-1">${repo.name}</h3>
-                            <p class="text-xs text-stone-500 dark:text-stone-400 mb-4 line-clamp-3">${cleanedDescription}</p>
                         </div>
-                        <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/80">
-                            <span class="text-xs px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800/80 font-semibold text-stone-600 dark:text-stone-300">${language}</span>
-                            <div class="flex items-center gap-3 text-stone-400 text-xs">
-                                <span><i class="fa-regular fa-star mr-1"></i> ${stars}</span>
-                                <span><i class="fa-solid fa-code-fork mr-1"></i> ${forks}</span>
-                            </div>
-                        </div>
+                    `;
+                    gridContainer.appendChild(card);
+                    observer.observe(card);
+                }
+
+                // 2. DETAY SAYFASINDAKİ SIRALI LİSTE (Tüm repolar sıralı olarak listelenir)
+                const row = document.createElement('div');
+                row.className = "bg-white dark:bg-darkCard p-6 rounded-2xl border border-stone-200/50 dark:border-stone-800/50 flex flex-col md:flex-row md:items-center justify-between gap-4 standard-hover-card cursor-pointer opacity-0 translate-y-10 reveal pointer-events-none";
+                row.innerHTML = `
+                    <div class="space-y-2">
+                         <div class="flex items-center gap-3">
+                              <span class="px-2.5 py-1 text-xs rounded-lg bg-primary/10 text-primary font-bold flex-shrink-0">${language}</span>
+                              <h3 class="text-lg font-bold text-stone-900 dark:text-white break-all">${repo.name}</h3>
+                         </div>
+                         <p class="text-xs text-stone-500 dark:text-stone-400 max-w-2xl">${cleanedDescription}</p>
+                    </div>
+                    <div class="flex items-center gap-6 text-stone-400 text-xs self-end md:self-auto flex-shrink-0 pointer-events-auto">
+                         <span class="flex items-center gap-1"><i class="fa-regular fa-star"></i> ${stars}</span>
+                         <span class="flex items-center gap-1"><i class="fa-solid fa-code-fork"></i> ${forks}</span>
+                         <a href="${repo.html_url}" target="_blank" class="px-4 py-2 bg-primary text-stone-950 font-bold rounded-xl text-xs hover:scale-105 transition-all flex items-center gap-1 relative z-20">
+                             GitHub <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                         </a>
                     </div>
                 `;
-
-                container.appendChild(card);
-                observer.observe(card);
+                listContainer.appendChild(row);
+                observer.observe(row);
             });
 
-            // Dinamik repolar için 3D Tilt'i başlat
+            // Dinamik repolar için 3D Tilt'i başlat (Sadece ana sayfadakiler)
             if (window.VanillaTilt) {
                 VanillaTilt.init(document.querySelectorAll("#repos-container .tilt-card"));
             }
 
             if (displayedReposCount === 0) {
-                container.innerHTML = `<p class="col-span-full text-center text-stone-500 py-8">Gösterilebilir herhangi bir açık kaynaklı ürün bulunamadı.</p>`;
+                gridContainer.innerHTML = `<p class="col-span-full text-center text-stone-500 py-8">Gösterilebilir herhangi bir açık kaynaklı ürün bulunamadı.</p>`;
             }
         }
 
@@ -962,21 +1048,4 @@
         // KONSOL MESAJI (Console Easter Egg)
         console.log(
             '%cFıstıkcan Portfolio %c\nMerhaba yazılımcı dostum! Kodları mı inceliyorsun? Projelerime göz atmayı unutma: https://github.com/Fistikcan',
-            'color: #93C90F; font-size: 20px; font-weight: bold; font-family: sans-serif;',
-            'color: #8b949e; font-size: 14px; font-family: sans-serif;'
-        );
-
-
-        // Başlangıç Çalıştırmaları
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchGithubProfile();
-            fetchGithubRepos();
-            type();
-            
-            if (window.VanillaTilt) {
-                VanillaTilt.init(document.querySelectorAll(".tilt-card"));
-            }
-        });
-    </script>
-</body>
-</html>
+            'color: #93C90F; font-size: 20px; font-weight
