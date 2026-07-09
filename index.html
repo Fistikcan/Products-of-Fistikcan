@@ -66,7 +66,7 @@
             0%, 100% { border-color: rgba(147, 201, 15, 0.3); box-shadow: 0 0 15px rgba(147, 201, 15, 0.2); }
             50% { border-color: rgba(147, 201, 15, 0.8); box-shadow: 0 0 30px rgba(147, 201, 15, 0.5); }
         }
-        /* Yukarıdan Aşağı Süzülen Arka Plan Kod Yağmuru */
+        /* Arka Plan Kod Yağmuru */
         @keyframes fallAndSpin {
             0% { transform: translateY(-150px) rotate(0deg); }
             100% { transform: translateY(110vh) rotate(360deg); }
@@ -92,18 +92,18 @@
             animation: avatarPulse 4s infinite ease-in-out;
         }
 
-        /* 3D TERS TİLT DERİNLİK AYARLARI (Yalnızca Repolar İçin) */
+        /* 3D TERS TİLT DERİNLİK AYARLARI */
         .tilt-card {
             transform-style: preserve-3d;
-            perspective: 600px; 
+            perspective: 700px; 
             will-change: transform;
         }
         .tilt-inner {
-            transform: translateZ(45px);
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateZ(40px);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Diğer Kartlar İçin Yumuşak Hover Efekti (Standart ama Etkileyici) */
+        /* Diğer Kartlar İçin Yumuşak Hover Efekti */
         .standard-hover-card {
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
         }
@@ -121,35 +121,17 @@
             clip-path: polygon(50% 0, 100% 0, 100% 100%, 52% 100%, 46% 70%, 53% 45%, 47% 20%);
         }
 
-        /* Profil Çatlak Kod Yağmuru Animasyonu */
-        @keyframes avatarSplitFall {
-            0% {
-                transform: translateY(0) scale(0.6);
-                opacity: 0;
-            }
-            15% {
-                opacity: 1;
-                transform: translateY(20px) scale(1);
-            }
-            85% {
-                transform: translateY(calc(100vh - var(--start-y) - 40px));
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(calc(100vh - var(--start-y) - 40px));
-                opacity: 0; /* Tabanda sönme */
-            }
-        }
+        /* Profil Fırlayan Kod Efekti Stil Tanımı (JS Fizik Motoru Tarafından Yönetilir) */
         .avatar-falling-code {
             position: fixed;
             pointer-events: none;
             color: #93C90F;
             font-family: monospace;
-            font-size: 13px;
             font-weight: bold;
             z-index: 100;
-            text-shadow: 0 0 5px rgba(147, 201, 15, 0.7);
-            animation: avatarSplitFall 3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            text-shadow: 0 0 5px rgba(147, 201, 15, 0.8);
+            transform: translate(-50%, -50%);
+            will-change: left, top, opacity;
         }
 
         /* Modern SaaS Grid Kafes Arka Planı */
@@ -288,7 +270,6 @@
 
             <!-- Sağ Bölüm: Profil Kartı (Çatlama & Yönlendirme Efektli Alan) -->
             <div class="md:col-span-5 flex justify-center items-center reveal">
-                <!-- Tıklanınca GitHub'a giden ve mouse gelince parçalanan alan -->
                 <a href="https://github.com/Fistikcan" target="_blank" id="profile-link" class="relative w-64 h-64 sm:w-80 sm:h-80 block group cursor-pointer animate-float select-none">
                     <!-- Dışarıdaki dönen fıstık yeşili halka -->
                     <div class="absolute inset-0 rounded-full border border-dashed border-primary/50 animate-[spin_30s_linear_infinite] avatar-glow"></div>
@@ -327,7 +308,7 @@
                 <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">GitHub hesabımdan anlık olarak çekilen açık kaynaklı yazılım projelerim.</p>
             </div>
 
-            <!-- İnteraktif Arama Kutusu (Sade ama Şık Standard Tasarım) -->
+            <!-- İnteraktif Arama Kutusu -->
             <div class="max-w-md mx-auto mb-12 relative reveal standard-hover-card border border-stone-200/50 dark:border-stone-800/50 rounded-2xl">
                 <div class="relative">
                     <input type="text" id="repo-search" placeholder="Projelerde anahtar kelime ara..." class="w-full pl-12 pr-4 py-4 bg-white dark:bg-darkCard border-0 rounded-2xl outline-none transition-all duration-300 text-sm shadow-md">
@@ -335,7 +316,7 @@
                 </div>
             </div>
 
-            <!-- Repoların Yükleneceği Izgara (Grid) -->
+            <!-- Repoların Yükleneceği Izgara -->
             <div id="repos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Burası JavaScript tarafından doldurulacak -->
             </div>
@@ -351,7 +332,7 @@
                 <p class="text-stone-500 dark:text-stone-400 max-w-md mx-auto text-sm">Geliştirme süreçlerinde en çok kullandığım diller ve ekosistemler.</p>
             </div>
 
-            <!-- Diller Izgarası (Normal ama Premium Süzülmeli Animasyon) -->
+            <!-- Diller Izgarası -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 max-w-4xl mx-auto">
                 <!-- HTML, JS, CSS Kartı -->
                 <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-darkCard border border-stone-200/50 dark:border-stone-800/50 transition-theme spotlight-card standard-hover-card group reveal shadow-sm cursor-pointer">
@@ -378,7 +359,7 @@
         </div>
     </section>
 
-    <!-- İletişim Bölümü (AJAX Destekli & Standart Premium Animasyonlu) -->
+    <!-- İletişim Bölümü -->
     <section id="contact" class="py-24 px-6 relative bg-stone-100/40 dark:bg-stone-900/20 border-t border-stone-200/50 dark:border-stone-800/50 transition-colors duration-500">
         <div class="max-w-4xl mx-auto space-y-12">
             <div class="text-center space-y-4 reveal">
@@ -506,7 +487,7 @@
         });
 
 
-        // LOCALSTORAGE İÇİN ÖNBELLEKLEME (CACHE) YARDIMCILARI
+        // LOCALSTORAGE ÖNBELLEKLEME (CACHE)
         function setCache(key, data, durationInMinutes = 60) {
             const expires = Date.now() + (durationInMinutes * 60 * 1000);
             localStorage.setItem(key, JSON.stringify({ data, expires }));
@@ -524,7 +505,7 @@
         }
 
 
-        // SÜZÜLEN DERİNLİKLİ ARKA PLAN KOD YAĞMURU
+        // ARKA PLAN KOD YAĞMURU
         const codeRainContainer = document.getElementById('code-rain-container');
         const codeSnippets = [
             'def fıstık():',
@@ -580,51 +561,120 @@
         setInterval(createFallingCode, 1800);
 
 
-        // PROFIL FOTOĞRAFINA GELİNCE ÇATLAKTAN KOD AKITMA EFEKTİ
+        // GELİŞMİŞ FİZİK MOTORLU KOD FIRLAMA VE PATLAMA EFECTİ
         const profileLink = document.getElementById('profile-link');
         const crackGlow = document.getElementById('avatar-crack-glow');
         const avatarHalfLeft = document.querySelector('.left-half');
         const avatarHalfRight = document.querySelector('.right-half');
+        
+        let particles = [];
+        let isSpawningParticles = false;
+        let isLoopRunning = false;
         let avatarRainInterval = null;
+
+        class CodeParticle {
+            constructor(startX, startY, text) {
+                this.el = document.createElement('div');
+                this.el.className = 'avatar-falling-code';
+                this.el.innerHTML = text;
+                
+                this.x = startX;
+                this.y = startY;
+                
+                // Yukarı fışkırma hızı ve rastgele yön fırlama fiziği
+                this.vx = (Math.random() - 0.5) * 8; // -4 ile +4 arası yatay hız
+                this.vy = (Math.random() * -6) - 4;   // -4 ile -10 arası dikey (yukarı doğru) fırlama hızı
+                this.gravity = 0.28;                  // Yerçekimi ivmesi (aşağı çeker)
+                this.friction = 0.98;                 // Sürtünme direnci (havada yavaşlama)
+                this.bounce = -0.3;                   // Tabana çarpınca sekme oranı
+                this.opacity = 1;
+                this.isDead = false;
+                
+                this.el.style.fontSize = `${Math.random() * 4 + 11}px`; // 11px - 15px arası
+                this.el.style.left = `${this.x}px`;
+                this.el.style.top = `${this.y}px`;
+                this.el.style.opacity = this.opacity;
+                
+                document.body.appendChild(this.el);
+            }
+            
+            update() {
+                // Fizik hesaplamaları
+                this.vy += this.gravity;
+                this.vx *= this.friction;
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                const bottomBound = window.innerHeight - 35; // Ekranın tabanı
+                
+                // Taban çarpışma testi (Seker ve durur)
+                if (this.y >= bottomBound) {
+                    this.y = bottomBound;
+                    this.vy *= this.bounce; // Yukarı geri sekme hızı
+                    this.vx *= 0.6;         // Tabandaki zemin sürtünmesi
+                    
+                    // Tabana ulaştıktan sonra daha hızlı solmaya başla
+                    this.opacity -= 0.02;
+                }
+                
+                this.opacity -= 0.005; // Genel havada solma oranı
+                
+                if (this.opacity <= 0 || this.x < -100 || this.x > window.innerWidth + 100) {
+                    this.isDead = true;
+                    this.el.remove();
+                } else {
+                    this.el.style.left = `${this.x}px`;
+                    this.el.style.top = `${this.y}px`;
+                    this.el.style.opacity = this.opacity;
+                }
+            }
+        }
+
+        function particlePhysicsLoop() {
+            particles = particles.filter(p => {
+                p.update();
+                return !p.isDead;
+            });
+            
+            if (particles.length > 0 || isSpawningParticles) {
+                requestAnimationFrame(particlePhysicsLoop);
+            } else {
+                isLoopRunning = false;
+            }
+        }
 
         if (profileLink) {
             profileLink.addEventListener('mouseenter', () => {
-                // Çatlama ve aralama durumu
+                // Çatlama ve aralama hareketi
                 avatarHalfLeft.style.transform = 'translateX(-15px) rotate(-3deg)';
                 avatarHalfRight.style.transform = 'translateX(15px) rotate(3deg)';
                 crackGlow.style.opacity = '1';
 
-                // Kodları akıtmaya başla (Her 90 milisaniyede bir)
+                isSpawningParticles = true;
+                if (!isLoopRunning) {
+                    isLoopRunning = true;
+                    requestAnimationFrame(particlePhysicsLoop);
+                }
+
+                // Kodları akıtmaya (fırlatmaya) başla
                 avatarRainInterval = setInterval(() => {
                     const rect = profileLink.getBoundingClientRect();
-                    // Tam çatlak çizgisinin ortasından akış başlar
-                    const startX = rect.left + rect.width / 2 + (Math.random() * 12 - 6);
-                    const startY = rect.top + rect.height / 2 + (Math.random() * 30 - 15);
+                    const startX = rect.left + rect.width / 2;
+                    const startY = rect.top + rect.height / 2;
 
-                    const codeEl = document.createElement('div');
-                    codeEl.className = 'avatar-falling-code';
-                    codeEl.innerHTML = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
-                    
-                    codeEl.style.left = `${startX}px`;
-                    codeEl.style.top = `${startY}px`;
-                    codeEl.style.setProperty('--start-y', `${startY}px`);
-
-                    document.body.appendChild(codeEl);
-
-                    // Animasyon bitince temizle
-                    setTimeout(() => {
-                        codeEl.remove();
-                    }, 3000);
-
-                }, 90);
+                    // Her döngüde 2 farklı parçacık fırlat
+                    particles.push(new CodeParticle(startX, startY, codeSnippets[Math.floor(Math.random() * codeSnippets.length)]));
+                    particles.push(new CodeParticle(startX, startY, codeSnippets[Math.floor(Math.random() * codeSnippets.length)]));
+                }, 80);
             });
 
             profileLink.addEventListener('mouseleave', () => {
-                // Normal görünüme geri dön
+                // Resimleri normal haline geri döndür
                 avatarHalfLeft.style.transform = 'translateX(0px) rotate(0deg)';
                 avatarHalfRight.style.transform = 'translateX(0px) rotate(0deg)';
                 crackGlow.style.opacity = '0';
 
+                isSpawningParticles = false;
                 if (avatarRainInterval) {
                     clearInterval(avatarRainInterval);
                 }
@@ -664,7 +714,7 @@
         }
 
 
-        // SCROLL REVEAL (AŞAĞI KAYDIRDIKÇA BELİRME)
+        // SCROLL REVEAL (BELİRME)
         const observerOptions = {
             root: null,
             threshold: 0.1,
@@ -685,7 +735,7 @@
         });
 
 
-        // GITHUB API ENTEGRASYONU VE FİLTRELEME
+        // GITHUB API ENTEGRASYONU (Önbellek destekli)
         const githubUsername = 'Fistikcan';
 
         async function fetchGithubProfile() {
@@ -709,7 +759,6 @@
 
         function applyProfileData(data) {
             if (data.avatar_url) {
-                // Her iki yarım resim parçasına da kaynağı uyguluyoruz
                 document.getElementById('profile-avatar-left').src = data.avatar_url;
                 document.getElementById('profile-avatar-right').src = data.avatar_url;
             }
@@ -771,14 +820,14 @@
                 displayedReposCount++;
 
                 const card = document.createElement('div');
-                // TERS TİLT ÖZELLİKLERİ (İmleçten kaçarak bükülen yapı - reverse: true)
-                card.className = "group bg-white dark:bg-darkCard rounded-3xl p-6 border border-stone-200/60 dark:border-stone-800/60 transition-all duration-300 hover:shadow-2xl opacity-0 translate-y-10 ease-out flex flex-col justify-between tilt-card spotlight-card cursor-pointer";
+                // TERS TİLT ÖZELLİKLERİ VE BOYUTLANDIRILMIŞ HİZALAMA
+                card.className = "group bg-white dark:bg-darkCard rounded-3xl p-6 border border-stone-200/60 dark:border-stone-800/60 transition-all duration-300 hover:shadow-2xl opacity-0 translate-y-10 ease-out flex flex-col justify-between h-[300px] tilt-card spotlight-card cursor-pointer";
                 card.setAttribute('data-tilt', '');
-                card.setAttribute('data-tilt-reverse', 'true'); // Ters tilt aktif
+                card.setAttribute('data-tilt-reverse', 'true'); 
                 card.setAttribute('data-tilt-max', '20'); 
                 card.setAttribute('data-tilt-speed', '800'); 
                 card.setAttribute('data-tilt-scale', '1.03'); 
-                card.setAttribute('data-tilt-perspective', '600'); 
+                card.setAttribute('data-tilt-perspective', '700'); 
                 card.setAttribute('data-tilt-glare', 'true');
                 card.setAttribute('data-tilt-max-glare', '0.2');
 
@@ -788,23 +837,29 @@
                 const forks = repo.forks_count;
 
                 card.innerHTML = `
-                    <div class="tilt-inner">
-                        <div class="flex justify-between items-start mb-6">
-                            <div class="p-3 bg-primary/10 rounded-2xl text-primary text-xl">
-                                <i class="fa-solid fa-code"></i>
+                    <!-- 3D transformlardan etkilenmeyen kararlı flexbox yapısı -->
+                    <div class="tilt-inner flex flex-col justify-between h-full w-full pointer-events-none">
+                        <div>
+                            <!-- İkon Hizalama Alanı -->
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-xl text-primary text-lg flex-shrink-0">
+                                    <i class="fa-solid fa-code"></i>
+                                </div>
+                                <div class="text-stone-400 group-hover:text-primary transition-colors text-xl flex-shrink-0 pointer-events-auto">
+                                    <a href="${repo.html_url}" target="_blank" class="relative z-20 block">
+                                        <i class="fa-brands fa-github"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <a href="${repo.html_url}" target="_blank" class="text-stone-400 hover:text-primary transition-colors text-xl relative z-20">
-                                <i class="fa-brands fa-github"></i>
-                            </a>
+                            <h3 class="text-lg font-bold group-hover:text-primary transition-colors mb-2 break-all line-clamp-1">${repo.name}</h3>
+                            <p class="text-xs text-stone-500 dark:text-stone-400 mb-4 line-clamp-3">${cleanedDescription}</p>
                         </div>
-                        <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2 break-all">${repo.name}</h3>
-                        <p class="text-sm text-stone-500 dark:text-stone-400 mb-6 line-clamp-3">${cleanedDescription}</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/80 tilt-inner">
-                        <span class="text-xs px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800/80 font-semibold text-stone-600 dark:text-stone-300">${language}</span>
-                        <div class="flex items-center gap-3 text-stone-400 text-xs">
-                            <span><i class="fa-regular fa-star mr-1"></i> ${stars}</span>
-                            <span><i class="fa-solid fa-code-fork mr-1"></i> ${forks}</span>
+                        <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/80">
+                            <span class="text-xs px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800/80 font-semibold text-stone-600 dark:text-stone-300">${language}</span>
+                            <div class="flex items-center gap-3 text-stone-400 text-xs">
+                                <span><i class="fa-regular fa-star mr-1"></i> ${stars}</span>
+                                <span><i class="fa-solid fa-code-fork mr-1"></i> ${forks}</span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -902,7 +957,6 @@
             fetchGithubRepos();
             type();
             
-            // Sadece .tilt-card olan elemanlar için (Repolar) tilt etkisini başlatıyoruz
             if (window.VanillaTilt) {
                 VanillaTilt.init(document.querySelectorAll(".tilt-card"));
             }
