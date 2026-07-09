@@ -15,7 +15,7 @@
         "https://github.com/Fistikcan",
         "https://fcandev.space"
       ],
-      "description": "Fıstıkcan, (FCAN, fcanDev) bedava projeler geliştiren, açık kaynaklı bir geliştirici.",
+      "description": "Fıstıkcan, (FCAN, fcanDev) bedava projelerim var.",
       "jobTitle": "Software/Web Developer"
     }
     </script>
@@ -389,7 +389,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-6 border-b border-stone-200/50 dark:border-stone-800/50">
                 <div class="space-y-2">
                     <h2 class="text-3xl font-extrabold text-stone-900 dark:text-white">Tüm Projelerim</h2>
-                    <p class="text-stone-500 dark:text-stone-400 text-sm">Ne kadar varsa hepsi burda (ya da değil)</p>
+                    <p class="text-stone-500 dark:text-stone-400 text-sm">Ne kadar projem varsa hepsi burda (ya da değil mi?)</p>
                 </div>
                 <button id="back-to-home-btn" class="px-6 py-3 bg-white dark:bg-darkCard hover:bg-stone-100 dark:hover:bg-stone-800 font-bold rounded-2xl border border-stone-200 dark:border-stone-800 hover:border-primary/40 transition-all text-sm flex items-center gap-2 self-start sm:self-auto shadow-md">
                     <i class="fa-solid fa-arrow-left"></i> Ana Sayfaya Dön
@@ -856,7 +856,7 @@
                 console.error(error);
                 gridContainer.innerHTML = `
                     <div class="col-span-full text-center py-8">
-                        <p class="text-red-500 mb-4">Veriler çekilirken bir hata oluştu veya API limitine ulaşıldı.</p>
+                        <p class="text-red-500 mb-4">API limitine ulaşıldı.</p>
                         <a href="https://github.com/${githubUsername}" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-stone-950 font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all">
                             Profilime Git <i class="fa-brands fa-github"></i>
                         </a>
@@ -884,7 +884,7 @@
                 displayedReposCount++;
 
                 const language = repo.language || 'Markdown';
-                const cleanedDescription = repoDesc.replace('(s)', '').trim() || 'Bu proje için herhangi bir açıklama eklenmemiş.';
+                const cleanedDescription = repoDesc.replace('(s)', '').trim() || 'Bu repo için herhangi bir açıklama eklenmemiş.';
                 const stars = repo.stargazers_count;
                 const forks = repo.forks_count;
 
@@ -956,7 +956,7 @@
             }
 
             if (displayedReposCount === 0) {
-                gridContainer.innerHTML = `<p class="col-span-full text-center text-stone-500 py-8">Gösterilebilir herhangi bir açık kaynaklı ürün bulunamadı.</p>`;
+                gridContainer.innerHTML = `<p class="col-span-full text-center text-stone-500 py-8">Gösterilebilir herhangi repo bulunamadı.</p>`;
             }
         }
 
@@ -1021,7 +1021,7 @@
         }
 
         console.log(
-            '%cFıstıkcan Portfolio %c\nMerhaba yazılımcı dostum! Kodları mı inceliyorsun? Projelerime göz atmayı unutma: https://github.com/Fistikcan',
+            '%cFıstıkcan Portfolio %c\nŞKardeş hayırdır, ne geziyon burda, gelmişken buraya bi göz at bence: https://github.com/Fistikcan',
             'color: #93C90F; font-size: 20px; font-weight: bold; font-family: sans-serif;',
             'color: #8b949e; font-size: 14px; font-family: sans-serif;'
         );
